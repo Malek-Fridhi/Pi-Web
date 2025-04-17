@@ -1,0 +1,184 @@
+    {% extends 'base.html.twig' %}
+
+    {% block title %}Créer un Abonnement{% endblock %}
+
+    {% block stylesheets %}
+        <link rel="stylesheet" href="{{ asset('assets/css/bootstrap.min.css') }}" />
+        <link rel="stylesheet" href="{{ asset('assets/css/plugins.min.css') }}" />
+        <link rel="stylesheet" href="{{ asset('assets/css/kaiadmin.min.css') }}" />
+        <link rel="stylesheet" href="{{ asset('assets/css/demo.css') }}" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+        <style>
+            .invalid-feedback {
+                display: none;
+                color: #dc3545;
+                font-size: 0.875em;
+            }
+
+            .is-invalid {
+                border-color: #dc3545 !important;
+            }
+
+            .is-invalid ~ .invalid-feedback {
+                display: block !important;
+            }
+
+            .form-control::placeholder {
+                color: rgb(176, 182, 192);
+            }
+
+            .main-container {
+                background: #f3f5fe;
+                min-height: 100vh;
+                padding: 40px 0;
+                
+            }
+
+            .main-card {
+                max-width: 670px;
+                margin: auto;
+                background: white;
+                border-radius: 16px;
+                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            }
+
+            .page-header {
+                background: #2A2F5B;
+                color: white;
+                padding: 25px 40px;
+                text-align: center;
+            }
+
+            .form-body {
+                padding: 40px;
+            }
+
+            .form-field {
+                margin-bottom: 25px;
+            }
+
+            .form-label {
+                font-weight: 600;
+                margin-bottom: 8px;
+                display: block;
+            }
+
+            .btn-save {
+                background: linear-gradient(to right, #1c83f3, #0d6efd);
+                color: white;
+                border: none;
+                padding: 12px 25px;
+                border-radius: 8px;
+                font-weight: 560;
+                margin-top: 15px;
+            }
+        </style>
+    {% endblock %}
+
+    {% block body %}
+    <div class="main-container">
+        <div class="main-card">
+            <div class="page-header">
+                <h1>Créer un Abonnement</h1>
+            </div>
+            <div class="form-body">
+                {{ form_start(form, {'attr': {'novalidate': 'novalidate', 'class': 'needs-validation'}}) }}
+
+                    <div class="form-field">
+                        {{ form_label(form.type, null, {'label_attr': {'class': 'form-label'}}) }}
+                        {{ form_widget(form.type, {'attr': {'class': 'form-control' ~ (form_errors(form.type) ? ' is-invalid' : '')}}) }}
+                        {% if form_errors(form.type) %}
+                            <div class="invalid-feedback d-block">
+                                {{ form_errors(form.type) }}
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    <div class="form-field">
+                        {{ form_label(form.date_debut, null, {'label_attr': {'class': 'form-label'}}) }}
+                        {{ form_widget(form.date_debut, {'attr': {'class': 'form-control' ~ (form_errors(form.date_debut) ? ' is-invalid' : '')}}) }}
+                        {% if form_errors(form.date_debut) %}
+                            <div class="invalid-feedback d-block">
+                                {{ form_errors(form.date_debut) }}
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    <div class="form-field">
+                        {{ form_label(form.cours, null, {'label_attr': {'class': 'form-label'}}) }}
+                        {{ form_widget(form.cours, {'attr': {'class': 'form-control' ~ (form_errors(form.cours) ? ' is-invalid' : '')}}) }}
+                        {% if form_errors(form.cours) %}
+                            <div class="invalid-feedback d-block">
+                                {{ form_errors(form.cours) }}
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    <button id="submitBtn" type="submit" class="btn btn-save">Enregistrer</button>
+
+                {{ form_end(form) }}
+
+                <a href="{{ path('app_abonnement_index') }}" class="btn btn-link mt-3">← Retour à la liste</a>
+            </div>
+        </div>
+    </div>
+    {% endblock %}
+
+    {% block javascripts %}
+        <script src="{{ asset('assets/js/core/jquery-3.7.1.min.js') }}"></script>
+        <script src="{{ asset('assets/js/core/bootstrap.min.js') }}"></script>
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                const form = document.querySelector('.needs-validation');
+
+                form.addEventListener('submit', function (event) {
+                    if (!form.checkValidity()) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                        document.querySelectorAll('.form-control').forEach(input => {
+                            if (!input.value.trim()) {
+                                input.classList.add('is-invalid');
+                            }
+                        });
+                    }
+                    form.classList.add('was-validated');
+                }, false);
+
+                document.querySelectorAll('.form-control').forEach(input => {
+                    input.addEventListener('input', function () {
+                        if (this.value.trim() !== '') {
+                            this.classList.remove('is-invalid');
+                        }
+                    });
+                });
+            });
+        </script>
+
+        {# Script logique business (min cours) #}
+        <script>
+            $(document).ready(function () {
+                function updateCoursLimit() {
+                    let type = $('#abonnement_type').val();
+                    let minCours = 1;
+                    if (type === 'Gold') minCours = 2;
+                    else if (type === 'Diamond') minCours = 3;
+                    else if (type === 'Premium') minCours = 4;
+
+                    let selectedCount = $('input[name="abonnement[cours][]"]:checked').length;
+
+                    $('input[name="abonnement[cours][]"]').each(function () {
+                        $(this).prop('disabled', selectedCount >= minCours && !$(this).is(':checked'));
+                    });
+
+                    $('#submitBtn').prop('disabled', selectedCount < minCours);
+                    $('#coursError').text(selectedCount < minCours
+                        ? 'Veuillez sélectionner au moins ' + minCours + ' cours pour cet abonnement.'
+                        : '');
+                }
+
+                $('#abonnement_type').change(updateCoursLimit);
+                $('input[name="abonnement[cours][]"]').change(updateCoursLimit);
+                updateCoursLimit();
+            });
+        </script>
+    {% endblock %}

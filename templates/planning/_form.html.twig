@@ -1,0 +1,67 @@
+{{ form_start(form, {'attr': {'novalidate': 'novalidate', 'class': 'needs-validation'}}) }}
+
+    <!-- Champ Date -->
+    <div class="form-field mb-3">
+        {{ form_label(form.date, null, {'label_attr': {'class': 'form-label'}}) }}
+        {{ form_widget(form.date, {
+            'attr': {
+                'class': 'form-control' ~ (form_errors(form.date) ? ' is-invalid' : ''),
+                'placeholder': 'Date du planning*'
+            }
+        }) }}
+        {% if form_errors(form.date) %}
+            <div class="invalid-feedback d-block">
+                {{ form_errors(form.date) }}
+            </div>
+        {% endif %}
+    </div>
+
+    <!-- Champ Durée -->
+    <div class="form-field mb-3">
+        {{ form_label(form.duree, null, {'label_attr': {'class': 'form-label'}}) }}
+        {{ form_widget(form.duree, {
+            'attr': {
+                'class': 'form-control' ~ (form_errors(form.duree) ? ' is-invalid' : ''),
+                'placeholder': 'Durée (en minutes)*'
+            }
+        }) }}
+        {% if form_errors(form.duree) %}
+            <div class="invalid-feedback d-block">
+                {{ form_errors(form.duree) }}
+            </div>
+        {% endif %}
+    </div>
+
+    <!-- Champ Cours -->
+    <div class="form-field mb-3">
+        {{ form_label(form.cour, null, {'label_attr': {'class': 'form-label'}}) }}
+        {{ form_widget(form.cour, {
+            'attr': {
+                'class': 'form-control' ~ (form_errors(form.cour) ? ' is-invalid' : '')
+            }
+        }) }}
+        {% if form_errors(form.cour) %}
+            <div class="invalid-feedback d-block">
+                {{ form_errors(form.cour) }}
+            </div>
+        {% endif %}
+    </div>
+
+    <!-- Champ Utilisateur -->
+    <div class="form-field mb-3">
+        {{ form_label(form.user, null, {'label_attr': {'class': 'form-label'}}) }}
+        {{ form_widget(form.user, {
+            'attr': {
+                'class': 'form-control' ~ (form_errors(form.user) ? ' is-invalid' : '')
+            }
+        }) }}
+        {% if form_errors(form.user) %}
+            <div class="invalid-feedback d-block">
+                {{ form_errors(form.user) }}
+            </div>
+        {% endif %}
+    </div>
+
+    <button type="submit" class="btn btn-primary">Enregistrer</button>
+
+{{ form_end(form) }}

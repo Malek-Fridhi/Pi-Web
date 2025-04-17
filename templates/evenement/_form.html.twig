@@ -1,0 +1,7 @@
+{{ form_start(form) }}
+    {{ form_widget(form) }}
+    <button type="submit" class="btn btn-primary btn-custom">
+    {% if button_icon is defined %}<i class="{{ button_icon }}"></i> {% endif %}{{ button_label|default('Save') }}
+</button>
+    <div id="image-preview-container" class="mt-3"></div>
+{{ form_end(form) }}

@@ -1,0 +1,33 @@
+{{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
+
+    {# Champ Date de création #}
+    <div class="form-group">
+        {{ form_label(form.dateCreation, 'Date de création') }}
+        {{ form_widget(form.dateCreation, {'attr': {'class': 'form-control' ~ (form.dateCreation.vars.valid ? '' : ' is-invalid')}}) }}
+        {{ form_errors(form.dateCreation) }}
+    </div>
+
+    {# Champ Date de modification #}
+    <div class="form-group">
+        {{ form_label(form.dateModification, 'Date de modification') }}
+        {{ form_widget(form.dateModification, {'attr': {'class': 'form-control' ~ (form.dateModification.vars.valid ? '' : ' is-invalid')}}) }}
+        {{ form_errors(form.dateModification) }}
+    </div>
+
+    {# Champ Régime #}
+    <div class="form-group">
+        {{ form_label(form.regime, 'Régime') }}
+        {{ form_widget(form.regime, {'attr': {'class': 'form-control' ~ (form.regime.vars.valid ? '' : ' is-invalid'), 'rows': 5}}) }}
+        {{ form_errors(form.regime) }}
+    </div>
+
+    {# Champ Nombre de jours #}
+    <div class="form-group">
+        {{ form_label(form.nbrJours, 'Nombre de jours') }}
+        {{ form_widget(form.nbrJours, {'attr': {'class': 'form-control' ~ (form.nbrJours.vars.valid ? '' : ' is-invalid')}}) }}
+        {{ form_errors(form.nbrJours) }}
+    </div>
+
+    <button class="btn btn-primary">{{ button_label|default('Enregistrer') }}</button>
+
+{{ form_end(form) }}

@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>Finance</title>
+    <meta content="width=device-width, initial-scale=1.0, shrink-to-fit=no" name="viewport" />
+    <link rel="icon" href="assets/img/kaiadmin/favicon.ico" type="image/x-icon" />
+
+    <!-- Fonts and icons -->
+    <script src="assets/js/plugin/webfont/webfont.min.js"></script>
+    <!--   Core JS Files   -->
+    <script src="assets/js/core/jquery-3.7.1.min.js"></script>
+    <script src="assets/js/core/popper.min.js"></script>
+    <script src="assets/js/core/bootstrap.min.js"></script>
+
+    <!-- jQuery Scrollbar -->
+    <script src="assets/js/plugin/jquery-scrollbar/jquery.scrollbar.min.js"></script>
+
+    <!-- Chart JS -->
+    <script src="assets/js/plugin/chart.js/chart.min.js"></script>
+
+    <!-- jQuery Sparkline -->
+    <script src="assets/js/plugin/jquery.sparkline/jquery.sparkline.min.js"></script>
+
+    <!-- Chart Circle -->
+    <script src="assets/js/plugin/chart-circle/circles.min.js"></script>
+
+    <!-- Datatables -->
+    <script src="assets/js/plugin/datatables/datatables.min.js"></script>
+
+    <!-- Bootstrap Notify -->
+    <script src="assets/js/plugin/bootstrap-notify/bootstrap-notify.min.js"></script>
+
+    <!-- jQuery Vector Maps -->
+    <script src="assets/js/plugin/jsvectormap/jsvectormap.min.js"></script>
+    <script src="assets/js/plugin/jsvectormap/world.js"></script>
+
+    <!-- Sweet Alert -->
+    <script src="assets/js/plugin/sweetalert/sweetalert.min.js"></script>
+
+    <!-- Kaiadmin JS -->
+    <script src="assets/js/kaiadmin.min.js"></script>
+
+    <!-- Kaiadmin DEMO methods, don't include it in your project! -->
+    <script src="assets/js/setting-demo.js"></script>
+    <script src="assets/js/demo.js"></script>
+    <script>
+      WebFont.load({
+        google: { families: ["Public Sans:300,400,500,600,700"] },
+        custom: {
+          families: [
+            "Font Awesome 5 Solid",
+            "Font Awesome 5 Regular",
+            "Font Awesome 5 Brands",
+            "simple-line-icons",
+          ],
+          urls: ["assets/css/fonts.min.css"],
+        },
+        active: function () {
+          sessionStorage.fonts = true;
+        },
+      });
+    </script>
+<style>
+.card:hover {
+  transform: translateY(-5px);
+  transition: transform 0.3s ease;
+}
+</style>
+    <!-- CSS Files -->
+    <link rel="stylesheet" href="assets/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="assets/css/plugins.min.css" />
+    <link rel="stylesheet" href="assets/css/kaiadmin.min.css" />
+    <link rel="stylesheet" href="assets/css/demo.css" />
+  </head>
+  <body>
+    <div class="wrapper">
+      <!-- Sidebar -->
+      <div class="sidebar" data-background-color="dark">
+        <div class="sidebar-logo">
+          <div class="logo-header" data-background-color="dark">
+            <a href="index.html" class="logo">
+              <img src="img/logogeekhub-removebg-preview.png" alt="navbar brand" class="navbar-brand" height="70" />
+              <span class="logo-text" style="font-size: 18px; font-weight: bold; color: #fff; margin-left: 10px;">GeekHub</span>
+            </a>
+            <div class="nav-toggle">
+              <button class="btn btn-toggle toggle-sidebar">
+                <i class="gg-menu-right"></i>
+              </button>
+              <button class="btn btn-toggle sidenav-toggler">
+                <i class="gg-menu-left"></i>
+              </button>
+            </div>
+            <button class="topbar-toggler more">
+              <i class="gg-more-vertical-alt"></i>
+            </button>
+          </div>
+        </div>
+        <div class="sidebar-wrapper scrollbar scrollbar-inner">
+          <div class="sidebar-content">
+            <ul class="nav nav-secondary">
+              <li class="nav-item"><a href="/dashcompt"><i class="fas fa-bullseye"></i><p>Home</p></a></li>
+              <li class="nav-section">
+                <span class="sidebar-mini-icon"><i class="fa fa-ellipsis-h"></i></span>
+                <h4 class="text-section">Modules</h4>
+              </li>
+              <li class="nav-item"><a href="/finance"><i class="fas fa-chart-line"></i><p>Rapports</p></a></li>
+              <li class="nav-item"><a href="/depense"><i class="fas fa-id-card"></i><p>Dépenses</p></a></li>
+              <li class="nav-item"><a href="/revenu"><i class="fas fa-chart-line"></i><p>Revenus</p></a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <!-- End Sidebar -->
+
+      <div class="main-panel">
+        <div class="main-header">
+          <nav class="navbar navbar-header navbar-header-transparent navbar-expand-lg border-bottom">
+            <div class="container-fluid">
+              <div class="navbar-form nav-search d-none d-lg-flex">
+                <div class="input-group">
+                  <div class="input-group-prepend">
+                    <button type="submit" class="btn btn-search pe-1">
+                      <i class="fa fa-search search-icon"></i>
+                    </button>
+                  </div>
+                  <input type="text" placeholder="Search ..." class="form-control" />
+                </div>
+              </div>
+              <ul class="navbar-nav topbar-nav ms-md-auto align-items-center">
+                <li class="nav-item topbar-user dropdown hidden-caret">
+                  <a class="dropdown-toggle profile-pic" data-bs-toggle="dropdown" href="#" aria-expanded="false">
+                    <div class="avatar-sm">
+                      <img src="assets/img/profile.jpg" alt="..." class="avatar-img rounded-circle" />
+                    </div>
+                    <span class="profile-username"><span class="op-7">Hi,</span> <span class="fw-bold">Hizrian</span></span>
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </nav>
+        </div>
+
+        <div class="container">
+  <div class="page-inner">
+    <div class="d-flex align-items-left align-items-md-center flex-column flex-md-row pt-2 pb-4"><h1>Rapports</h1>
+      <div class="ms-md-auto py-2 py-md-0">
+      <div class="btn-group">
+          <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+            Trier par date
+          </button>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="#" onclick="sortReports('asc')">Plus ancien au plus récent</a></li>
+            <li><a class="dropdown-item" href="#" onclick="sortReports('desc')">Plus récent au plus ancien</a></li>
+          </ul>
+        </div>
+        <a href="{{ path('app_finance_new') }}" class="btn btn-primary btn-round">Ajouter rapport</a>
+      </div>
+    </div>
+
+    <div class="row" id="reports-container">
+      {% for finance in finances %}
+        <div class="col-md-4 mb-4 report-card" data-month="{{ finance.moisFin }}" data-year="{{ finance.anneeFin }}">
+          <div class="card">
+            <div class="card-body">
+              <div class="d-flex justify-content-between align-items-center ">
+                <h5 class="card-title">Rapport n°{{ finance.idfinance }}</h5>
+                <button type="button" class="btn" data-bs-toggle="modal" data-bs-target="#financeDetails{{ finance.idfinance }}">
+  <i class="fas fa-ellipsis-h" style="color:black"></i>
+</button>
+              </div>
+              <p class="card-text"><strong>Mois:</strong> {{ finance.moisFin }}</p>
+              <p class="card-text"><strong>Année:</strong> {{ finance.anneeFin }}</p>
+              <p class="card-text"><strong>Total Dépenses:</strong> {{ finance.totalDepenses }} DT</p>
+              <p class="card-text"><strong>Total Revenus:</strong> {{ finance.totalRevenus }} DT</p>
+              <p class="card-text"><strong>Profit:</strong> {{ finance.profit }} DT</p>
+              <div class="d-flex justify-content-end gap-2 ">
+                <a href="{{ path('app_finance_edit', {'idfinance': finance.idfinance}) }}" class="btn">
+                  <i class="fas fa-edit" style="color:#3173de" ></i> 
+                </a>
+                <div class="d-inline-block">
+                  {{ include('finance/_delete_form.html.twig') }}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+<!-- Modal pour les détails -->
+       <div class="modal fade" id="financeDetails{{ finance.idfinance }}" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Détails du rapport {{ finance.moisFin }}/{{ finance.anneeFin }}</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="row mb-4">
+          <div class="col-md-4">
+            <div class="card bg-success text-white">
+              <div class="card-body text-center">
+                <h6>Total Revenus</h6>
+                <h4>{{ finance.totalRevenus }} DT</h4>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="card bg-danger text-white">
+              <div class="card-body text-center">
+                <h6>Total Dépenses</h6>
+                <h4>{{ finance.totalDepenses }} DT</h4>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="card bg-info text-white">
+              <div class="card-body text-center">
+                <h6>Profit</h6>
+                <h4>{{ finance.profit }} DT</h4>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-6">
+            <div class="card">
+              <div class="card-header bg-success text-white">
+                <h6 class="mb-0">Revenus ({{ finance.revenus|length }})</h6>
+              </div>
+              <div class="card-body">
+                {% if finance.revenus is not empty %}
+                  <div class="table-responsive">
+                    <table class="table table-sm table-hover">
+                      <thead>
+                        <tr>
+                          <th>Source</th>
+                          <th>Montant</th>
+                          <th>Date</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {% for rapport in finance.revenus %}
+                        <tr>
+                          <td>{{ rapport.revenu.sourceRevenu }}</td>
+                          <td>{{ rapport.revenu.montantRevenu }} DT</td>
+                          <td>{{ rapport.revenu.datereceptionRevenu|date('d/m/Y') }}</td>
+                        </tr>
+                        {% endfor %}
+                      </tbody>
+                    </table>
+                  </div>
+                {% else %}
+                  <div class="alert alert-info">Aucun revenu associé</div>
+                {% endif %}
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-6">
+            <div class="card">
+              <div class="card-header bg-danger text-white">
+                <h6 class="mb-0">Dépenses ({{ finance.depenses|length }})</h6>
+              </div>
+              <div class="card-body">
+                {% if finance.depenses is not empty %}
+                  <div class="table-responsive">
+                    <table class="table table-sm table-hover">
+                      <thead>
+                        <tr>
+                          <th>Type</th>
+                          <th>Montant</th>
+                          <th>Date</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {% for rapport in finance.depenses %}
+                        <tr>
+                          <td>{{ rapport.depense.typeDep }}</td>
+                          <td>{{ rapport.depense.montantDep }} DT</td>
+                          <td>{{ rapport.depense.datereceptionDep|date('d/m/Y') }}</td>
+                        </tr>
+                        {% endfor %}
+                      </tbody>
+                    </table>
+                  </div>
+                {% else %}
+                  <div class="alert alert-info">Aucune dépense associée</div>
+                {% endif %}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+      </div>
+    </div>
+  </div>
+</div>
+              
+
+      {% else %}
+        <p>Aucun rapport</p>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+
+        </div>
+      </div>
+    </div>
+    <script>
+    function sortReports(order) {
+        const container = document.getElementById('reports-container');
+        if (!container) {
+          console.error("Le conteneur des rapports n'a pas été trouvé");
+          return;
+        }
+        
+        // Sélectionne à la fois les cartes et les modals
+        const reportCards = Array.from(container.querySelectorAll('.report-card'));
+        const modals = Array.from(container.querySelectorAll('.modal'));
+        
+        // Crée un tableau combiné avec les paires carte/modal
+        const reports = reportCards.map(card => {
+          const modalId = card.querySelector('button[data-bs-target]')?.getAttribute('data-bs-target').replace('#', '');
+          const modal = modalId ? document.getElementById(modalId) : null;
+          return { card, modal };
+        }).filter(item => item.modal !== null);
+        
+        // Trier les rapports
+        reports.sort((a, b) => {
+          const yearA = parseInt(a.card.getAttribute('data-year'));
+          const yearB = parseInt(b.card.getAttribute('data-year'));
+          const monthA = parseInt(a.card.getAttribute('data-month'));
+          const monthB = parseInt(b.card.getAttribute('data-month'));
+          
+          if (yearA !== yearB) {
+            return order === 'asc' ? yearA - yearB : yearB - yearA;
+          } else {
+            return order === 'asc' ? monthA - monthB : monthB - monthA;
+          }
+        });
+        
+        // Vider le conteneur
+        container.innerHTML = '';
+        
+        // Réinsérer les rapports triés en conservant l'ordre carte/modal
+        reports.forEach(({ card, modal }) => {
+          container.appendChild(card);
+          container.appendChild(modal);
+        });
+        
+        // Réinitialiser les modals Bootstrap
+        if (typeof bootstrap !== 'undefined' && bootstrap.Modal) {
+          const modalInstances = reports.map(({ modal }) => {
+            return bootstrap.Modal.getOrCreateInstance(modal);
+          });
+        }
+      }
+      </script>
+  </body>
+</html>

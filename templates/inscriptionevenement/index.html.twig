@@ -1,0 +1,37 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Inscriptionevenement index{% endblock %}
+
+{% block body %}
+    <h1>Inscriptionevenement index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Idinscriptionevenement</th>
+                <th>Date_inscription</th>
+                <th>Statut</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for inscriptionevenement in inscriptionevenements %}
+            <tr>
+                <td>{{ inscriptionevenement.idinscriptionevenement }}</td>
+                <td>{{ inscriptionevenement.dateInscription ? inscriptionevenement.dateInscription|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ inscriptionevenement.statut }}</td>
+                <td>
+                    <a href="{{ path('app_inscriptionevenement_show', {'idinscriptionevenement': inscriptionevenement.idinscriptionevenement}) }}">show</a>
+                    <a href="{{ path('app_inscriptionevenement_edit', {'idinscriptionevenement': inscriptionevenement.idinscriptionevenement}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="4">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_inscriptionevenement_new') }}">Create new</a>
+{% endblock %}

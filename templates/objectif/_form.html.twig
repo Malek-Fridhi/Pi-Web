@@ -1,0 +1,85 @@
+<div class="objective-form">
+    <div class="container">
+        <div class="form-card wow fadeInUp" data-wow-delay="0.2s">
+            <div class="form-header">
+                <h2>{{ form_title|default('Définir un Objectif') }}</h2>
+            </div>
+            
+            <div class="form-body">
+                {{ form_start(form, {'attr': {'class': 'needs-validation', 'novalidate': 'novalidate', 'id': 'objective-form'}}) }}
+                
+                <div class="progress-container">
+                    <div class="progress-text">Complétez votre objectif</div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="form-progress"></div>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    {{ form_label(form.description, 'Description de votre objectif', {'label_attr': {'class': 'form-label'}}) }}
+                    {{ form_widget(form.description, {'attr': {
+                        'class': 'form-control',
+                        'placeholder': 'Ex: Perte de poids pour l\'été'
+                    }}) }}
+                    {% if form_errors(form.description) %}
+                        <div class="error-message">
+                            <i class="fas fa-exclamation-circle"></i> {{ form_errors(form.description) }}
+                        </div>
+                    {% endif %}
+                </div>
+                
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            {{ form_label(form.poidsActuel, 'Poids actuel (kg)', {'label_attr': {'class': 'form-label'}}) }}
+                            {{ form_widget(form.poidsActuel, {'attr': {
+                                'class': 'form-control',
+                                'placeholder': 'Ex: 75'
+                            }}) }}
+                            {% if form_errors(form.poidsActuel) %}
+                                <div class="error-message">
+                                    <i class="fas fa-exclamation-circle"></i> {{ form_errors(form.poidsActuel) }}
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            {{ form_label(form.poidsCible, 'Poids cible (kg)', {'label_attr': {'class': 'form-label'}}) }}
+                            {{ form_widget(form.poidsCible, {'attr': {
+                                'class': 'form-control',
+                                'placeholder': 'Ex: 68'
+                            }}) }}
+                            {% if form_errors(form.poidsCible) %}
+                                <div class="error-message">
+                                    <i class="fas fa-exclamation-circle"></i> {{ form_errors(form.poidsCible) }}
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <div class="select-wrapper">
+                        {{ form_label(form.status, 'Statut de votre objectif', {'label_attr': {'class': 'form-label'}}) }}
+                        {{ form_widget(form.status, {'attr': {'class': 'form-control'}}) }}
+                    </div>
+                    {% if form_errors(form.status) %}
+                        <div class="error-message">
+                            <i class="fas fa-exclamation-circle"></i> {{ form_errors(form.status) }}
+                        </div>
+                    {% endif %}
+                </div>
+                
+                <div class="form-actions">
+                    <button type="submit" class="submit-btn">
+                        <i class="fas fa-check-circle"></i> {{ button_label|default('Enregistrer') }}
+                    </button>
+                </div>
+                
+                {{ form_end(form) }}
+            </div>
+        </div>
+    </div>
+</div>

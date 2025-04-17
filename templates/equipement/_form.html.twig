@@ -1,0 +1,6 @@
+{{ form_start(form) }}
+    {{ form_widget(form) }}
+    <button class="btn {{ button_class|default('btn-primary') }} mt-3">
+        {{ button_label|default('<i class="fas fa-save"></i> Enregistrer')|raw }}
+    </button>
+{{ form_end(form) }}

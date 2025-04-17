@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+    </style>
+</head>
+<body>
+    <h1>User Statistics</h1>
+    <p>Here are the user statistics with roles:</p>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Role</th>
+                <th>Count</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for role, count in stats %}
+                <tr>
+                    <td>{{ role }}</td>
+                    <td>{{ count }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <h2>Chart</h2>
+    <!-- Embed the chart image -->
+    <img src="{{ asset(chartImage) }}" alt="User Roles Chart" width="100%" />
+
+</body>
+<script>
+html2canvas(document.getElementById('statisticsChart')).then(function(canvas) {
+    var imgData = canvas.toDataURL('image/png');  // Get the image data (base64)
+
+    // Send the image data to the server
+    fetch('/user/statistics/pdf/chart', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ chartImage: imgData })  // Send the base64 image
+    })
+    .then(response => response.blob())  // Get the PDF response
+    .then(pdfBlob => {
+        var link = document.createElement('a');
+        link.href = URL.createObjectURL(pdfBlob);
+        link.download = 'user_statistics_with_chart.pdf';
+        link.click();
+    });
+});
+
+</script>
+</html>

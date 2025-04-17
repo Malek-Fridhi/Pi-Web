@@ -1,0 +1,14 @@
+<h1>Objective Details</h1>
+<p>{{ objectif.description }}</p>
+<p>Current Weight: {{ objectif.poidsActuel }}</p>
+<p>Target Weight: {{ objectif.poidsCible }}</p>
+<p>Status: {{ objectif.status }}</p>
+
+<h2>Associated Nutritional Plans</h2>
+<ul>
+    {% for plan in planNutritionnels %}
+        <li>{{ plan.regime }} (Created: {{ plan.dateCreation|date('Y-m-d') }})</li>
+    {% else %}
+        <li>No nutritional plans available.</li>
+    {% endfor %}
+</ul>

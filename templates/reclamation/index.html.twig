@@ -1,0 +1,612 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Reclamation index{% endblock %}
+
+{% block body %}
+<script src="assets/js/plugin/webfont/webfont.min.js"></script>
+<script>
+  WebFont.load({
+    google: { families: ["Public Sans:300,400,500,600,700"] },
+    custom: {
+      families: [
+        "Font Awesome 5 Solid",
+        "Font Awesome 5 Regular",
+        "Font Awesome 5 Brands",
+        "simple-line-icons",
+      ],
+      urls: ["assets/css/fonts.min.css"],
+    },
+    active: function () {
+      sessionStorage.fonts = true;
+    },
+  });
+</script>
+  <link rel="stylesheet" href="assets/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="assets/css/plugins.min.css" />
+  <link rel="stylesheet" href="assets/css/kaiadmin.min.css" />
+  <!-- CSS Just for demo purpose, don't include it in your project -->
+  <link rel="stylesheet" href="assets/css/demo.css" />
+  <div class="wrapper">
+  <!-- Sidebar -->
+  <div class="sidebar" data-background-color="dark">
+    <div class="sidebar-logo">
+      <!-- Logo Header -->
+      <div class="logo-header" data-background-color="dark">
+        <a href="index.html" class="logo">
+        <img
+          src="img/logogeekhub-removebg-preview.png"
+          alt="navbar brand"
+          class="navbar-brand"
+          height="70"
+        />
+        <span class="logo-text" style="font-size: 18px;
+          font-weight: bold; 
+          color: #fff; 
+          margin-left: 10px;">GeekHub</span>
+      </a>
+        <div class="nav-toggle">
+          <button class="btn btn-toggle toggle-sidebar">
+            <i class="gg-menu-right"></i>
+          </button>
+          <button class="btn btn-toggle sidenav-toggler">
+            <i class="gg-menu-left"></i>
+          </button>
+        </div>
+        <button class="topbar-toggler more">
+          <i class="gg-more-vertical-alt"></i>
+        </button>
+      </div>
+      <!-- End Logo Header -->
+    </div>
+    <div class="sidebar-wrapper scrollbar scrollbar-inner">
+      <div class="sidebar-content">
+        <ul class="nav nav-secondary">
+          <li class="nav-item">
+          <a href="/dashadmin">
+              <i class="fas fa-bullseye"></i>
+              <p class="d-inline">Home</p>
+          </a>
+      </li>
+          <li class="nav-section">
+            <span class="sidebar-mini-icon">
+              <i class="fa fa-ellipsis-h"></i>
+            </span>
+            <h4 class="text-section">Modules</h4>
+          </li>
+         <!-- <li class="nav-item">
+            <a href="/abonnement" >
+                <i class="fas fa-id-card"></i>
+                <p class="d-inline">Abonnements</p>
+            </a>
+        </li>-->
+                    <li class="nav-item">
+  <a data-bs-toggle="collapse" href="#maps" role="button" aria-expanded="false" aria-controls="maps">
+      <i class="fas fa-table"></i>
+          <p>Cours & Abonnement</p>
+          <span class="caret"></span>
+      </a>
+      <div class="collapse" id="maps">
+        <ul class="nav nav-collapse">
+        <li>
+      <a href="/CourBack">
+        <span class="sub-item">Cours</span>
+          </a>
+        </li>
+        <li>
+          <a href="/abonnement">
+    <span class="sub-item">Abonnements</span>
+          </a>
+          </li>
+      <li>
+      <a href="/planning">
+  <span class="sub-item">Planning</span>
+  </a>
+  </li>
+  </ul>
+  </div>
+  </li>
+          <li class="nav-item">
+              <a href="/evenement" >
+                  <i class="fas fa-calendar-alt"></i>
+                  <p class="d-inline">Événements</p>
+              </a>
+          </li>
+          <li class="nav-item">
+            <a href="/reclamation">
+                <i class="fas fa-exclamation-circle"></i>
+                <p class="d-inline">Réclamations</p>
+            </a>
+        </li>
+        <li class="nav-item">
+          <a href="/service">
+              <i class="fas fa-concierge-bell"></i>
+              <p class="d-inline">Services</p>
+          </a>
+      </li>
+     <!-- <li class="nav-item">
+          <a href="/equipement" >
+              <i class="fas fa-dumbbell"></i>
+              <p class="d-inline">Équipements</p>
+          </a>
+      </li>-->
+                          <li class="nav-item active">
+                        <a data-bs-toggle="collapse" href="#equipements" class="collapsed" aria-expanded="false">
+                            <i class="fas fa-dumbbell"></i>
+                            <p>Équipements</p>
+                            <span class="caret"></span>
+                        </a>
+                        <div class="collapse show" id="equipements">
+                                <ul class="nav nav-collapse">
+                                    <li class="active">
+                                        <a href="/equipement">
+                                            <span class="sub-item">Equipement</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="/marque">
+                                            <span class="sub-item">Marque</span>
+                                        </a>
+                                    </li>
+                                    <li>
+    <a href="/produit">
+        <span class="sub-item">Produit</span>
+    </a>
+</li>
+                                </ul>
+                            </div>
+                    </li>
+      <li class="nav-item">
+          <a href="/plan/nutritionnel/admin/plans-objectifs">
+              <i class="fas fa-bullseye"></i>
+              <p class="d-inline">Objectifs</p>
+          </a>
+      </li>
+      
+    <!--  <li class="nav-item">
+          <a href="/finance" >
+              <i class="fas fa-chart-line"></i>
+              <p class="d-inline">Finance</p>
+          </a>
+      </li>-->
+                 <li class="nav-item">
+       <a data-bs-toggle="collapse" href="#tables">
+         <i class="fas fa-table"></i>
+         <p>Finance</p>
+         <span class="caret"></span>
+       </a>
+       <div class="collapse" id="tables">
+         <ul class="nav nav-collapse">
+           <li>
+             <a href="/financeadmin">
+               <span class="sub-item">Rapports</span>
+             </a>
+           </li>
+           <li>
+             <a href="/depenseadmin">
+               <span class="sub-item">Dépenses</span>
+             </a>
+           </li>
+           <li>
+             <a href="/revenuadmin">
+               <span class="sub-item">Revenus</span>
+             </a>
+           </li>
+         </ul>
+       </div>
+     </li>
+      <li class="nav-section">
+            <span class="sidebar-mini-icon">
+              <i class="fa fa-ellipsis-h"></i>
+            </span>
+            <h4 class="text-section">Comp</h4>
+          </li>
+          <li class="nav-item">
+            <a data-bs-toggle="collapse" href="#tables">
+              <i class="fas fa-table"></i>
+              <p>Tables</p>
+              <span class="caret"></span>
+            </a>
+            <div class="collapse" id="tables">
+              <ul class="nav nav-collapse">
+                <li>
+                  <a href="tables/tables.html">
+                    <span class="sub-item">Basic Table</span>
+                  </a>
+                </li>
+                <li>
+                  <a href="tables/datatables.html">
+                    <span class="sub-item">Datatables</span>
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </li>
+          <li class="nav-item">
+            <a data-bs-toggle="collapse" href="#maps">
+              <i class="fas fa-map-marker-alt"></i>
+              <p>Maps</p>
+              <span class="caret"></span>
+            </a>
+            <div class="collapse" id="maps">
+              <ul class="nav nav-collapse">
+                <li>
+                  <a href="maps/googlemaps.html">
+                    <span class="sub-item">Google Maps</span>
+                  </a>
+                </li>
+                <li>
+                  <a href="maps/jsvectormap.html">
+                    <span class="sub-item">Jsvectormap</span>
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </li>
+          <li class="nav-item">
+            <a data-bs-toggle="collapse" href="#charts">
+              <i class="far fa-chart-bar"></i>
+              <p>Charts</p>
+              <span class="caret"></span>
+            </a>
+            <div class="collapse" id="charts">
+              <ul class="nav nav-collapse">
+                <li>
+                  <a href="charts/charts.html">
+                    <span class="sub-item">Chart Js</span>
+                  </a>
+                </li>
+                <li>
+                  <a href="charts/sparkline.html">
+                    <span class="sub-item">Sparkline</span>
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </li>
+          <li class="nav-item">
+            <a href="widgets.html">
+              <i class="fas fa-desktop"></i>
+              <p>Widgets</p>
+              <span class="badge badge-success">4</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="../../documentation/index.html">
+              <i class="fas fa-file"></i>
+              <p>Documentation</p>
+              <span class="badge badge-secondary">1</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a data-bs-toggle="collapse" href="#submenu">
+              <i class="fas fa-bars"></i>
+              <p>Menu Levels</p>
+              <span class="caret"></span>
+            </a>
+            <div class="collapse" id="submenu">
+              <ul class="nav nav-collapse">
+                <li>
+                  <a data-bs-toggle="collapse" href="#subnav1
+                    <span class="sub-item">Level 1</span>
+                    <span class="caret"></span>
+                  </a>
+                  <div class="collapse" id="subnav1">
+                    <ul class="nav nav-collapse subnav">
+                      <li>
+                        <a href="#">
+                          <span class="sub-item">Level 2</spa
+                        </a>
+                      </li>
+                      <li>
+                        <a href="#">
+                          <span class="sub-item">Level 2</spa
+                        </a>
+                      </li>
+                    </ul>
+                  </div>
+                </li>
+                <li>
+                  <a data-bs-toggle="collapse" href="#subnav2
+                    <span class="sub-item">Level 1</span>
+                    <span class="caret"></span>
+                  </a>
+                  <div class="collapse" id="subnav2">
+                    <ul class="nav nav-collapse subnav">
+                      <li>
+                        <a href="#">
+                          <span class="sub-item">Level 2</spa
+                        </a>
+                      </li>
+                    </ul>
+                  </div>
+                </li>
+                <li>
+                  <a href="#">
+                    <span class="sub-item">Level 1</span>
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="main-panel">
+  <div class="main-header">
+
+
+
+
+
+
+
+</div>
+</div>
+    </div>
+
+ <div class="container">
+   <input type="text" id="searchInput1" placeholder="Rechercher..." class="form-control mb-3">
+
+          {% set sortedReclamations = reclamations|sort((a, b) => a.status == 'En attente' ? -1 : (b.status == 'En attente' ? 1 : 0)) %}
+        {% for reclamation in sortedReclamations %}
+
+        <div class="card">
+            <div class="circle">
+                <h2>{{ reclamation.id }}</h2>
+            </div>
+          <p class="card-text"style=" margin-bottom: 100px;
+ margin-left: 20Px;"><strong>Date:</strong> {{ reclamation.date ? reclamation.date|date('Y-m-d') : '' }}</p>
+
+         <p class="card-text" style="
+    margin-bottom: 80px;
+    margin-left: 20Px;
+">
+                    <strong>Status:</strong> 
+                    <span class="badge 
+                        {% if reclamation.status == 'En attente' %}bg-warning
+                        {% elseif reclamation.status == 'Traité' %}bg-success
+                        {% else %}bg-secondary{% endif %}">
+                        {{ reclamation.status }}
+                    </span>
+                </p>
+            <div class="content">
+                <p style="
+    margin-right: 50px;
+"><strong>Description:</strong>{{ reclamation.description }}</p>
+             
+                  <div class="d-flex justify-content-between">
+                     <a href="{{ path('app_reclamation_show', {'id': reclamation.id}) }}">Show</a>
+                    <a href="{{ path('app_reclamation_edit', {'id': reclamation.id}) }}" class="btn btn-sm btn-secondary">Edit</a>
+                </div>
+             </div>
+          
+          
+          
+        </div>
+        {% else %}
+        <h1>no records found</h1>
+        {% endfor %}
+        <div class="card">
+            <div class="circle">
+                <h2>2</h2>
+            </div>
+            <div class="content">
+                <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+                <a href="#">Read More</a>
+             </div>
+ 
+        </div>
+        <div class="card">
+            <div class="circle">
+                <h2>3</h2>
+            </div>
+            <div class="content">
+                <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+                <a href="#">Read More</a>
+            </div>
+        </div>
+
+        <div class="card">
+    <div class="circle">
+        <h2>4</h2>
+    </div>
+    <div class="content">
+        <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+        <a href="#">Read More</a>
+    </div>
+</div>
+          <a href="{{ path('app_reclamation_new') }}">Create new</a>
+    </div> 
+    <style>
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins',sans-serif;
+}
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background: linear-gradient(45deg, #ffaf00, #bb02ff);
+    background-attachment: fixed;
+}
+
+.container {
+    position: relative;
+    width: 1150px;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    margin-left:300px
+
+}
+.container .card {
+    position: relative;
+    width: 300px;
+    height: 420px;
+    background: #fff;
+    margin: 20px;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 15px 25px rgba(0,0,0,0.2);
+    transition: 0.5s;
+}
+
+.container:hover .card {
+    filter: blur(20px);
+    transform: scale(0.9);
+    opacity: 0.5;
+}
+
+.container .card:hover {
+    filter: blur(0px);
+    transform: scale(1.1);
+    opacity: 1;
+}
+
+.container .card .circle {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    background: #000;
+    clip-path: circle(180px at center 0);
+    text-align: center;
+}
+
+.container .card .circle h2 {
+    color: #fff;
+    font-size: 4.5em;
+    padding: 30px 0;
+}
+
+.container .card .content {
+    position: absolute;
+    bottom: 10px;
+    padding: 20px;
+    page-break-after: 20px;
+    text-align: center;
+}
+
+.container .card .content p {
+    color: #666;
+}
+
+.container .card .content a {
+    position: relative;
+    display: inline-block;
+    padding: 10px 20px;
+    background: #000;
+    color: #fff;
+    border-radius: 40px;
+    text-decoration: none;
+    margin-top: 20px;
+}
+
+.container .card:nth-child(1) .circle,
+.container .card:nth-child(1) .content a {
+    background: #ffaf00;
+}
+
+.container .card:nth-child(2) .circle,
+.container .card:nth-child(2) .content a {
+    background: #da2268;
+}
+
+.container .card:nth-child(3) .circle,
+.container .card:nth-child(3) .content a {
+    background: #bb02ff;
+}
+    </style>
+
+
+
+
+<script>
+document.getElementById("searchInput1").addEventListener("keyup", function() {
+    let filter = this.value.toLowerCase();
+    let cards = document.querySelectorAll(".card");
+
+    cards.forEach(card => {
+        let text = card.innerText.toLowerCase();
+        if (text.includes(filter)) {
+            card.style.display = "block";
+        } else {
+            card.style.display = "none";
+        }
+    });
+});
+</script>
+
+    <script src="assets/js/core/jquery-3.7.1.min.js"></script>
+    <script src="assets/js/core/popper.min.js"></script>
+    <script src="assets/js/core/bootstrap.min.js"></script>
+
+    <!-- jQuery Scrollbar -->
+    <script src="assets/js/plugin/jquery-scrollbar/jquery.scrollbar.min.js"></script>
+
+    <!-- Chart JS -->
+    <script src="assets/js/plugin/chart.js/chart.min.js"></script>
+
+    <!-- jQuery Sparkline -->
+    <script src="assets/js/plugin/jquery.sparkline/jquery.sparkline.min.js"></script>
+
+    <!-- Chart Circle -->
+    <script src="assets/js/plugin/chart-circle/circles.min.js"></script>
+
+    <!-- Datatables -->
+    <script src="assets/js/plugin/datatables/datatables.min.js"></script>
+
+    <!-- Bootstrap Notify -->
+    <script src="assets/js/plugin/bootstrap-notify/bootstrap-notify.min.js"></script>
+
+    <!-- jQuery Vector Maps -->
+    <script src="assets/js/plugin/jsvectormap/jsvectormap.min.js"></script>
+    <script src="assets/js/plugin/jsvectormap/world.js"></script>
+
+    <!-- Sweet Alert -->
+    <script src="assets/js/plugin/sweetalert/sweetalert.min.js"></script>
+
+    <!-- Kaiadmin JS -->
+    <script src="assets/js/kaiadmin.min.js"></script>
+
+    <!-- Kaiadmin DEMO methods, don't include it in your project! -->
+    <script src="assets/js/setting-demo.js"></script>
+    <script src="assets/js/demo.js"></script>
+    <script>
+      $("#lineChart").sparkline([102, 109, 120, 99, 110, 105, 115], {
+        type: "line",
+        height: "70",
+        width: "100%",
+        lineWidth: "2",
+        lineColor: "#177dff",
+        fillColor: "rgba(23, 125, 255, 0.14)",
+      });
+
+      $("#lineChart2").sparkline([99, 125, 122, 105, 110, 124, 115], {
+        type: "line",
+        height: "70",
+        width: "100%",
+        lineWidth: "2",
+        lineColor: "#f3545d",
+        fillColor: "rgba(243, 84, 93, .14)",
+      });
+
+      $("#lineChart3").sparkline([105, 103, 123, 100, 95, 105, 115], {
+        type: "line",
+        height: "70",
+        width: "100%",
+        lineWidth: "2",
+        lineColor: "#ffa534",
+        fillColor: "rgba(255, 165, 52, .14)",
+      });
+    </script>
+
+{% endblock %}

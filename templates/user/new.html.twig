@@ -1,0 +1,138 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New User{% endblock %}
+
+{% block body %}
+<style>
+    .form-group {
+        margin-bottom: 15px;
+    }
+
+    .form-group input,
+    .form-group select {
+        width: 100%;
+        padding: 10px;
+        font-size: 14px;
+        border-radius: 4px;
+        border: 1px solid #ccc;
+    }
+
+    .form-group input:focus {
+        border-color: #007bff;
+    }
+
+    .error-message {
+        color: red;
+        font-size: 12px;
+        margin-top: 5px;
+    }
+
+    .btn-primary {
+        background-color: #007bff;
+        color: white;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+    }
+
+    .btn-primary:hover {
+        background-color: #0056b3;
+    }
+</style>
+
+    <h1>Create New User</h1>
+
+    {{ form_start(form, {'attr': {'id': 'userForm'}}) }}
+        <div>
+            {{ form_label(form.email) }}
+            {{ form_widget(form.email) }}
+            <span class="error-message" id="emailError"></span>
+        </div>
+
+        <div>
+            {{ form_label(form.username) }}
+            {{ form_widget(form.username) }}
+            <span class="error-message" id="usernameError"></span>
+        </div>
+
+        <div>
+            {{ form_label(form.password) }}
+            {{ form_widget(form.password) }}
+            <span class="error-message" id="passwordError"></span>
+        </div>
+
+
+        <div>
+            {{ form_label(form.tel) }}
+            {{ form_widget(form.tel) }}
+            <span class="error-message" id="telError"></span>
+        </div>
+
+
+        <div>
+            {{ form_label(form.image) }}
+            {{ form_widget(form.image) }}
+        </div>
+
+        <button type="submit" class="btn btn-primary" id="submitBtn">{{ button_label|default('Save') }}</button>
+    {{ form_end(form) }}
+
+    <a href="{{ path('app_user_index') }}">Back to List</a>
+{% endblock %}
+
+{% block javascripts %}
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            // Form validation
+            $('#userForm').submit(function(event) {
+                let isValid = true;
+
+                // Reset error messages
+                $('.error-message').text('');
+
+                // Validate Email
+                const email = $('#user_email').val();
+                const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+                if (!email || !emailPattern.test(email)) {
+                    $('#emailError').text('Please enter a valid email.');
+                    isValid = false;
+                }
+
+                // Validate Username
+                const username = $('#user_username').val();
+                if (!username) {
+                    $('#usernameError').text('Username is required.');
+                    isValid = false;
+                }
+
+                // Validate Password
+                const password = $('#user_password').val();
+                if (!password || password.length < 6) {
+                    $('#passwordError').text('Password must be at least 6 characters long.');
+                    isValid = false;
+                }
+
+                // Validate Telephone
+                const tel = $('#user_tel').val();
+                const telPattern = /^[0-9]{10}$/;
+                if (!tel || !telPattern.test(tel)) {
+                    $('#telError').text('Please enter a valid phone number.');
+                    isValid = false;
+                }
+
+                // Validate Salaire (Salary)
+                const salaire = $('#user_salaire').val();
+                if (!salaire || isNaN(salaire) || salaire <= 0) {
+                    $('#salaireError').text('Please enter a valid salary.');
+                    isValid = false;
+                }
+
+                // If any validation fails, prevent form submission
+                if (!isValid) {
+                    event.preventDefault();
+                }
+            });
+        });
+    </script>
+{% endblock %}

@@ -1,0 +1,72 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Reclamation{% endblock %}
+
+{% block body %}
+      <link rel="stylesheet" href="{{ asset('assets/css/bootstrap.min.css') }}" />
+      <link rel="stylesheet" href="{{ asset('assets/css/plugins.min.css') }}" />
+      <link rel="stylesheet" href="{{ asset('assets/css/kaiadmin.min.css') }}" />
+      <link rel="stylesheet" href="{{ asset('assets/css/demo.css') }}" />
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+      <style>
+          .card-details {
+              background: #fff;
+              border-radius: 16px;
+              box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+          }
+          .card-header {
+              background: #2A2F5B;
+              color: white;
+              border-radius: 16px 16px 0 0;
+              padding: 25px 40px;
+          }
+          .table th {
+              width: 30%;
+              color: #495057;
+          }
+          .btn-custom {
+              border-radius: 8px;
+              padding: 10px 20px;
+              font-weight: 500;
+          }
+          .btn-edit { background: #0d6efd; color: white; }
+          .btn-back { background: #6c757d; color: white; }
+          .btn-delete {
+      background: #dc3545 !important;
+      color: white;
+      border: 1px solid #dc3545;
+  }
+      </style>
+    <h1>Reclamation</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ reclamation.id }}</td>
+            </tr>
+            <tr>
+                <th>Description</th>
+                <td>{{ reclamation.description }}</td>
+            </tr>
+            <tr>
+                <th>Date</th>
+                <td>{{ reclamation.date ? reclamation.date|date('Y-m-d') : '' }}</td>
+            </tr>
+            <tr>
+                <th>Status</th>
+                <td>{{ reclamation.status }}</td>
+            </tr>
+            <tr>
+                <th>Reponse</th>
+                <td>{{ reclamation.reponse }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_reclamation_index') }}">back to list</a>
+
+    <a href="{{ path('app_reclamation_edit', {'id': reclamation.id}) }}">edit</a>
+
+    {{ include('reclamation/_delete_form.html.twig') }}
+{% endblock %}

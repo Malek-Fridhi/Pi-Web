@@ -1,0 +1,14 @@
+knpu_oauth2_client:
+    clients:
+        google:
+            type: google
+            client_id: '%env(GOOGLE_CLIENT_ID)%'
+            client_secret: '%env(GOOGLE_CLIENT_SECRET)%'
+            redirect_route: google_check
+            redirect_params: {}
+            access_type: offline  # Valid option for Google OAuth
+            use_oidc_mode: true   # Use OpenID Connect (OIDC) mode
+            user_fields:          # Define the fields you want to fetch for the authenticated user
+                - id
+                - email
+                - name

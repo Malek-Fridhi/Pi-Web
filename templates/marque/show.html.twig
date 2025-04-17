@@ -1,0 +1,113 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Détails de la marque{% endblock %}
+
+{% block body %}
+<div class="wrapper">
+      <link rel="stylesheet" href="{{ asset('assets/css/bootstrap.min.css') }}" />
+      <link rel="stylesheet" href="{{ asset('assets/css/plugins.min.css') }}" />
+      <link rel="stylesheet" href="{{ asset('assets/css/kaiadmin.min.css') }}" />
+      <link rel="stylesheet" href="{{ asset('assets/css/demo.css') }}" />
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+      <style>
+          .card-details {
+              background: #fff;
+              border-radius: 16px;
+              box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+          }
+          .card-header {
+              background: #2A2F5B;
+              color: white;
+              border-radius: 16px 16px 0 0;
+              padding: 25px 40px;
+          }
+          .table th {
+              width: 30%;
+              color: #495057;
+          }
+          .btn-custom {
+              border-radius: 8px;
+              padding: 10px 20px;
+              font-weight: 500;
+          }
+          .btn-edit { background: #0d6efd; color: white; }
+          .btn-back { background: #6c757d; color: white; }
+          .btn-delete {
+      background: #dc3545 !important;
+      color: white;
+      border: 1px solid #dc3545;
+  }
+      </style>
+    <!-- Sidebar (votre sidebar existante) -->
+    <!-- ... -->
+
+    <!-- Main Content -->
+    <div class="main-panel">
+        <div class="content">
+            <div class="page-inner">
+                <div class="row">
+                    <!-- Colonne gauche - Détails texte -->
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-header">
+                                <h4 class="card-title">Détails de la marque</h4>
+                            </div>
+                            <div class="card-body">
+                                <table class="table">
+                                    <tbody>
+                                        <tr>
+                                            <th>Id</th>
+                                            <td>{{ marque.idMarque }}</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Nom</th>
+                                            <td>{{ marque.nom }}</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Téléphone</th>
+                                            <td>{{ marque.telephone }}</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Email</th>
+                                            <td>{{ marque.email }}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+
+                                <div class="mt-3">
+                                    <a href="{{ path('app_marque_index') }}" class="btn btn-secondary">
+                                        <i class="fas fa-arrow-left"></i> Retour à la liste
+                                    </a>
+                                    <a href="{{ path('app_marque_edit', {'id_marque': marque.id_marque}) }}" class="btn btn-warning">
+                                        <i class="fas fa-edit"></i> Modifier
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Colonne droite - Image -->
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-header">
+                                <h4 class="card-title">Logo de la marque</h4>
+                            </div>
+                            <div class="card-body text-center">
+                                <!-- Image de la marque -->
+                                {% if marque.image %}
+                                    <img src="{{ asset('uploads/marques/' ~ marque.image) }}" 
+                                         alt="{{ marque.nom }}" 
+                                         class="img-fluid rounded" 
+                                         style="max-height: 400px;">
+                                {% else %}
+                                    <div class="alert alert-warning">Aucun logo disponible</div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

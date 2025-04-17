@@ -1,0 +1,42 @@
+{% for message in app.flashes('error') %}
+    <div class="alert alert-danger">
+        {{ message }}
+    </div>
+{% endfor %}
+{{ form_start(form, {'attr': {'novalidate': 'novalidate', 'class': 'needs-validation'}}) }}
+
+    <div class="form-group">
+        <!-- Champ mois -->
+        <div class="form-field">
+            {{ form_label(form.moisFin, null, {'label_attr': {'class': 'form-label'}}) }}
+            {{ form_widget(form.moisFin, {
+                'attr': {
+                    'class': 'form-control' ~ (form.moisFin.vars.valid ? '' : ' is-invalid'),
+                    'placeholder': 'Mois du rapport*'
+                }
+            }) }}
+            <div class="error-message">
+                {{ form_errors(form.moisFin) }}
+            </div>
+        </div>
+
+        <!-- Champ annee -->
+        <div class="form-field">
+            {{ form_label(form.anneeFin, null, {'label_attr': {'class': 'form-label'}}) }}
+            {{ form_widget(form.anneeFin, {
+                'attr': {
+                    'class': 'form-control' ~ (form.anneeFin.vars.valid ? '' : ' is-invalid'),
+                    'placeholder': 'Année du rapport*'
+                }
+            }) }}
+            <div class="error-message">
+                {{ form_errors(form.anneeFin) }}
+            </div>
+        </div>
+    </div>
+
+    
+    <button type="submit" class="btn-save">
+        {{ button_label|default('Enregistrer') }}
+    </button>
+{{ form_end(form) }}

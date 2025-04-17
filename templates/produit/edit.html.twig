@@ -1,0 +1,337 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Modifier Produit{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .form-container {
+            max-width: 800px;
+            margin: 30px auto;
+            padding: 30px;
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+        }
+
+        .form-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .form-header h1 {
+            color: #2c3e50;
+            font-weight: 700;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px 15px;
+            font-size: 16px;
+            border: 2px solid #ecf0f1;
+            border-radius: 8px;
+            transition: all 0.3s;
+            background-color: #f8f9fa;
+        }
+
+        .form-control:focus {
+            border-color: #3498db;
+            background-color: #fff;
+            box-shadow: 0 0 0 3px rgba(52,152,219,0.1);
+            outline: none;
+        }
+
+        .btn-submit {
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            font-size: 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: block;
+            width: 100%;
+            font-weight: 600;
+        }
+
+        .btn-submit:hover {
+            background: #2980b9;
+            transform: translateY(-2px);
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-top: 20px;
+            color: #3498db;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
+        }
+
+        .image-preview-container {
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .current-image {
+            max-width: 200px;
+            max-height: 200px;
+            border-radius: 8px;
+            border: 2px solid #ecf0f1;
+            margin-bottom: 15px;
+        }
+
+        .file-input-wrapper {
+            position: relative;
+            overflow: hidden;
+            display: inline-block;
+            width: 100%;
+        }
+
+        .file-input-button {
+            border: 2px dashed #bdc3c7;
+            border-radius: 8px;
+            padding: 30px;
+            text-align: center;
+            width: 100%;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .file-input-button:hover {
+            border-color: #3498db;
+            background: #f8f9fa;
+        }
+
+        .file-input-text {
+            color: #7f8c8d;
+            margin-top: 10px;
+        }
+
+        .file-input {
+            position: absolute;
+            left: 0;
+            top: 0;
+            opacity: 0;
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+        }
+
+        .flash-messages {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+        }
+        
+        .alert-success {
+            background-color: #4CAF50;
+            color: white;
+            padding: 15px;
+            border-radius: 4px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+<div class="container">
+    <!-- Flash messages -->
+    {% for message in app.flashes('success') %}
+        <div class="flash-messages">
+            <div class="alert-success">
+                {{ message }}
+            </div>
+        </div>
+    {% endfor %}
+
+    <div class="row justify-content-center">
+        <div class="col-md-10">
+            <div class="card">
+                <div class="card-body">
+                    <div class="form-container">
+                        <div class="form-header">
+                            <h1><i class="fas fa-edit"></i> Modifier le produit</h1>
+                        </div>
+
+                        {{ form_start(form, {'attr': {'id': 'produitEditForm', 'novalidate': 'novalidate'}}) }}
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    {{ form_label(form.nom) }}
+                                    {{ form_widget(form.nom, {
+                                        'attr': {
+                                            'class': 'form-control',
+                                            'placeholder': 'Entrez le nom du produit'
+                                        }
+                                    }) }}
+                                </div>
+
+                                <div class="form-group">
+                                    {{ form_label(form.quantite) }}
+                                    {{ form_widget(form.quantite, {
+                                        'attr': {
+                                            'class': 'form-control',
+                                            'placeholder': 'Entrez la quantité disponible'
+                                        }
+                                    }) }}
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    {{ form_label(form.prix_vente) }}
+                                    {{ form_widget(form.prix_vente, {
+                                        'attr': {
+                                            'class': 'form-control',
+                                            'placeholder': 'Entrez le prix de vente'
+                                        }
+                                    }) }}
+                                </div>
+
+                                <div class="form-group">
+                                    {{ form_label(form.prix_achat) }}
+                                    {{ form_widget(form.prix_achat, {
+                                        'attr': {
+                                            'class': 'form-control',
+                                            'placeholder': 'Entrez le prix d\'achat'
+                                        }
+                                    }) }}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="image-preview-container">
+                                {% if produit.image %}
+                                    <p>Image actuelle :</p>
+                                    <img src="{{ asset('uploads/produits/' ~ produit.image) }}" 
+                                         class="current-image"
+                                         onerror="this.onerror=null;this.style.display='none'"
+                                         alt="Image actuelle">
+                                {% else %}
+                                    <div class="alert alert-warning">Aucune image actuellement</div>
+                                {% endif %}
+                            </div>
+                            
+                            {{ form_label(form.image) }}
+                            <div class="file-input-wrapper">
+                                <div class="file-input-button">
+                                    <i class="fas fa-cloud-upload-alt fa-3x" style="color: #3498db;"></i>
+                                    <div class="file-input-text">Cliquez pour changer l'image</div>
+                                    {{ form_widget(form.image) }}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group mt-4">
+                            <button type="submit" class="btn-submit">
+                                <i class="fas fa-save"></i> Enregistrer les modifications
+                            </button>
+                            <a href="{{ path('app_produit_show', {'id_produit': produit.id_produit}) }}" 
+                               class="btn btn-secondary mt-2" style="width:100%">
+                                <i class="fas fa-times"></i> Annuler
+                            </a>
+                        </div>
+                        {{ form_end(form) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Gestion des messages flash
+            const flashMessages = document.querySelectorAll('.flash-messages .alert-success');
+            if (flashMessages.length > 0) {
+                setTimeout(() => {
+                    flashMessages.forEach(msg => {
+                        msg.style.transition = 'opacity 1s';
+                        msg.style.opacity = '0';
+                        setTimeout(() => msg.remove(), 1000);
+                    });
+                }, 3000);
+            }
+
+            // Aperçu de l'image
+            const imageInput = document.getElementById('{{ form.image.vars.id }}');
+            if (imageInput) {
+                imageInput.addEventListener('change', function(e) {
+                    const previewContainer = document.querySelector('.image-preview-container');
+                    const oldPreview = previewContainer.querySelector('.new-image-preview');
+                    
+                    if (oldPreview) oldPreview.remove();
+                    
+                    if (this.files && this.files[0]) {
+                        const reader = new FileReader();
+                        const preview = document.createElement('img');
+                        preview.className = 'current-image new-image-preview';
+                        preview.alt = 'Nouvelle image sélectionnée';
+                        
+                        reader.onload = function(e) {
+                            preview.src = e.target.result;
+                            previewContainer.insertBefore(preview, previewContainer.firstChild);
+                            
+                            // Cache l'ancienne image
+                            const oldImage = previewContainer.querySelector('.current-image:not(.new-image-preview)');
+                            if (oldImage) oldImage.style.display = 'none';
+                        }
+                        reader.readAsDataURL(this.files[0]);
+                    }
+                });
+            }
+
+            // Validation des champs
+            const form = document.getElementById('produitEditForm');
+            if (form) {
+                form.addEventListener('submit', function(e) {
+                    let isValid = true;
+                    
+                    ['quantite', 'prix_vente', 'prix_achat'].forEach(field => {
+                        const el = document.getElementById('produit_' + field);
+                        if (el && (isNaN(el.value) || el.value < 0) {
+                            alert(`Le champ ${field.replace('_', ' ')} doit être un nombre positif`);
+                            el.classList.add('is-invalid');
+                            isValid = false;
+                        }
+                    });
+                    
+                    if (!isValid) {
+                        e.preventDefault();
+                        return false;
+                    }
+                    
+                    // Désactiver le bouton
+                    const submitBtn = this.querySelector('button[type="submit"]');
+                    if (submitBtn) {
+                        submitBtn.disabled = true;
+                        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Enregistrement...';
+                    }
+                });
+            }
+        });
+    </script>
+{% endblock %}

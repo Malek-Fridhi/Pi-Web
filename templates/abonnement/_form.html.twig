@@ -1,0 +1,51 @@
+    {{ form_start(form, {'attr': {'novalidate': 'novalidate', 'class': 'needs-validation'}}) }}
+
+        <!-- Champ Type -->
+        <div class="form-field mb-3">
+            {{ form_label(form.type, null, {'label_attr': {'class': 'form-label'}}) }}
+            {{ form_widget(form.type, {
+                'attr': {
+                    'class': 'form-control' ~ (form_errors(form.type) ? ' is-invalid' : ''),
+                    'placeholder': 'Type d\'abonnement*'
+                }
+            }) }}
+            {% if form_errors(form.type) %}
+                <div class="invalid-feedback d-block">
+                    {{ form_errors(form.type) }}
+                </div>
+            {% endif %}
+        </div>
+
+        <!-- Champ Date Début -->
+        <div class="form-field mb-3">
+            {{ form_label(form.date_debut, null, {'label_attr': {'class': 'form-label'}}) }}
+            {{ form_widget(form.date_debut, {
+                'attr': {
+                    'class': 'form-control' ~ (form_errors(form.date_debut) ? ' is-invalid' : ''),
+                    'placeholder': 'Date de début (JJ/MM/AAAA)*'
+                }
+            }) }}
+            {% if form_errors(form.date_debut) %}
+                <div class="invalid-feedback d-block">
+                    {{ form_errors(form.date_debut) }}
+                </div>
+            {% endif %}
+        </div>
+
+        <!-- Champ Utilisateur -->
+        <div class="form-field mb-3">
+            {{ form_label(form.user, null, {'label_attr': {'class': 'form-label'}}) }}
+            {{ form_widget(form.user, {
+                'attr': {
+                    'class': 'form-control' ~ (form_errors(form.user) ? ' is-invalid' : '')
+                }
+            }) }}
+            {% if form_errors(form.user) %}
+                <div class="invalid-feedback d-block">
+                    {{ form_errors(form.user) }}
+                </div>
+            {% endif %}
+        </div>
+
+        <button type="submit" class="btn btn-primary">Enregistrer</button>
+    {{ form_end(form) }}

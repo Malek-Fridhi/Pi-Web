@@ -1,0 +1,50 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<div class="card">
+    <div class="card-header">
+        <h3>User Statistics</h3>
+        <a href="{{ path('user_statistics_pdf') }}" class="btn btn-danger btn-sm">Exporter en PDF</a>
+    </div>
+
+    <form id="pdfForm" method="POST" action="{{ path('user_statistics_pdf_with_chart') }}">
+        <input type="hidden" name="chartImage" id="chartImageInput">
+        <button type="submit">Exporter PDF avec Graphique</button>
+    </form>
+
+    <div class="card-body">
+        <canvas id="userChart"></canvas>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    const ctx = document.getElementById('userChart').getContext('2d');
+    const chart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: {{ stats|keys|json_encode|raw }},
+            datasets: [{
+                label: 'Nombre d\'utilisateurs',
+                data: {{ stats|map(v => v)|json_encode|raw }},
+                backgroundColor: 'rgba(54, 162, 235, 0.7)',
+                borderWidth: 1
+            }]
+        }
+    });
+
+    // Add event listener for form submission
+    document.getElementById('pdfForm').addEventListener('submit', function (e) {
+        e.preventDefault();  // Prevent the form from submitting immediately
+
+        // Capture the chart image
+        const chartImage = document.getElementById('userChart').toDataURL('image/png');
+
+        // Assign the image data to the hidden input field
+        document.getElementById('chartImageInput').value = chartImage;
+
+        // Submit the form after the image is set
+        this.submit();
+    });
+</script>
+{% endblock %}

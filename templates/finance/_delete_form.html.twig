@@ -1,0 +1,5 @@
+<form method="post" action="{{ path('app_finance_delete', {'idfinance': finance.idfinance}) }}" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer ce rapport?');">
+    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ finance.idfinance) }}">
+    <button class="btn"><i class="fas fa-trash" style="color:red"></i></button>
+</form>
+

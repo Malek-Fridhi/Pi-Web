@@ -1,0 +1,195 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Détails du produit{% endblock %}
+
+{% block body %}
+      <link rel="stylesheet" href="{{ asset('assets/css/bootstrap.min.css') }}" />
+      <link rel="stylesheet" href="{{ asset('assets/css/plugins.min.css') }}" />
+      <link rel="stylesheet" href="{{ asset('assets/css/kaiadmin.min.css') }}" />
+      <link rel="stylesheet" href="{{ asset('assets/css/demo.css') }}" />
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+      <style>
+          .card-details {
+              background: #fff;
+              border-radius: 16px;
+              box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+          }
+          .card-header {
+              background: #2A2F5B;
+              color: white;
+              border-radius: 16px 16px 0 0;
+              padding: 25px 40px;
+          }
+          .table th {
+              width: 30%;
+              color: #495057;
+          }
+          .btn-custom {
+              border-radius: 8px;
+              padding: 10px 20px;
+              font-weight: 500;
+          }
+          .btn-edit { background: #0d6efd; color: white; }
+          .btn-back { background: #6c757d; color: white; }
+          .btn-delete {
+      background: #dc3545 !important;
+      color: white;
+      border: 1px solid #dc3545;
+  }
+      </style>
+<div class="wrapper">
+    <!-- Sidebar -->
+    <div class="sidebar" data-background-color="dark">
+        <div class="sidebar-logo">
+            <div class="logo-header" data-background-color="dark">
+                <a href="index.html" class="logo">
+                    <img src="{{ asset('img/logogeekhub-removebg-preview.png') }}" alt="navbar brand" class="navbar-brand" height="70" />
+                    <span class="logo-text" style="font-size: 18px; font-weight: bold; color: #fff; margin-left: 10px;">GeekHub</span>
+                </a>
+                <div class="nav-toggle">
+                    <button class="btn btn-toggle toggle-sidebar"><i class="gg-menu-right"></i></button>
+                    <button class="btn btn-toggle sidenav-toggler"><i class="gg-menu-left"></i></button>
+                </div>
+                <button class="topbar-toggler more"><i class="gg-more-vertical-alt"></i></button>
+            </div>
+        </div>
+        <div class="sidebar-wrapper scrollbar scrollbar-inner">
+            <div class="sidebar-content">
+                <ul class="nav nav-secondary">
+                    <li class="nav-item"><a href="/dashadmin"><i class="fas fa-bullseye"></i><p class="d-inline">Home</p></a></li>
+                    <li class="nav-section"><span class="sidebar-mini-icon"><i class="fa fa-ellipsis-h"></i></span><h4 class="text-section">Modules</h4></li>
+                    <li class="nav-item"><a href="/abonnement"><i class="fas fa-id-card"></i><p class="d-inline">Abonnements</p></a></li>
+                    <li class="nav-item"><a href="/evenement"><i class="fas fa-calendar-alt"></i><p class="d-inline">Événements</p></a></li>
+                    <li class="nav-item"><a href="/reclamation"><i class="fas fa-exclamation-circle"></i><p class="d-inline">Réclamations</p></a></li>
+                    <li class="nav-item"><a href="/service"><i class="fas fa-concierge-bell"></i><p class="d-inline">Services</p></a></li>
+                    <li class="nav-item">
+                        <a data-bs-toggle="collapse" href="#equipements" class="collapsed" aria-expanded="false">
+                            <i class="fas fa-dumbbell"></i>
+                            <p>Équipements</p>
+                            <span class="caret"></span>
+                        </a>
+                        <div class="collapse" id="equipements">
+                            <ul class="nav nav-collapse">
+                                <li><a href="/equipement"><span class="sub-item">Liste</span></a></li>
+                                <li><a href="{{ path('app_equipement_new') }}"><span class="sub-item">Ajouter</span></a></li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li class="nav-item active">
+                        <a data-bs-toggle="collapse" href="#produits" class="collapsed" aria-expanded="false">
+                            <i class="fas fa-box"></i>
+                            <p>Produits</p>
+                            <span class="caret"></span>
+                        </a>
+                        <div class="collapse show" id="produits">
+                            <ul class="nav nav-collapse">
+                                <li><a href="/produit"><span class="sub-item">Liste</span></a></li>
+                                <li><a href="{{ path('app_produit_new') }}"><span class="sub-item">Ajouter</span></a></li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li class="nav-item"><a href="/objectif"><i class="fas fa-bullseye"></i><p class="d-inline">Objectifs</p></a></li>
+                    <li class="nav-item"><a href="/finance"><i class="fas fa-chart-line"></i><p class="d-inline">Finance</p></a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-panel">
+        <div class="content">
+            <div class="page-inner">
+                <div class="page-header">
+                    <h4 class="page-title">Détails du produit</h4>
+                    <ul class="breadcrumbs">
+                        <li class="nav-home"><a href="#"><i class="flaticon-home"></i></a></li>
+                        <li class="separator"><i class="flaticon-right-arrow"></i></li>
+                        <li class="nav-item"><a href="#">Modules</a></li>
+                        <li class="separator"><i class="flaticon-right-arrow"></i></li>
+                        <li class="nav-item"><a href="{{ path('app_produit_index') }}">Produits</a></li>
+                        <li class="separator"><i class="flaticon-right-arrow"></i></li>
+                        <li class="nav-item"><a href="#">Détails</a></li>
+                    </ul>
+                </div>
+
+                <div class="row">
+                    <!-- Colonne gauche - Détails texte -->
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-header">
+                                <h4 class="card-title">Informations du produit</h4>
+                            </div>
+                            <div class="card-body">
+                                <table class="table">
+                                    <tbody>
+                                        <tr>
+                                            <th>ID</th>
+                                            <td>{{ produit.id_produit }}</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Nom</th>
+                                            <td>{{ produit.nom }}</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Quantité</th>
+                                            <td>{{ produit.quantite }}</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Prix de vente</th>
+                                            <td>{{ produit.prix_vente|number_format(2, ',', ' ') }} DT</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Prix d'achat</th>
+                                            <td>{{ produit.prix_achat|number_format(2, ',', ' ') }} DT</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Marge</th>
+                                            <td>{{ (produit.prix_vente - produit.prix_achat)|number_format(2, ',', ' ') }} DT</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+
+                                <div class="mt-3">
+                                    <a href="{{ path('app_produit_index') }}" class="btn btn-secondary">
+                                        <i class="fas fa-arrow-left"></i> Retour à la liste
+                                    </a>
+                                    <a href="{{ path('app_produit_edit', {'id_produit': produit.id_produit}) }}" class="btn btn-warning">
+                                        <i class="fas fa-edit"></i> Modifier
+                                    </a>
+                                    {{ include('produit/_delete_form.html.twig') }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Colonne droite - Image -->
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-header">
+                                <h4 class="card-title">Image du produit</h4>
+                            </div>
+                            <div class="card-body text-center">
+                                {% if produit.image %}
+                                    <img src="{{ asset('uploads/produits/' ~ produit.image) }}" 
+                                         alt="{{ produit.nom }}" 
+                                         class="img-fluid rounded" 
+                                         style="max-height: 400px;">
+                                    <div class="mt-3">
+                                        <a href="{{ asset('uploads/produits/' ~ produit.image) }}" 
+                                           target="_blank" 
+                                           class="btn btn-primary">
+                                            <i class="fas fa-expand"></i> Voir en grand
+                                        </a>
+                                    </div>
+                                {% else %}
+                                    <div class="alert alert-warning">Aucune image disponible</div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}PlanNutritionnel{% endblock %}
+
+{% block body %}
+    <h1>PlanNutritionnel</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>IdPlan</th>
+                <td>{{ plan_nutritionnel.idPlan }}</td>
+            </tr>
+            <tr>
+                <th>DateCreation</th>
+                <td>{{ plan_nutritionnel.dateCreation ? plan_nutritionnel.dateCreation|date('Y-m-d') : '' }}</td>
+            </tr>
+            <tr>
+                <th>DateModification</th>
+                <td>{{ plan_nutritionnel.dateModification ? plan_nutritionnel.dateModification|date('Y-m-d') : '' }}</td>
+            </tr>
+            <tr>
+                <th>Regime</th>
+                <td>{{ plan_nutritionnel.regime }}</td>
+            </tr>
+            <tr>
+                <th>NbrJours</th>
+                <td>{{ plan_nutritionnel.nbrJours }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_plan_nutritionnel_index') }}">back to list</a>
+
+    <a href="{{ path('app_plan_nutritionnel_edit', {'idPlan': plan_nutritionnel.idPlan}) }}">edit</a>
+
+    {{ include('plan_nutritionnel/_delete_form.html.twig') }}
+{% endblock %}

@@ -1,0 +1,441 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Marque index{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('assets/css/bootstrap.min.css') }}" />
+    <link rel="stylesheet" href="{{ asset('assets/css/plugins.min.css') }}" />
+    <link rel="stylesheet" href="{{ asset('assets/css/kaiadmin.min.css') }}" />
+    <link rel="stylesheet" href="{{ asset('assets/css/demo.css') }}" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/dataTables.bootstrap5.min.css" />
+{% endblock %}
+
+{% block body %}
+<div class="wrapper">
+    <!-- Sidebar -->
+    <div class="sidebar" data-background-color="dark">
+        <div class="sidebar-logo">
+            <!-- Logo Header -->
+            <div class="logo-header" data-background-color="dark">
+                <a href="index.html" class="logo">
+                    <img src="{{ asset('img/logogeekhub-removebg-preview.png') }}" alt="navbar brand" class="navbar-brand" height="70" />
+                    <span class="logo-text" style="font-size: 18px; font-weight: bold; color: #fff; margin-left: 10px;">GeekHub</span>
+                </a>
+
+                <div class="nav-toggle">
+                    <button class="btn btn-toggle toggle-sidebar">
+                        <i class="gg-menu-right"></i>
+                    </button>
+                    <button class="btn btn-toggle sidenav-toggler">
+                        <i class="gg-menu-left"></i>
+                    </button>
+                </div>
+                <button class="topbar-toggler more">
+                    <i class="gg-more-vertical-alt"></i>
+                </button>
+            </div>
+            <!-- End Logo Header -->
+        </div>
+        <div class="sidebar-wrapper scrollbar scrollbar-inner">
+            <div class="sidebar-content">
+                <ul class="nav nav-secondary">
+                    <li class="nav-item">
+                        <a href="/dashadmin">
+                            <i class="fas fa-bullseye"></i>
+                            <p class="d-inline">Home</p>
+                        </a>
+                    </li>
+                    <li class="nav-section">
+                        <span class="sidebar-mini-icon">
+                            <i class="fa fa-ellipsis-h"></i>
+                        </span>
+                        <h4 class="text-section">Modules</h4>
+                    </li>
+                   <!-- <li class="nav-item">
+                        <a href="/abonnement">
+                            <i class="fas fa-id-card"></i>
+                            <p class="d-inline">Abonnements</p>
+                        </a>
+                    </li>-->
+                     <li class="nav-item">
+   <a data-bs-toggle="collapse" href="#tables" role="button" aria-expanded="false" aria-controls="tables">
+       <i class="fas fa-table"></i>
+           <p>Cours & Abonnement</p>
+           <span class="caret"></span>
+       </a>
+       <div class="collapse" id="tables">
+         <ul class="nav nav-collapse">
+         <li>
+       <a href="/CourBack">
+         <span class="sub-item">Cours</span>
+           </a>
+         </li>
+         <li>
+           <a href="/abonnement">
+     <span class="sub-item">Abonnements</span>
+           </a>
+           </li>
+       <li>
+       <a href="/planning">
+   <span class="sub-item">Planning</span>
+   </a>
+   </li>
+   </ul>
+   </div>
+   </li>
+                    <li class="nav-item">
+                        <a href="/evenement">
+                            <i class="fas fa-calendar-alt"></i>
+                            <p class="d-inline">Événements</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/reclamation">
+                            <i class="fas fa-exclamation-circle"></i>
+                            <p class="d-inline">Réclamations</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/service">
+                            <i class="fas fa-concierge-bell"></i>
+                            <p class="d-inline">Services</p>
+                        </a>
+                    </li>
+                                        <li class="nav-item active">
+                        <a data-bs-toggle="collapse" href="#equipements" class="collapsed" aria-expanded="false">
+                            <i class="fas fa-dumbbell"></i>
+                            <p>Équipements</p>
+                            <span class="caret"></span>
+                        </a>
+                        <div class="collapse show" id="equipements">
+                                <ul class="nav nav-collapse">
+                                    <li class="active">
+                                        <a href="/equipement">
+                                            <span class="sub-item">Equipement</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="/marque">
+                                            <span class="sub-item">Marque</span>
+                                        </a>
+                                    </li>
+                                    <li>
+    <a href="/produit">
+        <span class="sub-item">Produit</span>
+    </a>
+</li>
+                                </ul>
+                            </div>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/plan/nutritionnel/admin/plans-objectifs">
+                            <i class="fas fa-bullseye"></i>
+                            <p class="d-inline">Objectifs</p>
+                        </a>
+                    </li>
+                   <!-- <li class="nav-item">
+                        <a href="/finance">
+                            <i class="fas fa-chart-line"></i>
+                            <p class="d-inline">Finance</p>
+                        </a>
+                    </li>-->
+                                           <li class="nav-item">
+       <a data-bs-toggle="collapse" href="#tables">
+         <i class="fas fa-table"></i>
+         <p>Finance</p>
+         <span class="caret"></span>
+       </a>
+       <div class="collapse" id="tables">
+         <ul class="nav nav-collapse">
+           <li>
+             <a href="/financeadmin">
+               <span class="sub-item">Rapports</span>
+             </a>
+           </li>
+           <li>
+             <a href="/depenseadmin">
+               <span class="sub-item">Dépenses</span>
+             </a>
+           </li>
+           <li>
+             <a href="/revenuadmin">
+               <span class="sub-item">Revenus</span>
+             </a>
+           </li>
+         </ul>
+       </div>
+     </li>
+                    <li class="nav-section">
+                        <span class="sidebar-mini-icon">
+                            <i class="fa fa-ellipsis-h"></i>
+                        </span>
+                        <h4 class="text-section">Comp</h4>
+                    </li>
+                    <li class="nav-item">
+                        <a data-bs-toggle="collapse" href="#tables">
+                            <i class="fas fa-table"></i>
+                            <p>Tables</p>
+                            <span class="caret"></span>
+                        </a>
+                        <div class="collapse" id="tables">
+                            <ul class="nav nav-collapse">
+                                <li>
+                                    <a href="tables/tables.html">
+                                        <span class="sub-item">Basic Table</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="tables/datatables.html">
+                                        <span class="sub-item">Datatables</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!-- End Sidebar -->
+
+    <!-- Main Content -->
+    <div class="main-panel">
+        <div class="content">
+            <div class="page-inner">
+                <div class="page-header">
+                    <h4 class="page-title">Marques</h4>
+                    <ul class="breadcrumbs">
+                        <li class="nav-home">
+                            <a href="#">
+                                <i class="flaticon-home"></i>
+                            </a>
+                        </li>
+                        <li class="separator">
+                            <i class="flaticon-right-arrow"></i>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#">Modules</a>
+                        </li>
+                        <li class="separator">
+                            <i class="flaticon-right-arrow"></i>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#">Marques</a>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="d-flex justify-content-end">
+                                    <div class="btn-group">
+                                        <a href="{{ path('app_marque_export_pdf') }}" class="btn btn-danger mr-2">
+                                            <i class="fas fa-file-pdf"></i> Exporter PDF
+                                        </a>
+                                        <a href="{{ path('app_marque_new') }}" class="btn btn-primary">
+                                            <i class="fa fa-plus"></i> Ajouter
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table id="marque-table" class="display table table-striped table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th>ID</th>
+                                                <th>Nom</th>
+                                                <th>Image</th>
+                                                <th>Téléphone</th>
+                                                <th>Email</th>
+                                                <th>Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                        {% for marque in marques %}
+                                            <tr>
+                                                <td>{{ marque.idMarque }}</td>
+                                                <td>{{ marque.nom }}</td>
+                                                <td>
+                                                    {% if marque.image %}
+                                                        <img src="{{ asset('uploads/marques/' ~ marque.image) }}" 
+                                                             alt="{{ marque.nom }}" 
+                                                             style="max-width: 100px; max-height: 50px;">
+                                                    {% else %}
+                                                        <span class="text-muted">Aucune image</span>
+                                                    {% endif %}
+                                                </td>
+                                                <td>{{ marque.telephone }}</td>
+                                                <td>{{ marque.email }}</td>
+                                                <td>
+                                                    <div class="form-button-action">
+                                                        <a href="{{ path('app_marque_show', {'id_marque': marque.idMarque}) }}" 
+                                                           class="btn btn-link btn-primary" 
+                                                           data-toggle="tooltip" 
+                                                           title="Voir détails">
+                                                            <i class="fa fa-eye"></i>
+                                                        </a>
+                                                        <a href="{{ path('app_marque_edit', {'id_marque': marque.idMarque}) }}" 
+                                                           class="btn btn-link btn-warning" 
+                                                           data-toggle="tooltip" 
+                                                           title="Modifier">
+                                                            <i class="fa fa-edit"></i>
+                                                        </a>
+                                                        <form method="post" 
+                                                              action="{{ path('app_marque_delete', {'id_marque': marque.idMarque}) }}" 
+                                                              style="display: inline-block;"
+                                                              onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cette marque ?');">
+                                                            <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ marque.idMarque) }}">
+                                                            <button class="btn btn-link btn-danger" data-toggle="tooltip" title="Supprimer">
+                                                                <i class="fa fa-trash"></i>
+                                                            </button>
+                                                        </form>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        {% else %}
+                                            <tr>
+                                                <td colspan="6" class="text-center">Aucune marque trouvée</td>
+                                            </tr>
+                                        {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End Main Content -->
+
+    <!-- Custom template -->
+    <div class="custom-template">
+        <div class="title">Settings</div>
+        <div class="custom-content">
+            <div class="switcher">
+                <div class="switch-block">
+                    <h4>Logo Header</h4>
+                    <div class="btnSwitch">
+                        <button type="button" class="selected changeLogoHeaderColor" data-color="dark"></button>
+                        <button type="button" class="changeLogoHeaderColor" data-color="blue"></button>
+                        <button type="button" class="changeLogoHeaderColor" data-color="purple"></button>
+                        <button type="button" class="changeLogoHeaderColor" data-color="light-blue"></button>
+                        <button type="button" class="changeLogoHeaderColor" data-color="green"></button>
+                        <button type="button" class="changeLogoHeaderColor" data-color="orange"></button>
+                        <button type="button" class="changeLogoHeaderColor" data-color="red"></button>
+                        <button type="button" class="changeLogoHeaderColor" data-color="white"></button>
+                        <br />
+                        <button type="button" class="changeLogoHeaderColor" data-color="dark2"></button>
+                        <button type="button" class="changeLogoHeaderColor" data-color="blue2"></button>
+                        <button type="button" class="changeLogoHeaderColor" data-color="purple2"></button>
+                        <button type="button" class="changeLogoHeaderColor" data-color="light-blue2"></button>
+                        <button type="button" class="changeLogoHeaderColor" data-color="green2"></button>
+                        <button type="button" class="changeLogoHeaderColor" data-color="orange2"></button>
+                        <button type="button" class="changeLogoHeaderColor" data-color="red2"></button>
+                    </div>
+                </div>
+                <div class="switch-block">
+                    <h4>Navbar Header</h4>
+                    <div class="btnSwitch">
+                        <button type="button" class="changeTopBarColor" data-color="dark"></button>
+                        <button type="button" class="changeTopBarColor" data-color="blue"></button>
+                        <button type="button" class="changeTopBarColor" data-color="purple"></button>
+                        <button type="button" class="changeTopBarColor" data-color="light-blue"></button>
+                        <button type="button" class="changeTopBarColor" data-color="green"></button>
+                        <button type="button" class="changeTopBarColor" data-color="orange"></button>
+                        <button type="button" class="changeTopBarColor" data-color="red"></button>
+                        <button type="button" class="selected changeTopBarColor" data-color="white"></button>
+                        <br />
+                        <button type="button" class="changeTopBarColor" data-color="dark2"></button>
+                        <button type="button" class="changeTopBarColor" data-color="blue2"></button>
+                        <button type="button" class="changeTopBarColor" data-color="purple2"></button>
+                        <button type="button" class="changeTopBarColor" data-color="light-blue2"></button>
+                        <button type="button" class="changeTopBarColor" data-color="green2"></button>
+                        <button type="button" class="changeTopBarColor" data-color="orange2"></button>
+                        <button type="button" class="changeTopBarColor" data-color="red2"></button>
+                    </div>
+                </div>
+                <div class="switch-block">
+                    <h4>Sidebar</h4>
+                    <div class="btnSwitch">
+                        <button type="button" class="changeSideBarColor" data-color="white"></button>
+                        <button type="button" class="selected changeSideBarColor" data-color="dark"></button>
+                        <button type="button" class="changeSideBarColor" data-color="dark2"></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="custom-toggle">
+            <i class="icon-settings"></i>
+        </div>
+    </div>
+    <!-- End Custom template -->
+</div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('assets/js/plugin/webfont/webfont.min.js') }}"></script>
+    <script>
+        WebFont.load({
+            google: { families: ["Public Sans:300,400,500,600,700"] },
+            custom: {
+                families: [
+                    "Font Awesome 5 Solid",
+                    "Font Awesome 5 Regular",
+                    "Font Awesome 5 Brands",
+                    "simple-line-icons",
+                ],
+                urls: ["{{ asset('assets/css/fonts.min.css') }}"],
+            },
+            active: function () {
+                sessionStorage.fonts = true;
+            },
+        });
+    </script>
+
+    <!-- Core JS Files -->
+    <script src="{{ asset('assets/js/core/jquery-3.7.1.min.js') }}"></script>
+    <script src="{{ asset('assets/js/core/popper.min.js') }}"></script>
+    <script src="{{ asset('assets/js/core/bootstrap.min.js') }}"></script>
+
+    <!-- jQuery Scrollbar -->
+    <script src="{{ asset('assets/js/plugin/jquery-scrollbar/jquery.scrollbar.min.js') }}"></script>
+
+    <!-- DataTables JS -->
+    <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap5.min.js"></script>
+    <script src="https://cdn.datatables.net/plug-ins/1.11.5/i18n/French.json"></script>
+
+    <!-- Kaiadmin JS -->
+    <script src="{{ asset('assets/js/kaiadmin.min.js') }}"></script>
+
+    <!-- Custom JS -->
+    <script>
+        $(document).ready(function() {
+            // Initialiser DataTable
+            $('#marque-table').DataTable({
+                "language": {
+                    "url": "//cdn.datatables.net/plug-ins/1.11.5/i18n/French.json"
+                },
+                "dom": "<'row'<'col-sm-12 col-md-6'l><'col-sm-12 col-md-6'f>>" +
+                       "<'row'<'col-sm-12'tr>>" +
+                       "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
+                "pageLength": 10,
+                "responsive": true,
+                "columnDefs": [
+                    { "orderable": false, "targets": [5] } // Désactiver le tri sur la colonne Actions
+                ]
+            });
+
+            // Activer les tooltips
+            $('[data-toggle="tooltip"]').tooltip();
+        });
+    </script>
+{% endblock %}

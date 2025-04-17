@@ -1,0 +1,153 @@
+{% for message in app.flashes('error') %}
+    <div class="alert alert-danger">
+        {{ message }}
+    </div>
+{% endfor %}
+
+{{ form_start(form, {'attr': {'novalidate': 'novalidate', 'class': 'needs-validation'}}) }}
+
+    <div class="form-group">
+        <!-- Champ Mois -->
+        <div class="form-field">
+            {{ form_label(form.moisFin, null, {'label_attr': {'class': 'form-label'}}) }}
+            {{ form_widget(form.moisFin, {
+                'attr': {
+                    'class': 'form-control' ~ (form.moisFin.vars.valid ? '' : ' is-invalid'),
+                    'placeholder': 'Mois du rapport*'
+                }
+            }) }}
+            <div class="error-message">
+                {{ form_errors(form.moisFin) }}
+            </div>
+        </div>
+
+        <!-- Champ Année -->
+        <div class="form-field">
+            {{ form_label(form.anneeFin, null, {'label_attr': {'class': 'form-label'}}) }}
+            {{ form_widget(form.anneeFin, {
+                'attr': {
+                    'class': 'form-control' ~ (form.anneeFin.vars.valid ? '' : ' is-invalid'),
+                    'placeholder': 'Année du rapport*'
+                }
+            }) }}
+            <div class="error-message">
+                {{ form_errors(form.anneeFin) }}
+            </div>
+        </div>
+    </div>
+
+    <div class="association-info mb-4">
+        <div class="alert alert-warning">
+            <i class="fas fa-exclamation-triangle me-2"></i>
+            Attention : La modification du mois ou de l'année entraînera une réassociation automatique des éléments correspondants.
+        </div>
+    </div>
+
+   <div class="d-flex justify-content-end">  {# Nouvelle div pour aligner à droite #}
+    <button type="submit" class="btn btn-primary">
+        <i class="fas fa-save me-2"></i> {{ button_label|default('Enregistrer') }}
+    </button>
+</div>
+   
+
+{{ form_end(form) }}
+
+{% if finance.revenus|length > 0 or finance.depenses|length > 0 %}
+<div class="mt-5">
+    <h5>Détail des éléments associés</h5>
+    
+    {% if finance.revenus|length > 0 %}
+    <div class="card mt-3">
+        <div class="card-header bg-primary text-white">
+            <i class="fas fa-money-bill-wave me-2"></i> Revenus ({{ finance.revenus|length }})
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>Source</th>
+                            <th>Montant</th>
+                            <th>Date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for rapport in finance.revenus %}
+                        <tr>
+                            <td>{{ rapport.revenu.sourceRevenu }}</td>
+                            <td>{{ rapport.revenu.montantRevenu }} DT</td>
+                            <td>{{ rapport.revenu.datereceptionRevenu|date('d/m/Y') }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+    {% if finance.depenses|length > 0 %}
+    <div class="card mt-4">
+        <div class="card-header bg-danger text-white">
+            <i class="fas fa-shopping-cart me-2"></i> Dépenses ({{ finance.depenses|length }})
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>Type</th>
+                            <th>Montant</th>
+                            <th>Date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for rapport in finance.depenses %}
+                        <tr>
+                            <td>{{ rapport.depense.typeDep }}</td>
+                            <td>{{ rapport.depense.montantDep }} DT</td>
+                            <td>{{ rapport.depense.datereceptionDep|date('d/m/Y') }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endif %}
+
+<style>
+    .association-info .alert {
+        padding: 12px 15px;
+        margin-bottom: 0;
+    }
+    .table th {
+        font-weight: 600;
+        background-color: #f8f9fa;
+    }
+    .card {
+        border-radius: 10px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    }
+    .card-header {
+        border-radius: 10px 10px 0 0 !important;
+    }
+    .btn-primary {
+        background: linear-gradient(to right, #1c83f3, #0d6efd);
+        border: none;
+        padding: 10px 20px;
+        border-radius: 8px;
+        font-weight: 500;
+    }
+    .error-message {
+        color: #dc3545;
+        font-size: 0.875rem;
+        margin-top: 0.25rem;
+    }
+     .btn-container {
+        text-align: right;
+        margin-top: 20px;
+    }
+</style>

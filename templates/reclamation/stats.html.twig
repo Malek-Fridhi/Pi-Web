@@ -1,0 +1,44 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Statistiques des Réclamations{% endblock %}
+
+{% block body %}
+    <h2>Statistiques des Réclamations</h2>
+
+    <p>Total des réclamations : <strong>{{ total }}</strong></p>
+
+    <h3>Réclamations par statut</h3>
+    <ul>
+        {% for stat in byStatus %}
+            <li>{{ stat.status }} : {{ stat.count }}</li>
+        {% endfor %}
+    </ul>
+
+    <h3>Réclamations par mois</h3>
+    <ul>
+        {% for stat in byMonth %}
+            <li>{{ stat.month }} : {{ stat.count }}</li>
+        {% endfor %}
+    </ul>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<canvas id="statusChart"></canvas>
+<script>
+    var ctx = document.getElementById('statusChart').getContext('2d');
+    var chart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: {{ byStatus|map(stat => stat.status)|json_encode()|raw }},
+            datasets: [{
+                label: 'Nombre de réclamations',
+                data: {{ byStatus|map(stat => stat.count)|json_encode()|raw }},
+                backgroundColor: 'rgba(54, 162, 235, 0.5)',
+                borderColor: 'rgba(54, 162, 235, 1)',
+                borderWidth: 1
+            }]
+        }
+    });
+</script>
+
+{% endblock %}

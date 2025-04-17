@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <style>
+        body { font-family: Arial, sans-serif; }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            padding: 8px;
+            border: 1px solid #aaa;
+            text-align: left;
+        }
+        h2 {
+            text-align: center;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h2>Statistiques des utilisateurs</h2>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Rôle</th>
+                <th>Nombre d'utilisateurs</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for role, count in stats %}
+                <tr>
+                    <td>{{ role }}</td>
+                    <td>{{ count }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>

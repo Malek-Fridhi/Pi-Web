@@ -1,0 +1,503 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Nouvelle Marque{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="{{ asset('assets/css/bootstrap.min.css') }}" />
+    <link rel="stylesheet" href="{{ asset('assets/css/plugins.min.css') }}" />
+    <link rel="stylesheet" href="{{ asset('assets/css/kaiadmin.min.css') }}" />
+    <link rel="stylesheet" href="{{ asset('assets/css/demo.css') }}" />
+    <style>
+        .form-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 30px;
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+        }
+
+        .form-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .form-header h1 {
+            color: #2c3e50;
+            font-weight: 700;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        .form-group label:after {
+            content: " *";
+            color: #e74c3c;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px 15px;
+            font-size: 16px;
+            border: 2px solid #ecf0f1;
+            border-radius: 8px;
+            transition: all 0.3s;
+            background-color: #f8f9fa;
+        }
+
+        .form-control:focus {
+            border-color: #3498db;
+            background-color: #fff;
+            box-shadow: 0 0 0 3px rgba(52,152,219,0.1);
+            outline: none;
+        }
+
+        .form-control.is-invalid {
+            border-color: #e74c3c !important;
+            background-color: #fef2f2;
+        }
+
+        .invalid-feedback {
+            color: #e74c3c;
+            font-size: 14px;
+            margin-top: 5px;
+            display: none;
+        }
+
+        .invalid-feedback.show {
+            display: block;
+        }
+
+        .btn-submit {
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            font-size: 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: block;
+            width: 100%;
+            font-weight: 600;
+        }
+
+        .btn-submit:hover {
+            background: #2980b9;
+            transform: translateY(-2px);
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-top: 20px;
+            color: #3498db;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
+        }
+
+        .image-preview {
+            max-width: 200px;
+            max-height: 200px;
+            margin-top: 10px;
+            display: none;
+            border-radius: 8px;
+            border: 2px solid #ecf0f1;
+        }
+
+        .file-input-wrapper {
+            position: relative;
+            overflow: hidden;
+            display: inline-block;
+            width: 100%;
+        }
+
+        .file-input-button {
+            border: 2px dashed #bdc3c7;
+            border-radius: 8px;
+            padding: 30px;
+            text-align: center;
+            width: 100%;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .file-input-button:hover {
+            border-color: #3498db;
+            background: #f8f9fa;
+        }
+
+        .file-input-text {
+            color: #7f8c8d;
+            margin-top: 10px;
+        }
+
+        .file-input {
+            position: absolute;
+            left: 0;
+            top: 0;
+            opacity: 0;
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+        }
+
+        .main-panel {
+            margin-left: 250px;
+            width: calc(100% - 250px);
+        }
+
+        .shake {
+            animation: shake 0.5s;
+        }
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            20%, 60% { transform: translateX(-10px); }
+            40%, 80% { transform: translateX(10px); }
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+<div class="wrapper">
+    <!-- Sidebar -->
+    <div class="sidebar" data-background-color="dark">
+        <div class="sidebar-logo">
+            <div class="logo-header" data-background-color="dark">
+                <a href="index.html" class="logo">
+                    <img src="{{ asset('img/logogeekhub-removebg-preview.png') }}" alt="navbar brand" class="navbar-brand" height="70" />
+                    <span class="logo-text" style="font-size: 18px; font-weight: bold; color: #fff; margin-left: 10px;">GeekHub</span>
+                </a>
+                <div class="nav-toggle">
+                    <button class="btn btn-toggle toggle-sidebar"><i class="gg-menu-right"></i></button>
+                    <button class="btn btn-toggle sidenav-toggler"><i class="gg-menu-left"></i></button>
+                </div>
+                <button class="topbar-toggler more"><i class="gg-more-vertical-alt"></i></button>
+            </div>
+        </div>
+        <div class="sidebar-wrapper scrollbar scrollbar-inner">
+            <div class="sidebar-content">
+                <ul class="nav nav-secondary">
+                    <li class="nav-item"><a href="/dashadmin"><i class="fas fa-bullseye"></i><p class="d-inline">Home</p></a></li>
+                    <li class="nav-section"><span class="sidebar-mini-icon"><i class="fa fa-ellipsis-h"></i></span><h4 class="text-section">Modules</h4></li>
+                    <li class="nav-item"><a href="/abonnement"><i class="fas fa-id-card"></i><p class="d-inline">Abonnements</p></a></li>
+                    <li class="nav-item"><a href="/evenement"><i class="fas fa-calendar-alt"></i><p class="d-inline">Événements</p></a></li>
+                    <li class="nav-item"><a href="/reclamation"><i class="fas fa-exclamation-circle"></i><p class="d-inline">Réclamations</p></a></li>
+                    <li class="nav-item"><a href="/service"><i class="fas fa-concierge-bell"></i><p class="d-inline">Services</p></a></li>
+                    <li class="nav-item">
+                        <a data-bs-toggle="collapse" href="#equipements" class="collapsed" aria-expanded="false">
+                            <i class="fas fa-dumbbell"></i>
+                            <p>Équipements</p>
+                            <span class="caret"></span>
+                        </a>
+                        <div class="collapse" id="equipements">
+                            <ul class="nav nav-collapse">
+                                <li><a href="/equipement"><span class="sub-item">Liste</span></a></li>
+                                <li><a href="{{ path('app_equipement_new') }}"><span class="sub-item">Ajouter</span></a></li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li class="nav-item active">
+                        <a data-bs-toggle="collapse" href="#marques" class="collapsed" aria-expanded="false">
+                            <i class="fas fa-tag"></i>
+                            <p>Marques</p>
+                            <span class="caret"></span>
+                        </a>
+                        <div class="collapse show" id="marques">
+                            <ul class="nav nav-collapse">
+                                <li><a href="/marque"><span class="sub-item">Liste</span></a></li>
+                                <li class="active"><a href="{{ path('app_marque_new') }}"><span class="sub-item">Ajouter</span></a></li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li class="nav-item"><a href="/objectif"><i class="fas fa-bullseye"></i><p class="d-inline">Objectifs</p></a></li>
+                    <li class="nav-item"><a href="/finance"><i class="fas fa-chart-line"></i><p class="d-inline">Finance</p></a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-panel">
+        <div class="content">
+            <div class="page-inner">
+                <div class="page-header">
+                    <h4 class="page-title">Nouvelle Marque</h4>
+                    <ul class="breadcrumbs">
+                        <li class="nav-home"><a href="#"><i class="flaticon-home"></i></a></li>
+                        <li class="separator"><i class="flaticon-right-arrow"></i></li>
+                        <li class="nav-item"><a href="#">Modules</a></li>
+                        <li class="separator"><i class="flaticon-right-arrow"></i></li>
+                        <li class="nav-item"><a href="{{ path('app_marque_index') }}">Marques</a></li>
+                        <li class="separator"><i class="flaticon-right-arrow"></i></li>
+                        <li class="nav-item"><a href="#">Nouvelle</a></li>
+                    </ul>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="form-container">
+                                    <div class="form-header">
+                                        <h1><i class="fas fa-tag"></i> Ajouter une nouvelle marque</h1>
+                                    </div>
+
+                                    {{ form_start(form, {'attr': {'id': 'marqueForm', 'novalidate': 'novalidate'}}) }}
+
+                                    <div class="form-group">
+                                        {{ form_label(form.nom) }}
+                                        {{ form_widget(form.nom, {
+                                            'attr': {
+                                                'class': 'form-control' ~ (form.nom.vars.errors|length ? ' is-invalid' : ''),
+                                                'placeholder': 'Entrez le nom de la marque'
+                                            }
+                                        }) }}
+                                        <div class="invalid-feedback">
+                                            {{ form_errors(form.nom) }}
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        {{ form_label(form.image) }}
+                                        <div class="file-input-wrapper">
+                                            <div class="file-input-button">
+                                                <i class="fas fa-cloud-upload-alt fa-3x" style="color: #3498db;"></i>
+                                                <div class="file-input-text">Cliquez pour télécharger un logo</div>
+                                                {{ form_widget(form.image, {'attr': {'class': 'file-input'}}) }}
+                                            </div>
+                                        </div>
+                                        <img id="imagePreview" class="image-preview" src="#" alt="Aperçu du logo">
+                                        <div class="invalid-feedback">
+                                            {{ form_errors(form.image) }}
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        {{ form_label(form.telephone) }}
+                                        {{ form_widget(form.telephone, {
+                                            'attr': {
+                                                'class': 'form-control' ~ (form.telephone.vars.errors|length ? ' is-invalid' : ''),
+                                                'placeholder': 'Entrez le numéro de téléphone'
+                                            }
+                                        }) }}
+                                        <div class="invalid-feedback">
+                                            {{ form_errors(form.telephone) }}
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        {{ form_label(form.email) }}
+                                        {{ form_widget(form.email, {
+                                            'attr': {
+                                                'class': 'form-control' ~ (form.email.vars.errors|length ? ' is-invalid' : ''),
+                                                'placeholder': 'Entrez l\'email de contact'
+                                            }
+                                        }) }}
+                                        <div class="invalid-feedback">
+                                            {{ form_errors(form.email) }}
+                                        </div>
+                                    </div>
+
+                                    <button type="submit" class="btn-submit">
+                                        <i class="fas fa-save"></i> Enregistrer
+                                    </button>
+
+                                    {{ form_end(form) }}
+
+                                    <a href="{{ path('app_marque_index') }}" class="back-link">
+                                        <i class="fas fa-arrow-left"></i> Retour à la liste
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Aperçu de l'image
+            const imageInput = document.getElementById('{{ form.image.vars.id }}');
+            const imagePreview = document.getElementById('imagePreview');
+            
+            if (imageInput) {
+                imageInput.addEventListener('change', function(e) {
+                    const file = e.target.files[0];
+                    if (file) {
+                        const reader = new FileReader();
+                        reader.onload = function(e) {
+                            imagePreview.src = e.target.result;
+                            imagePreview.style.display = 'block';
+                        };
+                        reader.readAsDataURL(file);
+                    } else {
+                        imagePreview.style.display = 'none';
+                    }
+                });
+            }
+
+            // Fonctions de validation
+            function validateNom() {
+                const nom = document.getElementById('{{ form.nom.vars.id }}');
+                const isValid = nom.value.trim().length >= 2 && nom.value.trim().length <= 50;
+                toggleError(nom, isValid, 'Le nom doit contenir entre 2 et 50 caractères');
+                return isValid;
+            }
+
+            function validateTelephone() {
+                const telephone = document.getElementById('{{ form.telephone.vars.id }}');
+                const isValid = /^[0-9]{8}$/.test(telephone.value);
+                toggleError(telephone, isValid, 'Le téléphone doit contenir 8 chiffres');
+                return isValid;
+            }
+
+            function validateEmail() {
+                const email = document.getElementById('{{ form.email.vars.id }}');
+                const isValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.value);
+                toggleError(email, isValid, 'Veuillez entrer un email valide');
+                return isValid;
+            }
+
+            function validateImage() {
+                const image = document.getElementById('{{ form.image.vars.id }}');
+                const isValid = image.files.length > 0;
+                toggleError(image, isValid, 'Veuillez sélectionner un logo');
+                return isValid;
+            }
+
+            function toggleError(field, isValid, errorMessage) {
+                let errorElement;
+                
+                // Trouver l'élément d'erreur
+                if (field.nextElementSibling && field.nextElementSibling.classList.contains('invalid-feedback')) {
+                    errorElement = field.nextElementSibling;
+                } else {
+                    // Créer un élément d'erreur s'il n'existe pas
+                    errorElement = document.createElement('div');
+                    errorElement.className = 'invalid-feedback';
+                    field.parentNode.insertBefore(errorElement, field.nextSibling);
+                }
+                
+                if (!isValid) {
+                    field.classList.add('is-invalid');
+                    errorElement.textContent = errorMessage;
+                    errorElement.classList.add('show');
+                } else {
+                    field.classList.remove('is-invalid');
+                    errorElement.classList.remove('show');
+                }
+            }
+
+            // Validation globale du formulaire
+            function validateForm() {
+                const isNomValid = validateNom();
+                const isTelephoneValid = validateTelephone();
+                const isEmailValid = validateEmail();
+                const isImageValid = validateImage();
+
+                return isNomValid && isTelephoneValid && isEmailValid && isImageValid;
+            }
+
+            // Gestion de la soumission du formulaire
+            const form = document.getElementById('marqueForm');
+            if (form) {
+                form.addEventListener('submit', function(event) {
+                    if (!validateForm()) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                        
+                        // Animation de feedback
+                        const submitBtn = document.querySelector('.btn-submit');
+                        if (submitBtn) {
+                            submitBtn.classList.add('shake');
+                            setTimeout(() => submitBtn.classList.remove('shake'), 500);
+                        }
+                        
+                        // Scroll vers le premier champ invalide
+                        const firstInvalid = document.querySelector('.is-invalid');
+                        if (firstInvalid) {
+                            firstInvalid.scrollIntoView({ 
+                                behavior: 'smooth', 
+                                block: 'center' 
+                            });
+                            firstInvalid.focus();
+                        }
+                        
+                        return false;
+                    }
+                    
+                    // Désactiver le bouton pour éviter les doubles clics
+                    const submitBtn = form.querySelector('button[type="submit"]');
+                    if (submitBtn) {
+                        submitBtn.disabled = true;
+                        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Enregistrement...';
+                    }
+                });
+
+                // Validation en temps réel
+                const fields = {
+                    '{{ form.nom.vars.id }}': validateNom,
+                    '{{ form.telephone.vars.id }}': validateTelephone,
+                    '{{ form.email.vars.id }}': validateEmail,
+                    '{{ form.image.vars.id }}': validateImage
+                };
+
+                Object.keys(fields).forEach(id => {
+                    const field = document.getElementById(id);
+                    if (field) {
+                        field.addEventListener('input', fields[id]);
+                        field.addEventListener('change', fields[id]);
+                    }
+                });
+
+                // Validation initiale au chargement
+                validateNom();
+                validateTelephone();
+                validateEmail();
+                validateImage();
+            }
+        });
+    </script>
+    <style>
+        .shake {
+            animation: shake 0.5s;
+        }
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            20%, 60% { transform: translateX(-10px); }
+            40%, 80% { transform: translateX(10px); }
+        }
+        .is-invalid {
+            border-color: #e74c3c !important;
+        }
+        .invalid-feedback {
+            display: none;
+            color: #e74c3c;
+            font-size: 0.875em;
+            margin-top: 0.25rem;
+        }
+        .invalid-feedback.show {
+            display: block;
+        }
+    </style>
+{% endblock %}

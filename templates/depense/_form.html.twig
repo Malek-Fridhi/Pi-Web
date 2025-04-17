@@ -1,0 +1,56 @@
+{% for message in app.flashes('error') %}
+    <div class="alert alert-danger">
+        {{ message }}
+    </div>
+{% endfor %}
+{{ form_start(form, {'attr': {'novalidate': 'novalidate', 'class': 'needs-validation'}}) }}
+    <div class="form-group">
+        <!-- Champ Type -->
+        <div class="form-field">
+            {{ form_label(form.typeDep, null, {'label_attr': {'class': 'form-label'}}) }}
+            {{ form_widget(form.typeDep, {
+                'attr': {
+                    'class': 'form-control' ~ (form.typeDep.vars.valid ? '' : ' is-invalid'),
+                    'placeholder': 'Type de dépense*'
+                    
+                }
+            }) }}
+            <div class="error-message">
+                {{ form_errors(form.typeDep) }}
+            </div>
+        </div>
+
+        <!-- Champ Montant -->
+        <div class="form-field">
+            {{ form_label(form.montantDep, null, {'label_attr': {'class': 'form-label'}}) }}
+            {{ form_widget(form.montantDep, {
+                'attr': {
+                    'class': 'form-control' ~ (form.montantDep.vars.valid ? '' : ' is-invalid'),
+                    'placeholder': 'Montant (DT)*'
+                }
+            }) }}
+            <div class="error-message">
+                {{ form_errors(form.montantDep) }}
+            </div>
+        </div>
+
+
+        <!-- Champ Date -->
+        <div class="form-field">
+            {{ form_label(form.datereceptionDep, null, {'label_attr': {'class': 'form-label'}}) }}
+            {{ form_widget(form.datereceptionDep, {
+                'attr': {
+                    'class': 'form-control' ~ (form.datereceptionDep.vars.valid ? '' : ' is-invalid'),
+                    'placeholder': 'Date (JJ/MM/AAAA)*'
+                }
+            }) }}
+            <div class="error-message">
+                {{ form_errors(form.datereceptionDep) }}
+            </div>
+        </div>
+    </div>
+    
+    <button type="submit" class="btn-save">
+        {{ button_label|default('Enregistrer') }}
+    </button>
+{{ form_end(form) }}

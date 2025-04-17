@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modifier un Plan Nutritionnel</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Teko:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        .objective-form {
+    background: url('https://images.unsplash.com/photo-1490645935967-10de6ba17061?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1453&q=80');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-attachment: fixed;
+    min-height: 100vh;
+    padding: 80px 0;
+}
+        
+        .form-card {
+            background-color: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+            max-width: 700px;
+            margin: 0 auto;
+            animation: fadeInUp 0.6s ease-out;
+        }
+        
+        .form-header {
+            background-color: #0F172B;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+        
+        .form-header h2 {
+            margin: 0;
+            font-family: 'Teko', sans-serif;
+            font-size: 2.5rem;
+            letter-spacing: 1px;
+        }
+        
+        .form-body {
+            padding: 30px;
+        }
+        
+        .form-group {
+            margin-bottom: 25px;
+            position: relative;
+        }
+        
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #0F172B;
+            font-size: 1.1rem;
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+        
+        .form-control:focus {
+            border-color: #0F172B;
+            box-shadow: 0 0 0 3px rgba(15, 23, 43, 0.2);
+        }
+        
+        .form-actions {
+            text-align: center;
+            margin-top: 30px;
+        }
+        
+        .submit-btn {
+            background-color: #0F172B;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            font-size: 1.1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            display: inline-flex;
+            align-items: center;
+        }
+        
+        .submit-btn:hover {
+            background-color: #1a2a4d;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(15, 23, 43, 0.3);
+        }
+        
+        .submit-btn i {
+            margin-right: 10px;
+        }
+        
+        .error-message {
+            color: #dc3545;
+            font-size: 0.9rem;
+            margin-top: 5px;
+            display: flex;
+            align-items: center;
+            animation: fadeIn 0.3s ease-out;
+        }
+        
+        .error-message i {
+            margin-right: 8px;
+        }
+        
+        .progress-container {
+            margin: 30px 0;
+            text-align: center;
+        }
+        
+        .progress-text {
+            margin-bottom: 10px;
+            font-weight: 600;
+            color: #0F172B;
+        }
+        
+        .progress-bar {
+            height: 10px;
+            background-color: #e9ecef;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background-color: #0F172B;
+            width: 0%;
+            transition: width 1s ease;
+        }
+        
+        .back-link {
+            text-align: center;
+            margin-top: 30px;
+        }
+        
+        .back-link a {
+            color: #0F172B;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+        }
+        
+        .back-link a:hover {
+            color: #1a2a4d;
+            transform: translateX(-5px);
+        }
+        
+        .back-link i {
+            margin-right: 8px;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @keyframes fadeInUp {
+            from { 
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to { 
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="objective-form">
+        <div class="container">
+            <div class="form-card wow fadeInUp" data-wow-delay="0.2s">
+                <div class="form-header">
+                    <h2>Modifier un Plan Nutritionnel</h2>
+                </div>
+                
+                <div class="form-body">
+                    {{ form_start(form, {'attr': {'class': 'needs-validation', 'novalidate': 'novalidate', 'id': 'plan-nutritionnel-form'}}) }}
+                    
+                    <div class="progress-container">
+                        <div class="progress-text">Modifiez votre plan nutritionnel</div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="form-progress"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        {{ form_label(form.dateCreation, 'Date de création', {'label_attr': {'class': 'form-label'}}) }}
+                        {{ form_widget(form.dateCreation, {'attr': {
+                            'class': 'form-control' ~ (form.dateCreation.vars.valid ? '' : ' is-invalid')
+                        }}) }}
+                        {% if form_errors(form.dateCreation) %}
+                            <div class="error-message">
+                                <i class="fas fa-exclamation-circle"></i> {{ form_errors(form.dateCreation) }}
+                            </div>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="form-group">
+                        {{ form_label(form.dateModification, 'Date de modification', {'label_attr': {'class': 'form-label'}}) }}
+                        {{ form_widget(form.dateModification, {'attr': {
+                            'class': 'form-control' ~ (form.dateModification.vars.valid ? '' : ' is-invalid')
+                        }}) }}
+                        {% if form_errors(form.dateModification) %}
+                            <div class="error-message">
+                                <i class="fas fa-exclamation-circle"></i> {{ form_errors(form.dateModification) }}
+                            </div>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="form-group">
+                        {{ form_label(form.regime, 'Régime', {'label_attr': {'class': 'form-label'}}) }}
+                        {{ form_widget(form.regime, {'attr': {
+                            'class': 'form-control' ~ (form.regime.vars.valid ? '' : ' is-invalid'),
+                            'rows': 5
+                        }}) }}
+                        {% if form_errors(form.regime) %}
+                            <div class="error-message">
+                                <i class="fas fa-exclamation-circle"></i> {{ form_errors(form.regime) }}
+                            </div>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="form-group">
+                        {{ form_label(form.nbrJours, 'Nombre de jours', {'label_attr': {'class': 'form-label'}}) }}
+                        {{ form_widget(form.nbrJours, {'attr': {
+                            'class': 'form-control' ~ (form.nbrJours.vars.valid ? '' : ' is-invalid')
+                        }}) }}
+                        {% if form_errors(form.nbrJours) %}
+                            <div class="error-message">
+                                <i class="fas fa-exclamation-circle"></i> {{ form_errors(form.nbrJours) }}
+                            </div>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="form-actions">
+                        <button type="submit" class="submit-btn">
+                            <i class="fas fa-save"></i> Mettre à jour
+                        </button>
+                    </div>
+                    
+                    {{ form_end(form) }}
+                </div>
+            </div>
+            
+            <div class="back-link">
+                <a href="{{ path('app_plan_nutritionnel_index') }}">
+                    <i class="fas fa-arrow-left"></i> Retour à la liste
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.getElementById('plan-nutritionnel-form');
+            const progressFill = document.getElementById('form-progress');
+            const inputs = form.querySelectorAll('input, textarea, select');
+            
+            function updateProgress() {
+                let filledCount = 0;
+                inputs.forEach(input => {
+                    if (input.value.trim() !== '') {
+                        filledCount++;
+                    }
+                });
+                
+                const progress = (filledCount / inputs.length) * 100;
+                progressFill.style.width = `${progress}%`;
+            }
+            
+            inputs.forEach(input => {
+                input.addEventListener('input', updateProgress);
+                input.addEventListener('change', updateProgress);
+            });
+            
+            // Initialiser la barre de progression avec les valeurs existantes
+            updateProgress();
+        });
+    </script>
+</body>
+</html>

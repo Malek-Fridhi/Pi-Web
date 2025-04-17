@@ -1,0 +1,483 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Produit index{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('assets/css/bootstrap.min.css') }}" />
+    <link rel="stylesheet" href="{{ asset('assets/css/plugins.min.css') }}" />
+    <link rel="stylesheet" href="{{ asset('assets/css/kaiadmin.min.css') }}" />
+    <link rel="stylesheet" href="{{ asset('assets/css/demo.css') }}" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/dataTables.bootstrap5.min.css" />
+{% endblock %}
+
+{% block body %}
+<div class="wrapper">
+    <!-- Sidebar -->
+    <div class="sidebar" data-background-color="dark">
+        <div class="sidebar-logo">
+            <!-- Logo Header -->
+            <div class="logo-header" data-background-color="dark">
+                <a href="index.html" class="logo">
+                    <img src="{{ asset('img/logogeekhub-removebg-preview.png') }}" alt="navbar brand" class="navbar-brand" height="70" />
+                    <span class="logo-text" style="font-size: 18px; font-weight: bold; color: #fff; margin-left: 10px;">GeekHub</span>
+                </a>
+
+                <div class="nav-toggle">
+                    <button class="btn btn-toggle toggle-sidebar">
+                        <i class="gg-menu-right"></i>
+                    </button>
+                    <button class="btn btn-toggle sidenav-toggler">
+                        <i class="gg-menu-left"></i>
+                    </button>
+                </div>
+                <button class="topbar-toggler more">
+                    <i class="gg-more-vertical-alt"></i>
+                </button>
+            </div>
+            <!-- End Logo Header -->
+        </div>
+        <div class="sidebar-wrapper scrollbar scrollbar-inner">
+            <div class="sidebar-content">
+                <ul class="nav nav-secondary">
+                    <li class="nav-item">
+                        <a href="/dashadmin">
+                            <i class="fas fa-bullseye"></i>
+                            <p class="d-inline">Home</p>
+                        </a>
+                    </li>
+                    <li class="nav-section">
+                        <span class="sidebar-mini-icon">
+                            <i class="fa fa-ellipsis-h"></i>
+                        </span>
+                        <h4 class="text-section">Modules</h4>
+                    </li>
+                  <!--  <li class="nav-item">
+                        <a href="/abonnement">
+                            <i class="fas fa-id-card"></i>
+                            <p class="d-inline">Abonnements</p>
+                        </a>
+                    </li>-->
+                     <li class="nav-item">
+   <a data-bs-toggle="collapse" href="#tables" role="button" aria-expanded="false" aria-controls="tables">
+       <i class="fas fa-table"></i>
+           <p>Cours & Abonnement</p>
+           <span class="caret"></span>
+       </a>
+       <div class="collapse" id="tables">
+         <ul class="nav nav-collapse">
+         <li>
+       <a href="/CourBack">
+         <span class="sub-item">Cours</span>
+           </a>
+         </li>
+         <li>
+           <a href="/abonnement">
+     <span class="sub-item">Abonnements</span>
+           </a>
+           </li>
+       <li>
+       <a href="/planning">
+   <span class="sub-item">Planning</span>
+   </a>
+   </li>
+   </ul>
+   </div>
+   </li>
+                    <li class="nav-item">
+                        <a href="/evenement">
+                            <i class="fas fa-calendar-alt"></i>
+                            <p class="d-inline">Événements</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/reclamation">
+                            <i class="fas fa-exclamation-circle"></i>
+                            <p class="d-inline">Réclamations</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/service">
+                            <i class="fas fa-concierge-bell"></i>
+                            <p class="d-inline">Services</p>
+                        </a>
+                    </li>
+                                                            <li class="nav-item active">
+                        <a data-bs-toggle="collapse" href="#equipements" class="collapsed" aria-expanded="false">
+                            <i class="fas fa-dumbbell"></i>
+                            <p>Équipements</p>
+                            <span class="caret"></span>
+                        </a>
+                        <div class="collapse show" id="equipements">
+                                <ul class="nav nav-collapse">
+                                    <li class="active">
+                                        <a href="/equipement">
+                                            <span class="sub-item">Equipement</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="/marque">
+                                            <span class="sub-item">Marque</span>
+                                        </a>
+                                    </li>
+                                    <li>
+    <a href="/produit">
+        <span class="sub-item">Produit</span>
+    </a>
+</li>
+                                </ul>
+                            </div>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/plan/nutritionnel/admin/plans-objectifs">
+                            <i class="fas fa-bullseye"></i>
+                            <p class="d-inline">Objectifs</p>
+                        </a>
+                    </li>
+                   <!-- <li class="nav-item">
+                        <a href="/finance">
+                            <i class="fas fa-chart-line"></i>
+                            <p class="d-inline">Finance</p>
+                        </a>
+                    </li>-->
+                                           <li class="nav-item">
+       <a data-bs-toggle="collapse" href="#tables">
+         <i class="fas fa-table"></i>
+         <p>Finance</p>
+         <span class="caret"></span>
+       </a>
+       <div class="collapse" id="tables">
+         <ul class="nav nav-collapse">
+           <li>
+             <a href="/financeadmin">
+               <span class="sub-item">Rapports</span>
+             </a>
+           </li>
+           <li>
+             <a href="/depenseadmin">
+               <span class="sub-item">Dépenses</span>
+             </a>
+           </li>
+           <li>
+             <a href="/revenuadmin">
+               <span class="sub-item">Revenus</span>
+             </a>
+           </li>
+         </ul>
+       </div>
+     </li>
+                    <li class="nav-section">
+                        <span class="sidebar-mini-icon">
+                            <i class="fa fa-ellipsis-h"></i>
+                        </span>
+                        <h4 class="text-section">Comp</h4>
+                    </li>
+                    <li class="nav-item">
+                        <a data-bs-toggle="collapse" href="#tables">
+                            <i class="fas fa-table"></i>
+                            <p>Tables</p>
+                            <span class="caret"></span>
+                        </a>
+                        <div class="collapse" id="tables">
+                            <ul class="nav nav-collapse">
+                                <li>
+                                    <a href="tables/tables.html">
+                                        <span class="sub-item">Basic Table</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="tables/datatables.html">
+                                        <span class="sub-item">Datatables</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!-- End Sidebar -->
+
+    <!-- Main Content -->
+    <div class="main-panel">
+        <div class="content">
+            <div class="page-inner">
+                <div class="page-header">
+                    <h4 class="page-title">Produits</h4>
+                    <ul class="breadcrumbs">
+                        <li class="nav-home">
+                            <a href="#">
+                                <i class="flaticon-home"></i>
+                            </a>
+                        </li>
+                        <li class="separator">
+                            <i class="flaticon-right-arrow"></i>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#">Modules</a>
+                        </li>
+                        <li class="separator">
+                            <i class="flaticon-right-arrow"></i>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#">Produits</a>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="d-flex justify-content-end">
+                                    <div class="btn-group">
+                                        <a href="{{ path('app_produit_export_pdf') }}" class="btn btn-danger mr-2">
+                                            <i class="fas fa-file-pdf"></i> Exporter PDF
+                                        </a>
+                                        <a href="{{ path('app_produit_new') }}" class="btn btn-primary">
+                                            <i class="fa fa-plus"></i> Ajouter
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table id="produit-table" class="display table table-striped table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th>ID</th>
+                                                <th>Nom</th>
+                                                <th>Image</th>
+                                                <th>Quantité</th>
+                                                <th>Prix Achat</th>
+                                                <th>Prix Vente</th>
+                                                <th>Marge</th>
+                                                <th>Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                        {% for produit in produits %}
+                                            <tr>
+                                                <td>{{ produit.id_produit }}</td>
+                                                <td>{{ produit.nom }}</td>
+                                                <td>
+                                                    {% if produit.image %}
+                                                        <img src="{{ asset('uploads/produits/' ~ produit.image) }}" 
+                                                             alt="{{ produit.nom }}" 
+                                                             style="max-width: 100px; max-height: 50px;">
+                                                    {% else %}
+                                                        <span class="text-muted">Aucune image</span>
+                                                    {% endif %}
+                                                </td>
+                                                <td>{{ produit.quantite }}</td>
+                                                <td>{{ produit.prix_achat }} DT</td>
+                                                <td>{{ produit.prix_vente }} DT</td>
+                                                <td>
+                                                    {% set marge = produit.prix_vente - produit.prix_achat %}
+                                                    <span class="badge 
+                                                        {% if marge > 0 %}badge-success
+                                                        {% else %}badge-danger
+                                                        {% endif %}">
+                                                        {{ marge|number_format(2) }} DT
+                                                    </span>
+                                                </td>
+                                                <td>
+                                                    <div class="form-button-action">
+                                                        <a href="{{ path('app_produit_show', {'id_produit': produit.id_produit}) }}" 
+                                                           class="btn btn-link btn-primary" 
+                                                           data-toggle="tooltip" 
+                                                           title="Voir détails">
+                                                            <i class="fa fa-eye"></i>
+                                                        </a>
+                                                        <a href="{{ path('app_produit_edit', {'id_produit': produit.id_produit}) }}" 
+                                                           class="btn btn-link btn-warning" 
+                                                           data-toggle="tooltip" 
+                                                           title="Modifier">
+                                                            <i class="fa fa-edit"></i>
+                                                        </a>
+                                                        <form method="post" 
+                                                              action="{{ path('app_produit_delete', {'id_produit': produit.id_produit}) }}" 
+                                                              style="display: inline-block;"
+                                                              onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer ce produit ?');">
+                                                            <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ produit.id_produit) }}">
+                                                            <button class="btn btn-link btn-danger" 
+                                                                    data-toggle="tooltip" 
+                                                                    title="Supprimer">
+                                                                <i class="fa fa-trash"></i>
+                                                            </button>
+                                                        </form>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        {% else %}
+                                            <tr>
+                                                <td colspan="8" class="text-center">Aucun produit trouvé</td>
+                                            </tr>
+                                        {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                {# Section du graphique des statistiques #}
+                <div class="row mt-4">
+                    <div class="col-md-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="card-title">Statistiques des produits</div>
+                            </div>
+                            <div class="card-body">
+                                <div class="chart-container">
+                                    <canvas id="produitChart"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End Main Content -->
+
+    <!-- Custom template -->
+    <div class="custom-template">
+        <div class="title">Settings</div>
+        <div class="custom-content">
+            <div class="switcher">
+                <!-- ... (identique à la version équipement) ... -->
+            </div>
+        </div>
+        <div class="custom-toggle">
+            <i class="icon-settings"></i>
+        </div>
+    </div>
+    <!-- End Custom template -->
+</div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('assets/js/plugin/webfont/webfont.min.js') }}"></script>
+    <script>
+        WebFont.load({
+            google: { families: ["Public Sans:300,400,500,600,700"] },
+            custom: {
+                families: [
+                    "Font Awesome 5 Solid",
+                    "Font Awesome 5 Regular",
+                    "Font Awesome 5 Brands",
+                    "simple-line-icons",
+                ],
+                urls: ["{{ asset('assets/css/fonts.min.css') }}"],
+            },
+            active: function () {
+                sessionStorage.fonts = true;
+            },
+        });
+    </script>
+
+    <!-- Core JS Files -->
+    <script src="{{ asset('assets/js/core/jquery-3.7.1.min.js') }}"></script>
+    <script src="{{ asset('assets/js/core/popper.min.js') }}"></script>
+    <script src="{{ asset('assets/js/core/bootstrap.min.js') }}"></script>
+
+    <!-- jQuery Scrollbar -->
+    <script src="{{ asset('assets/js/plugin/jquery-scrollbar/jquery.scrollbar.min.js') }}"></script>
+
+    <!-- DataTables JS -->
+    <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap5.min.js"></script>
+    <script src="https://cdn.datatables.net/plug-ins/1.11.5/i18n/French.json"></script>
+
+    <!-- Chart JS -->
+    <script src="{{ asset('assets/js/plugin/chart.js/chart.min.js') }}"></script>
+
+    <!-- Kaiadmin JS -->
+    <script src="{{ asset('assets/js/kaiadmin.min.js') }}"></script>
+
+    <!-- Custom JS -->
+    <script>
+        $(document).ready(function() {
+            // Initialiser DataTable
+            $('#produit-table').DataTable({
+                "language": {
+                    "url": "//cdn.datatables.net/plug-ins/1.11.5/i18n/French.json"
+                },
+                "dom": "<'row'<'col-sm-12 col-md-6'l><'col-sm-12 col-md-6'f>>" +
+                       "<'row'<'col-sm-12'tr>>" +
+                       "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
+                "pageLength": 10,
+                "responsive": true,
+                "columnDefs": [
+                    { "orderable": false, "targets": [7] } // Désactiver le tri sur la colonne Actions
+                ]
+            });
+
+            // Activer les tooltips
+            $('[data-toggle="tooltip"]').tooltip();
+
+            // Graphique des produits
+            var ctx = document.getElementById('produitChart').getContext('2d');
+            var myChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: {{ produits|map(p => p.nom)|json_encode|raw }},
+                    datasets: [
+                        {
+                            label: 'Prix d\'achat',
+                            data: {{ produits|map(p => p.prix_achat)|json_encode|raw }},
+                            backgroundColor: 'rgba(255, 99, 132, 0.7)',
+                            borderColor: 'rgba(255, 99, 132, 1)',
+                            borderWidth: 1
+                        },
+                        {
+                            label: 'Prix de vente',
+                            data: {{ produits|map(p => p.prix_vente)|json_encode|raw }},
+                            backgroundColor: 'rgba(54, 162, 235, 0.7)',
+                            borderColor: 'rgba(54, 162, 235, 1)',
+                            borderWidth: 1
+                        },
+                        {
+                            label: 'Marge',
+                            data: {{ produits|map(p => p.prix_vente - p.prix_achat)|json_encode|raw }},
+                            backgroundColor: 'rgba(75, 192, 192, 0.7)',
+                            borderColor: 'rgba(75, 192, 192, 1)',
+                            borderWidth: 1
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                callback: function(value) {
+                                    return value + ' DT';
+                                }
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return context.dataset.label + ': ' + context.raw + ' DT';
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        });
+    </script>
+{% endblock %}

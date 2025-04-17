@@ -1,0 +1,340 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Plans Nutritionnels - Admin View{% endblock %}
+
+{% block body %}
+<div class="wrapper">
+    <!-- SIDEBAR -->
+    <div class="sidebar" data-background-color="dark">
+        <div class="sidebar-logo">
+            <!-- Logo Header -->
+            <div class="logo-header" data-background-color="dark">
+                <a href="index.html" class="logo">
+                    <img
+                        src="{{ asset('img/logogeekhub-removebg-preview.png') }}"
+                        alt="navbar brand"
+                        class="navbar-brand"
+                        height="70"
+                    />
+                    <span class="logo-text" style="font-size: 18px;
+                        font-weight: bold; 
+                        color: #fff; 
+                        margin-left: 10px;">GeekHub</span>
+                </a>
+
+                <div class="nav-toggle">
+                    <button class="btn btn-toggle toggle-sidebar">
+                        <i class="gg-menu-right"></i>
+                    </button>
+                    <button class="btn btn-toggle sidenav-toggler">
+                        <i class="gg-menu-left"></i>
+                    </button>
+                </div>
+                <button class="topbar-toggler more">
+                    <i class="gg-more-vertical-alt"></i>
+                </button>
+            </div>
+            <!-- End Logo Header -->
+        </div>
+        <div class="sidebar-wrapper scrollbar scrollbar-inner">
+            <div class="sidebar-content">
+                <ul class="nav nav-secondary">
+                    <li class="nav-item">
+                        <a href="/dashadmin">
+                            <i class="fas fa-bullseye"></i>
+                            <p class="d-inline">Home</p>
+                        </a>
+                    </li>
+                    <li class="nav-section">
+                        <span class="sidebar-mini-icon">
+                            <i class="fa fa-ellipsis-h"></i>
+                        </span>
+                        <h4 class="text-section">Modules</h4>
+                    </li>
+                   <!-- <li class="nav-item">
+                        <a href="/abonnement">
+                            <i class="fas fa-id-card"></i>
+                            <p class="d-inline">Abonnements</p>
+                        </a>
+                    </li>-->
+                     <li class="nav-item">
+   <a data-bs-toggle="collapse" href="#tables" role="button" aria-expanded="false" aria-controls="tables">
+       <i class="fas fa-table"></i>
+           <p>Cours & Abonnement</p>
+           <span class="caret"></span>
+       </a>
+       <div class="collapse" id="tables">
+         <ul class="nav nav-collapse">
+         <li>
+       <a href="/CourBack">
+         <span class="sub-item">Cours</span>
+           </a>
+         </li>
+         <li>
+           <a href="/abonnement">
+     <span class="sub-item">Abonnements</span>
+           </a>
+           </li>
+       <li>
+       <a href="/planning">
+   <span class="sub-item">Planning</span>
+   </a>
+   </li>
+   </ul>
+   </div>
+   </li>
+                    <li class="nav-item">
+                        <a href="/evenement">
+                            <i class="fas fa-calendar-alt"></i>
+                            <p class="d-inline">Événements</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/reclamation">
+                            <i class="fas fa-exclamation-circle"></i>
+                            <p class="d-inline">Réclamations</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/service">
+                            <i class="fas fa-concierge-bell"></i>
+                            <p class="d-inline">Services</p>
+                        </a>
+                    </li>
+                   <!-- <li class="nav-item">
+                        <a href="/equipement">
+                            <i class="fas fa-dumbbell"></i>
+                            <p class="d-inline">Équipements</p>
+                        </a>
+                    </li>-->
+                                        <li class="nav-item active">
+                        <a data-bs-toggle="collapse" href="#equipements" class="collapsed" aria-expanded="false">
+                            <i class="fas fa-dumbbell"></i>
+                            <p>Équipements</p>
+                            <span class="caret"></span>
+                        </a>
+                        <div class="collapse show" id="equipements">
+                                <ul class="nav nav-collapse">
+                                    <li class="active">
+                                        <a href="/equipement">
+                                            <span class="sub-item">Equipement</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="/marque">
+                                            <span class="sub-item">Marque</span>
+                                        </a>
+                                    </li>
+                                    <li>
+    <a href="/produit">
+        <span class="sub-item">Produit</span>
+    </a>
+</li>
+                                </ul>
+                            </div>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/plan/nutritionnel/admin/plans-objectifs" class="active">
+                            <i class="fas fa-bullseye"></i>
+                            <p class="d-inline">Objectifs</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a data-bs-toggle="collapse" href="#tables">
+                            <i class="fas fa-table"></i>
+                            <p>Finance</p>
+                            <span class="caret"></span>
+                        </a>
+                        <div class="collapse" id="tables">
+                            <ul class="nav nav-collapse">
+                                <li>
+                                    <a href="/financeadmin">
+                                        <span class="sub-item">Rapports</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="/depenseadmin">
+                                        <span class="sub-item">Dépenses</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="/revenuadmin">
+                                        <span class="sub-item">Revenus</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li class="nav-section">
+                        <span class="sidebar-mini-icon">
+                            <i class="fa fa-ellipsis-h"></i>
+                        </span>
+                        <h4 class="text-section">Comp</h4>
+                    </li>
+                    <li class="nav-item">
+                        <a data-bs-toggle="collapse" href="#maps">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <p>Maps</p>
+                            <span class="caret"></span>
+                        </a>
+                        <div class="collapse" id="maps">
+                            <ul class="nav nav-collapse">
+                                <li>
+                                    <a href="maps/googlemaps.html">
+                                        <span class="sub-item">Google Maps</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="maps/jsvectormap.html">
+                                        <span class="sub-item">Jsvectormap</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li class="nav-item">
+                        <a data-bs-toggle="collapse" href="#charts">
+                            <i class="far fa-chart-bar"></i>
+                            <p>Charts</p>
+                            <span class="caret"></span>
+                        </a>
+                        <div class="collapse" id="charts">
+                            <ul class="nav nav-collapse">
+                                <li>
+                                    <a href="charts/charts.html">
+                                        <span class="sub-item">Chart Js</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="charts/sparkline.html">
+                                        <span class="sub-item">Sparkline</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!-- End Sidebar -->
+
+    <!-- CONTENU PRINCIPAL -->
+    <div class="main-panel">
+        <div class="container">
+            <div class="page-inner">
+                <style>
+                    .table-container {
+                        margin: 20px auto;
+                        width: 90%;
+                        box-shadow: 0 0 10px rgba(0,0,0,0.1);
+                        border-radius: 8px;
+                        overflow: hidden;
+                    }
+                    table {
+                        width: 100%;
+                        border-collapse: collapse;
+                    }
+                    th, td {
+                        padding: 12px 15px;
+                        text-align: left;
+                        border-bottom: 1px solid #ddd;
+                    }
+                    th {
+                        background-color: #007bff;
+                        color: white;
+                        font-weight: bold;
+                    }
+                    tr:nth-child(even) {
+                        background-color: #f2f2f2;
+                    }
+                    tr:hover {
+                        background-color: #e9e9e9;
+                    }
+                    h1 {
+                        text-align: center;
+                        margin: 20px 0;
+                        color: #333;
+                    }
+                </style>
+
+                <div class="table-container">
+                    <h1>Liste des Plans Nutritionnels avec leurs Objectifs</h1>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>ID Plan</th>
+                                <th>Régime</th>
+                                <th>ID Objectif</th>
+                                <th>Description Objectif</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for plan in plans %}
+                                <tr>
+                                    <td>{{ plan.idPlan }}</td>
+                                    <td>{{ plan.regime|slice(0, 50) ~ '...' }}</td>
+                                    <td>{{ plan.objectif.idObjectif }}</td>
+                                    <td>{{ plan.objectif.description }}</td>
+                                </tr>
+                            {% else %}
+                                <tr>
+                                    <td colspan="4">Aucun plan nutritionnel trouvé</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        
+        <footer class="footer">
+            <div class="container-fluid d-flex justify-content-between">
+                <div class="copyright">
+                    2024, made with <i class="fa fa-heart heart text-danger"></i> by
+                    <a href="http://www.themekita.com">ThemeKita</a>
+                </div>
+                <div>
+                    Distributed by
+                    <a target="_blank" href="https://themewagon.com/">ThemeWagon</a>.
+                </div>
+            </div>
+        </footer>
+    </div>
+</div>
+{% endblock %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('assets/css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/plugins.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/kaiadmin.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/demo.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/fonts.min.css') }}">
+{% endblock %}
+
+{% block javascripts %}
+    <script src="{{ asset('assets/js/core/jquery-3.7.1.min.js') }}"></script>
+    <script src="{{ asset('assets/js/core/popper.min.js') }}"></script>
+    <script src="{{ asset('assets/js/core/bootstrap.min.js') }}"></script>
+    <script src="{{ asset('assets/js/plugin/webfont/webfont.min.js') }}"></script>
+    <script>
+        WebFont.load({
+            google: { families: ["Public Sans:300,400,500,600,700"] },
+            custom: {
+                families: [
+                    "Font Awesome 5 Solid",
+                    "Font Awesome 5 Regular",
+                    "Font Awesome 5 Brands",
+                    "simple-line-icons",
+                ],
+                urls: ["{{ asset('assets/css/fonts.min.css') }}"],
+            },
+            active: function () {
+                sessionStorage.fonts = true;
+            },
+        });
+    </script>
+    <script src="{{ asset('assets/js/kaiadmin.min.js') }}"></script>
+{% endblock %}
+
+
