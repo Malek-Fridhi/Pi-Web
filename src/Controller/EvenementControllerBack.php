@@ -12,7 +12,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
 #[Route('/evenement')]
-final class EvenementController extends AbstractController
+final class EvenementControllerBack extends AbstractController
 {
     #[Route(name: 'app_evenement_index', methods: ['GET'])]
     public function index(EvenementRepository $evenementRepository): Response
@@ -22,6 +22,22 @@ final class EvenementController extends AbstractController
         ]);
     }
 
+/*************  ✨ Windsurf Command ⭐  *************/
+/**
+ * Create a new Evenement entity.
+ *
+ * This method handles the creation of a new Evenement. It displays a form
+ * for creating an Evenement and processes the form submission. If the form
+ * is submitted and valid, the new Evenement is persisted to the database
+ * and the user is redirected to the event index page.
+ *
+ * @param Request $request The HTTP request object.
+ * @param EntityManagerInterface $entityManager The entity manager for database operations.
+ *
+ * @return Response The HTTP response rendering the form or redirecting.
+ */
+
+/*******  6b0f6d02-6ada-43a7-ac85-17a63721e092  *******/
     #[Route('/new', name: 'app_evenement_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
@@ -91,6 +107,19 @@ final class EvenementController extends AbstractController
             'evenement' => $evenement,
         ]);
     }
+    // Ajoutez cette méthode dans votre EvenementController
+#[Route('/{idevenement}/inscriptions', name: 'app_evenement_inscriptions', methods: ['GET'])]
+public function showInscriptions(
+    Evenement $evenement,
+    InscriptionevenementRepository $inscriptionRepository
+): Response {
+    $inscriptions = $inscriptionRepository->findBy(['idevenement' => $evenement]);
+
+    return $this->render('evenement/inscriptions.html.twig', [
+        'evenement' => $evenement,
+        'inscriptions' => $inscriptions,
+    ]);
+}
 
     // ✅ Modifier un événement avec `idevenement`
    // src/Controller/EvenementController.php

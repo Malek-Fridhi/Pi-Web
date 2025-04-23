@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Détails événement{% endblock %}
+
+{% block body %}
+<div class="container my-5">
+    <div class="row">
+        <div class="col-md-8 mx-auto">
+            <div class="card">
+                {% if evenement.imageUrl %}
+                    <img src="{{ asset('uploads/' ~ evenement.imageUrl) }}" class="card-img-top" alt="{{ evenement.titre }}">
+                {% endif %}
+                
+                <div class="card-body">
+                    <h1 class="card-title">{{ evenement.titre }}</h1>
+                    <p class="text-muted">
+                        <i class="fas fa-calendar-alt"></i> 
+                        {{ evenement.date|date('d/m/Y H:i') }}
+                    </p>
+                    <p>{{ evenement.description }}</p>
+                    
+                    <a href="{{ path('app_evenement_front_index') }}" class="btn btn-primary">
+                        Retour à la liste
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -236,7 +236,22 @@
                     <i class="fas fa-trash"></i> Supprimer
                 </button>
             </form>
+            {# Ajoutez ce bouton dans templates/evenement/show.html.twig #}
+<a href="{{ path('app_evenement_inscriptions', {'idevenement': evenement.idevenement}) }}" class="btn btn-info">
+    Voir les inscriptions
+</a>
         </div>
     </div>
+    <div class="mt-3">
+    <a href="{{ path('app_evenement_inscriptions', {'idevenement': evenement.idevenement}) }}" 
+       class="btn btn-primary">
+        <i class="fas fa-users"></i> Voir les inscriptions
+    </a>
+    
+    {# Conservez vos autres boutons existants #}
+    <a href="{{ path('app_evenement_edit', {'idevenement': evenement.idevenement}) }}" class="btn btn-warning">
+        <i class="fas fa-edit"></i> Modifier
+    </a>
+</div>
 </div>
 {% endblock %}

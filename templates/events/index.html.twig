@@ -1,0 +1,36 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste des événements{% endblock %}
+
+{% block body %}
+<div class="container my-5">
+    <h1 class="mb-4">Événements disponibles</h1>
+    
+    <div class="row">
+        {% for evenement in evenements %}
+        <div class="col-md-4 mb-4">
+            <div class="card h-100">
+                {% if evenement.imageUrl %}
+                    <img src="{{ asset('uploads/' ~ evenement.imageUrl) }}" class="card-img-top" style="height: 200px; object-fit: cover;">
+                {% endif %}
+                
+                <div class="card-body">
+                    <h5 class="card-title">{{ evenement.titre }}</h5>
+                    <p class="card-text">
+                        {{ evenement.description|slice(0, 100) }}...
+                    </p>
+                    <a href="{{ path('app_evenement_front_show', {'idevenement': evenement.idevenement}) }}" 
+                       class="btn btn-primary">
+                        Voir détails
+                    </a>
+                </div>
+            </div>
+        </div>
+        {% else %}
+        <div class="col-12">
+            <div class="alert alert-info">Aucun événement disponible</div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

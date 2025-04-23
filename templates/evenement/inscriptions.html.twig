@@ -1,0 +1,111 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Inscriptions pour {{ evenement.titre }}{% endblock %}
+
+{% block body %}
+<div class="container mt-4">
+    <h1 class="mb-4">
+        <i class="fas fa-users"></i> Inscriptions pour "{{ evenement.titre }}"
+    </h1>
+
+    <div class="card mb-4">
+        <div class="card-header bg-primary text-white">
+            <h5 class="mb-0">
+                <i class="fas fa-info-circle"></i> Détails de l'événement
+            </h5>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6">
+                    <p><strong><i class="fas fa-calendar-day"></i> Date:</strong> {{ evenement.date|date('d/m/Y H:i') }}</p>
+                    <p><strong><i class="fas fa-users"></i> Capacité:</strong> {{ evenement.capacite }} personnes</p>
+                </div>
+                <div class="col-md-6">
+                    <p><strong><i class="fas fa-check-circle"></i> Inscriptions acceptées:</strong> 
+                        <span class="badge bg-success">
+                            {{ inscriptions|filter(i => i.statut == 'Approved')|length }}/{{ evenement.capacite }}
+                        </span>
+                    </p>
+                    <p><strong><i class="fas fa-clock"></i> En attente:</strong> 
+                        <span class="badge bg-warning text-dark">
+                            {{ inscriptions|filter(i => i.statut == 'Pending')|length }}
+                        </span>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-header bg-primary text-white">
+            <h5 class="mb-0">
+                <i class="fas fa-list"></i> Liste des inscriptions
+            </h5>
+        </div>
+        <div class="card-body">
+            {% if inscriptions|length > 0 %}
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead class="table-light">
+                        <tr>
+                            <th><i class="fas fa-user"></i> Utilisateur</th>
+                            <th><i class="fas fa-calendar-check"></i> Date</th>
+                            <th><i class="fas fa-info-circle"></i> Statut</th>
+                            <th><i class="fas fa-cogs"></i> Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for inscription in inscriptions %}
+                        <tr>
+                            <td>{{ inscription.idUser.username }}</td>
+                            <td>{{ inscription.dateInscription|date('d/m/Y H:i') }}</td>
+                            <td>
+                                <span class="badge 
+                                    {% if inscription.statut == 'Approved' %}bg-success
+                                    {% elseif inscription.statut == 'Canceled' %}bg-danger
+                                    {% else %}bg-warning text-dark{% endif %}">
+                                    {{ inscription.statut }}
+                                </span>
+                            </td>
+                            <td>
+                                {% if inscription.statut != 'Approved' %}
+                                <form method="post" 
+                                    action="{{ path('app_inscriptionevenement_accept', {'idinscriptionevenement': inscription.idinscriptionevenement}) }}" 
+                                    class="d-inline">
+                                    <input type="hidden" name="_token" value="{{ csrf_token('accept' ~ inscription.idinscriptionevenement) }}">
+                                    <button class="btn btn-sm btn-success" title="Accepter">
+                                        <i class="fas fa-check"></i>
+                                    </button>
+                                </form>
+                                {% endif %}
+                                
+                                {% if inscription.statut != 'Canceled' %}
+                                <form method="post" 
+                                    action="{{ path('app_inscriptionevenement_reject', {'idinscriptionevenement': inscription.idinscriptionevenement}) }}" 
+                                    class="d-inline">
+                                    <input type="hidden" name="_token" value="{{ csrf_token('reject' ~ inscription.idinscriptionevenement) }}">
+                                    <button class="btn btn-sm btn-danger" title="Refuser">
+                                        <i class="fas fa-times"></i>
+                                    </button>
+                                </form>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% else %}
+            <div class="alert alert-info">
+                <i class="fas fa-info-circle"></i> Aucune inscription pour cet événement.
+            </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <a href="{{ path('app_evenement_show', {'idevenement': evenement.idevenement}) }}" 
+       class="btn btn-secondary mt-3">
+        <i class="fas fa-arrow-left"></i> Retour à l'événement
+    </a>
+</div>
+{% endblock %}

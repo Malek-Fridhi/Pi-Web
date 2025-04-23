@@ -1,37 +1,56 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Inscriptionevenement index{% endblock %}
+{% block title %}Liste des inscriptions{% endblock %}
 
 {% block body %}
-    <h1>Inscriptionevenement index</h1>
+    <div class="container mt-4">
+        <h1>Liste des inscriptions</h1>
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Idinscriptionevenement</th>
-                <th>Date_inscription</th>
-                <th>Statut</th>
-                <th>actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for inscriptionevenement in inscriptionevenements %}
-            <tr>
-                <td>{{ inscriptionevenement.idinscriptionevenement }}</td>
-                <td>{{ inscriptionevenement.dateInscription ? inscriptionevenement.dateInscription|date('Y-m-d H:i:s') : '' }}</td>
-                <td>{{ inscriptionevenement.statut }}</td>
-                <td>
-                    <a href="{{ path('app_inscriptionevenement_show', {'idinscriptionevenement': inscriptionevenement.idinscriptionevenement}) }}">show</a>
-                    <a href="{{ path('app_inscriptionevenement_edit', {'idinscriptionevenement': inscriptionevenement.idinscriptionevenement}) }}">edit</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="4">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+        <table class="table table-striped">
+            <thead class="thead-dark">
+                <tr>
+                    <th>Événement</th>
+                    <th>Utilisateur</th>
+                    <th>Date inscription</th>
+                    <th>Statut</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for inscriptionevenement in inscriptionevenements %}
+                <tr>
+                    <td>{{ inscriptionevenement.idevenement.titre }}</td>
+                    <td>{{ inscriptionevenement.idUser.username }}</td>
+                    <td>{{ inscriptionevenement.dateInscription|date('d/m/Y H:i') }}</td>
+                    <td>
+                        <span class="badge 
+                            {% if inscriptionevenement.statut == 'Approved' %}bg-success
+                            {% elseif inscriptionevenement.statut == 'Canceled' %}bg-danger
+                            {% else %}bg-warning text-dark{% endif %}">
+                            {{ inscriptionevenement.statut }}
+                        </span>
+                    </td>
+                    <td>
+                        <a href="{{ path('app_inscriptionevenement_show', {'idinscriptionevenement': inscriptionevenement.idinscriptionevenement}) }}" 
+                           class="btn btn-sm btn-info">
+                            <i class="fas fa-eye"></i> Voir
+                        </a>
+                        <a href="{{ path('app_inscriptionevenement_edit', {'idinscriptionevenement': inscriptionevenement.idinscriptionevenement}) }}" 
+                           class="btn btn-sm btn-warning">
+                            <i class="fas fa-edit"></i> Modifier
+                        </a>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="5" class="text-center">Aucune inscription trouvée</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
 
-    <a href="{{ path('app_inscriptionevenement_new') }}">Create new</a>
+        <a href="{{ path('app_inscriptionevenement_new') }}" class="btn btn-primary">
+            <i class="fas fa-plus"></i> Créer nouvelle inscription
+        </a>
+    </div>
 {% endblock %}
