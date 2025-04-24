@@ -4,9 +4,7 @@ namespace App\Entity;
 
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
-
+use Symfony\Component\Validator\Constraints as Assert;
 use App\Repository\InscriptionevenementRepository;
 
 #[ORM\Entity(repositoryClass: InscriptionevenementRepository::class)]
@@ -31,6 +29,7 @@ class Inscriptionevenement
 
     #[ORM\ManyToOne(targetEntity: Evenement::class, inversedBy: 'inscriptionevenements')]
     #[ORM\JoinColumn(name: 'idevenement', referencedColumnName: 'idevenement')]
+    #[Assert\NotNull(message: "Un événement doit être associé")]
     private ?Evenement $evenement = null;
 
     public function getEvenement(): ?Evenement
@@ -46,6 +45,7 @@ class Inscriptionevenement
 
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'inscriptionevenements')]
     #[ORM\JoinColumn(name: 'iduser', referencedColumnName: 'id')]
+    #[Assert\NotNull(message: "Un utilisateur doit être associé")]
     private ?User $user = null;
 
     public function getUser(): ?User
@@ -60,20 +60,30 @@ class Inscriptionevenement
     }
 
     #[ORM\Column(type: 'datetime', nullable: true)]
+    #[Assert\NotNull(message: "La date d'inscription est obligatoire")]
+    #[Assert\LessThanOrEqual(
+        "now",
+        message: "La date d'inscription ne peut pas être dans le futur"
+    )]
     private ?\DateTimeInterface $date_inscription = null;
 
-    public function getDate_inscription(): ?\DateTimeInterface
+    public function getDateInscription(): ?\DateTimeInterface
     {
         return $this->date_inscription;
     }
 
-    public function setDate_inscription(?\DateTimeInterface $date_inscription): self
+    public function setDateInscription(?\DateTimeInterface $date_inscription): self
     {
         $this->date_inscription = $date_inscription;
         return $this;
     }
 
     #[ORM\Column(type: 'string', nullable: false)]
+    #[Assert\NotBlank(message: "Le statut est obligatoire")]
+    #[Assert\Choice(
+        choices: ['Pending', 'Approved', 'Canceled', 'Waitlist'],
+        message: "Statut d'inscription non valide"
+    )]
     private ?string $statut = null;
 
     public function getStatut(): ?string
@@ -87,16 +97,15 @@ class Inscriptionevenement
         return $this;
     }
 
-    public function getDateInscription(): ?\DateTimeInterface
+    // Alias pour compatibilité
+    public function getDate_inscription(): ?\DateTimeInterface
     {
         return $this->date_inscription;
     }
 
-    public function setDateInscription(?\DateTimeInterface $date_inscription): static
+    public function setDate_inscription(?\DateTimeInterface $date_inscription): self
     {
         $this->date_inscription = $date_inscription;
-
         return $this;
     }
-
 }

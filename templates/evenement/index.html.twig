@@ -385,7 +385,7 @@
                           </td>
                           <td>
                             {% if evenement.imageUrl %}
-                              <img src="{{ evenement.imageUrl }}" alt="Image" style="max-width: 50px;">
+                              <img src="{{ asset('uploads/' ~ evenement.imageUrl) }}" alt="Image" style="max-width: 50px;">
                             {% endif %}
                           </td>
                           <td>
@@ -397,6 +397,11 @@
                               <a href="{{ path('app_evenement_edit', {'idevenement': evenement.idevenement}) }}" 
                                  class="btn btn-sm btn-warning" title="Modifier">
                                 <i class="fas fa-edit"></i>
+                              </a>
+                              <!-- Nouveau bouton pour les inscriptions -->
+                              <a href="{{ path('app_evenement_inscriptions', {'idevenement': evenement.idevenement}) }}" 
+                                 class="btn btn-sm btn-primary" title="Gérer les inscriptions">
+                                <i class="fas fa-users"></i>
                               </a>
                             </div>
                           </td>

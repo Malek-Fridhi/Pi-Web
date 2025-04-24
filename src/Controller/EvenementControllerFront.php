@@ -30,29 +30,51 @@ class EvenementControllerFront extends AbstractController
             throw $this->createNotFoundException('Événement non trouvé');
         }
 
+        // Vérifie si l'utilisateur courant est déjà inscrit
+        $isRegistered = false;
+        if ($this->getUser()) {
+            foreach ($evenement->getInscriptionevenements() as $inscription) {
+                if ($inscription->getUser() === $this->getUser()) {
+                    $isRegistered = true;
+                    break;
+                }
+            }
+        }
+
         return $this->render('events/show.html.twig', [
             'evenement' => $evenement,
+            'isRegistered' => $isRegistered
         ]);
     }
 
     #[Route('/inscription/{idevenement}', name: 'app_evenement_inscription', methods: ['POST'])]
-    public function inscription(Evenement $evenement, EntityManagerInterface $entityManager): Response
+    public function inscription(int $idevenement, EntityManagerInterface $entityManager): Response
     {
         $user = $this->getUser();
         
         if (!$user) {
+            $this->addFlash('warning', 'Vous devez être connecté pour vous inscrire à un événement');
             return $this->redirectToRoute('app_login');
         }
 
+        $evenement = $entityManager->getRepository(Evenement::class)->find($idevenement);
+        
+        if (!$evenement) {
+            throw $this->createNotFoundException('Événement non trouvé');
+        }
+
+        // Vérifie si l'utilisateur est déjà inscrit
         $existingInscription = $entityManager->getRepository(Inscriptionevenement::class)->findOneBy([
             'evenement' => $evenement,
-            'iduser' => $user->getId()
+            'user' => $user
         ]);
 
-        if (!$existingInscription) {
+        if ($existingInscription) {
+            $this->addFlash('warning', 'Vous êtes déjà inscrit à cet événement');
+        } else {
             $inscription = new Inscriptionevenement();
             $inscription->setEvenement($evenement);
-            $inscription->setIduser($user->getId());
+            $inscription->setUser($user);
             $inscription->setDateInscription(new \DateTime());
             $inscription->setStatut('Pending');
 
@@ -60,6 +82,38 @@ class EvenementControllerFront extends AbstractController
             $entityManager->flush();
 
             $this->addFlash('success', 'Inscription réussie !');
+        }
+
+        return $this->redirectToRoute('app_evenement_front_show', ['idevenement' => $evenement->getIdevenement()]);
+    }
+
+    #[Route('/desinscription/{idevenement}', name: 'app_evenement_desinscription', methods: ['POST'])]
+    public function desinscription(int $idevenement, EntityManagerInterface $entityManager): Response
+    {
+        $user = $this->getUser();
+        
+        if (!$user) {
+            $this->addFlash('warning', 'Vous devez être connecté pour vous désinscrire');
+            return $this->redirectToRoute('app_login');
+        }
+
+        $evenement = $entityManager->getRepository(Evenement::class)->find($idevenement);
+        
+        if (!$evenement) {
+            throw $this->createNotFoundException('Événement non trouvé');
+        }
+
+        $inscription = $entityManager->getRepository(Inscriptionevenement::class)->findOneBy([
+            'evenement' => $evenement,
+            'user' => $user
+        ]);
+
+        if ($inscription) {
+            $entityManager->remove($inscription);
+            $entityManager->flush();
+            $this->addFlash('success', 'Désinscription réussie !');
+        } else {
+            $this->addFlash('warning', 'Vous n\'êtes pas inscrit à cet événement');
         }
 
         return $this->redirectToRoute('app_evenement_front_show', ['idevenement' => $evenement->getIdevenement()]);

@@ -1,30 +1,137 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Inscriptionevenement{% endblock %}
+{% block title %}Détails inscription - {{ inscriptionevenement.idinscriptionevenement }}{% endblock %}
 
 {% block body %}
-    <h1>Inscriptionevenement</h1>
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card shadow-sm border-0 rounded-lg">
+                <div class="card-header bg-primary text-white">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h2 class="h5 mb-0">Détails de l'inscription</h2>
+                        <span class="badge bg-light text-primary rounded-pill">#{{ inscriptionevenement.idinscriptionevenement }}</span>
+                    </div>
+                </div>
+                
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <tbody>
+                                <tr>
+                                    <th class="w-25">ID Inscription</th>
+                                    <td>{{ inscriptionevenement.idinscriptionevenement }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Date d'inscription</th>
+                                    <td>
+                                        <i class="far fa-calendar-alt me-2 text-muted"></i>
+                                        {{ inscriptionevenement.dateInscription ? inscriptionevenement.dateInscription|date('d/m/Y \\à H:i') : 'Non spécifiée' }}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>Statut</th>
+                                    <td>
+                                        <span class="badge 
+                                            {% if inscriptionevenement.statut == 'confirmé' %}bg-success
+                                            {% elseif inscriptionevenement.statut == 'en attente' %}bg-warning text-dark
+                                            {% elseif inscriptionevenement.statut == 'annulé' %}bg-danger
+                                            {% else %}bg-secondary
+                                            {% endif %}">
+                                            {{ inscriptionevenement.statut }}
+                                        </span>
+                                    </td>
+                                </tr>
+                                {% if inscriptionevenement.evenement %}
+                                <tr>
+                                    <th>Événement</th>
+                                    <td>
+                                        <a href="{{ path('app_evenement_show', {'idevenement': inscriptionevenement.evenement.idevenement}) }}" class="text-decoration-none">
+                                            <i class="fas fa-calendar-check me-2"></i>
+                                            {{ inscriptionevenement.evenement.titre }}
+                                        </a>
+                                    </td>
+                                </tr>
+                                {% endif %}
+                                {% if inscriptionevenement.user %}
+                                <tr>
+                                    <th>Participant</th>
+                                    <td>
+                                        <i class="fas fa-user me-2"></i>
+                                        {{ inscriptionevenement.user.nom }} {{ inscriptionevenement.user.prenom }}
+                                    </td>
+                                </tr>
+                                {% endif %}
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <div class="d-flex flex-column flex-sm-row justify-content-between align-items-center gap-3 mt-4">
+                        <a href="{{ path('app_inscriptionevenement_index') }}" class="btn btn-outline-secondary rounded-pill px-4">
+                            <i class="fas fa-arrow-left me-2"></i> Retour à la liste
+                        </a>
+                        
+                        <div class="d-flex gap-2">
+                            <a href="{{ path('app_inscriptionevenement_edit', {'idinscriptionevenement': inscriptionevenement.idinscriptionevenement}) }}" class="btn btn-primary rounded-pill px-4">
+                                <i class="fas fa-edit me-2"></i> Modifier
+                            </a>
+                            
+                            <button type="button" class="btn btn-danger rounded-pill px-4" data-bs-toggle="modal" data-bs-target="#deleteModal">
+                                <i class="fas fa-trash-alt me-2"></i> Supprimer
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
-    <table class="table">
-        <tbody>
-            <tr>
-                <th>Idinscriptionevenement</th>
-                <td>{{ inscriptionevenement.idinscriptionevenement }}</td>
-            </tr>
-            <tr>
-                <th>Date_inscription</th>
-                <td>{{ inscriptionevenement.dateInscription ? inscriptionevenement.dateInscription|date('Y-m-d H:i:s') : '' }}</td>
-            </tr>
-            <tr>
-                <th>Statut</th>
-                <td>{{ inscriptionevenement.statut }}</td>
-            </tr>
-        </tbody>
-    </table>
+<!-- Delete Confirmation Modal -->
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-danger text-white">
+                <h5 class="modal-title" id="deleteModalLabel">Confirmer la suppression</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>Êtes-vous sûr de vouloir supprimer cette inscription ? Cette action est irréversible.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary rounded-pill" data-bs-dismiss="modal">Annuler</button>
+                {{ include('inscriptionevenement/_delete_form.html.twig') }}
+            </div>
+        </div>
+    </div>
+</div>
 
-    <a href="{{ path('app_inscriptionevenement_index') }}">back to list</a>
-
-    <a href="{{ path('app_inscriptionevenement_edit', {'idinscriptionevenement': inscriptionevenement.idinscriptionevenement}) }}">edit</a>
-
-    {{ include('inscriptionevenement/_delete_form.html.twig') }}
+<style>
+    .card {
+        transition: transform 0.3s ease;
+    }
+    
+    .card:hover {
+        transform: translateY(-2px);
+    }
+    
+    .table th {
+        font-weight: 500;
+        color: #495057;
+    }
+    
+    .table td {
+        vertical-align: middle;
+    }
+    
+    @media (max-width: 576px) {
+        .d-flex.flex-sm-row {
+            flex-direction: column;
+        }
+        
+        .gap-3 {
+            gap: 1rem !important;
+        }
+    }
+</style>
 {% endblock %}

@@ -1,13 +1,256 @@
+{# templates/evenement/edit.html.twig #}
 {% extends 'base.html.twig' %}
 
-{% block title %}Edit Inscriptionevenement{% endblock %}
+{% block title %}Modifier "{{ evenement.titre }}"{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <style>
+        :root {
+            --primary-color: #4361ee;
+            --primary-hover: #3a56d4;
+            --secondary-color: #6c757d;
+            --border-color: #e9ecef;
+            --text-color: #495057;
+            --light-bg: #f8f9fa;
+        }
+        
+        .form-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 1.5rem;
+        }
+        
+        .form-card {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px -5px rgba(0,0,0,0.1);
+            padding: 2rem;
+            margin-bottom: 1.5rem;
+            border: 1px solid var(--border-color);
+        }
+        
+        .page-header {
+            margin-bottom: 1.5rem;
+            position: relative;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        
+        .page-header h1 {
+            font-weight: 600;
+            color: #212529;
+            margin-bottom: 0.25rem;
+            font-size: 1.5rem;
+        }
+        
+        .page-header p {
+            color: var(--secondary-color);
+            font-size: 0.95rem;
+            margin: 0;
+        }
+        
+        .header-actions {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+        
+        .btn-back {
+            background: white;
+            border: 2px solid var(--border-color);
+            border-radius: 50px;
+            padding: 8px 16px;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s ease;
+            color: var(--text-color);
+            font-size: 0.9rem;
+            text-decoration: none;
+        }
+        
+        .btn-back:hover {
+            background: var(--light-bg);
+            border-color: var(--primary-color);
+            color: var(--primary-color);
+        }
+        
+        .delete-btn {
+            background: none;
+            border: none;
+            color: #dc3545;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            padding: 8px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .delete-btn:hover {
+            color: #c82333;
+            transform: scale(1.1);
+        }
+        
+        /* Styles pour le formulaire */
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-label {
+            font-weight: 600;
+            color: var(--text-color);
+            display: block;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+        }
+        
+        .form-control {
+            border-radius: 8px;
+            padding: 12px 14px;
+            border: 2px solid var(--border-color);
+            width: 100%;
+            transition: all 0.3s ease;
+            font-size: 0.95rem;
+        }
+        
+        .form-control:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.15);
+            outline: none;
+        }
+        
+        .btn-submit {
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 12px 28px;
+            border-radius: 50px;
+            font-weight: 600;
+            margin-top: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-submit:hover {
+            background: var(--primary-hover);
+            transform: translateY(-2px);
+        }
+        
+        @media (max-width: 768px) {
+            .form-container {
+                padding: 1rem;
+            }
+            
+            .form-card {
+                padding: 1.5rem;
+            }
+            
+            .page-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .header-actions {
+                width: 100%;
+                justify-content: space-between;
+            }
+        }
+    </style>
+{% endblock %}
 
 {% block body %}
-    <h1>Edit Inscriptionevenement</h1>
+<div class="form-container">
+    <div class="page-header">
+        <div>
+            <h1>Modifier "{{ evenement.titre }}"</h1>
+            <p>Mettez à jour les détails de votre événement</p>
+        </div>
+        
+        <div class="header-actions">
+            <a href="{{ path('app_evenement_index') }}" class="btn-back">
+                <i class="fas fa-arrow-left"></i> Retour
+            </a>
+            
+            {{ form_start(delete_form, {'attr': {'class': 'd-inline'}}) }}
+                <input type="hidden" name="_method" value="DELETE">
+                <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ evenement.idevenement) }}">
+                <button type="submit" class="delete-btn" title="Supprimer l'événement" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cet événement ?')">
+                    <i class="fas fa-trash"></i>
+                </button>
+            {{ form_end(delete_form) }}
+        </div>
+    </div>
 
-    {{ include('inscriptionevenement/_form.html.twig', {'button_label': 'Update'}) }}
-
-    <a href="{{ path('app_inscriptionevenement_index') }}">back to list</a>
-
-    {{ include('inscriptionevenement/_delete_form.html.twig') }}
+    <div class="form-card">
+        {{ form_start(form) }}
+            <div class="form-group">
+                {{ form_label(form.titre) }}
+                {{ form_widget(form.titre, {'attr': {'class': 'form-control'}}) }}
+            </div>
+            
+            <div class="form-group">
+                {{ form_label(form.description) }}
+                {{ form_widget(form.description, {'attr': {'class': 'form-control', 'rows': 5}}) }}
+            </div>
+            
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        {{ form_label(form.date) }}
+                        {{ form_widget(form.date, {'attr': {'class': 'form-control'}}) }}
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        {{ form_label(form.duree) }}
+                        {{ form_widget(form.duree, {'attr': {'class': 'form-control'}}) }}
+                    </div>
+                </div>
+            </div>
+            
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        {{ form_label(form.capacite) }}
+                        {{ form_widget(form.capacite, {'attr': {'class': 'form-control'}}) }}
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        {{ form_label(form.statut) }}
+                        <div style="display: flex; gap: 1.5rem; margin-top: 0.5rem;">
+                            {% for child in form.statut %}
+                                <div style="display: flex; align-items: center; gap: 0.5rem;">
+                                    {{ form_widget(child) }}
+                                    {{ form_label(child) }}
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                {{ form_label(form.imageUrl) }}
+                {{ form_widget(form.imageUrl, {'attr': {'class': 'form-control'}}) }}
+                {% if evenement.imageUrl %}
+                    <div style="margin-top: 1rem;">
+                        <p class="small text-muted mb-2">Image actuelle :</p>
+                        <img src="{{ asset(evenement.imageUrl) }}" style="max-width: 100%; max-height: 200px; border-radius: 8px; border: 2px solid #e9ecef; padding: 6px;">
+                    </div>
+                {% endif %}
+            </div>
+            
+            <button type="submit" class="btn-submit">
+                <i class="fas fa-save"></i> Mettre à jour
+            </button>
+        {{ form_end(form) }}
+    </div>
+</div>
 {% endblock %}

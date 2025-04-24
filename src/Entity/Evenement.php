@@ -6,7 +6,7 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-
+use Symfony\Component\Validator\Constraints as Assert;
 use App\Repository\EvenementRepository;
 
 #[ORM\Entity(repositoryClass: EvenementRepository::class)]
@@ -30,6 +30,13 @@ class Evenement
     }
 
     #[ORM\Column(type: 'string', nullable: false)]
+    #[Assert\NotBlank(message: "Le titre ne peut pas être vide")]
+    #[Assert\Length(
+        min: 5,
+        max: 100,
+        minMessage: "Le titre doit faire au moins {{ limit }} caractères",
+        maxMessage: "Le titre ne peut pas dépasser {{ limit }} caractères"
+    )]
     private ?string $titre = null;
 
     public function getTitre(): ?string
@@ -44,6 +51,10 @@ class Evenement
     }
 
     #[ORM\Column(type: 'text', nullable: true)]
+    #[Assert\Length(
+        max: 2000,
+        maxMessage: "La description ne peut pas dépasser {{ limit }} caractères"
+    )]
     private ?string $description = null;
 
     public function getDescription(): ?string
@@ -58,6 +69,11 @@ class Evenement
     }
 
     #[ORM\Column(type: 'datetime', nullable: true)]
+    #[Assert\NotNull(message: "La date est obligatoire")]
+    #[Assert\GreaterThan(
+        "today",
+        message: "La date doit être dans le futur"
+    )]
     private ?\DateTimeInterface $date = null;
 
     public function getDate(): ?\DateTimeInterface
@@ -72,6 +88,11 @@ class Evenement
     }
 
     #[ORM\Column(type: 'integer', nullable: true)]
+    #[Assert\PositiveOrZero(message: "La durée doit être un nombre positif")]
+    #[Assert\LessThanOrEqual(
+        value: 1440,
+        message: "La durée ne peut pas dépasser 1440 minutes (24h)"
+    )]
     private ?int $duree = null;
 
     public function getDuree(): ?int
@@ -86,6 +107,7 @@ class Evenement
     }
 
     #[ORM\Column(type: 'integer', nullable: true)]
+    #[Assert\PositiveOrZero(message: "La capacité doit être un nombre positif ou zéro")]
     private ?int $capacite = null;
 
     public function getCapacite(): ?int
@@ -100,6 +122,11 @@ class Evenement
     }
 
     #[ORM\Column(type: 'string', nullable: false)]
+    #[Assert\NotBlank(message: "Le statut est obligatoire")]
+    #[Assert\Choice(
+        choices: ['Planned', 'Ongoing', 'Completed', 'Canceled'],
+        message: "Statut non valide"
+    )]
     private ?string $statut = null;
 
     public function getStatut(): ?string
@@ -115,6 +142,7 @@ class Evenement
 
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'evenements')]
     #[ORM\JoinColumn(name: 'cree_par', referencedColumnName: 'id')]
+    #[Assert\NotNull(message: "Un créateur doit être associé")]
     private ?User $user = null;
 
     public function getUser(): ?User
@@ -128,8 +156,9 @@ class Evenement
         return $this;
     }
 
-    //#[ORM\Column(type: 'string', nullable: true)]
     #[ORM\Column(name: 'imageUrl', type: 'string', nullable: true)]
+    #[Assert\Url(message: "L'URL de l'image n'est pas valide")]
+    #[Assert\Length(max: 255)]
     private ?string $imageUrl = null;
 
     public function getImageUrl(): ?string
@@ -146,34 +175,6 @@ class Evenement
     #[ORM\OneToMany(targetEntity: Feedbackevenement::class, mappedBy: 'evenement')]
     private Collection $feedbackevenements;
 
-    /**
-     * @return Collection<int, Feedbackevenement>
-     */
-    public function getFeedbackevenements(): Collection
-    {
-        if (!$this->feedbackevenements instanceof Collection) {
-            $this->feedbackevenements = new ArrayCollection();
-        }
-        return $this->feedbackevenements;
-    }
-
-    public function addFeedbackevenement(Feedbackevenement $feedbackevenement): self
-    {
-        if (!$this->getFeedbackevenements()->contains($feedbackevenement)) {
-            $this->getFeedbackevenements()->add($feedbackevenement);
-        }
-        return $this;
-    }
-
-    public function removeFeedbackevenement(Feedbackevenement $feedbackevenement): self
-    {
-        $this->getFeedbackevenements()->removeElement($feedbackevenement);
-        return $this;
-    }
-
-    #[ORM\OneToMany(targetEntity: Inscriptionevenement::class, mappedBy: 'evenement')]
-    private Collection $inscriptionevenements;
-
     public function __construct()
     {
         $this->feedbackevenements = new ArrayCollection();
@@ -181,28 +182,59 @@ class Evenement
     }
 
     /**
+     * @return Collection<int, Feedbackevenement>
+     */
+    public function getFeedbackevenements(): Collection
+    {
+        return $this->feedbackevenements;
+    }
+
+    public function addFeedbackevenement(Feedbackevenement $feedbackevenement): self
+    {
+        if (!$this->feedbackevenements->contains($feedbackevenement)) {
+            $this->feedbackevenements->add($feedbackevenement);
+            $feedbackevenement->setEvenement($this);
+        }
+        return $this;
+    }
+
+    public function removeFeedbackevenement(Feedbackevenement $feedbackevenement): self
+    {
+        if ($this->feedbackevenements->removeElement($feedbackevenement)) {
+            if ($feedbackevenement->getEvenement() === $this) {
+                $feedbackevenement->setEvenement(null);
+            }
+        }
+        return $this;
+    }
+
+    #[ORM\OneToMany(targetEntity: Inscriptionevenement::class, mappedBy: 'evenement')]
+    private Collection $inscriptionevenements;
+
+    /**
      * @return Collection<int, Inscriptionevenement>
      */
     public function getInscriptionevenements(): Collection
     {
-        if (!$this->inscriptionevenements instanceof Collection) {
-            $this->inscriptionevenements = new ArrayCollection();
-        }
         return $this->inscriptionevenements;
     }
 
     public function addInscriptionevenement(Inscriptionevenement $inscriptionevenement): self
     {
-        if (!$this->getInscriptionevenements()->contains($inscriptionevenement)) {
-            $this->getInscriptionevenements()->add($inscriptionevenement);
+        if (!$this->inscriptionevenements->contains($inscriptionevenement)) {
+            $this->inscriptionevenements->add($inscriptionevenement);
+            $inscriptionevenement->setEvenement($this);
         }
         return $this;
     }
 
     public function removeInscriptionevenement(Inscriptionevenement $inscriptionevenement): self
     {
-        $this->getInscriptionevenements()->removeElement($inscriptionevenement);
+        if ($this->inscriptionevenements->removeElement($inscriptionevenement)) {
+            if ($inscriptionevenement->getEvenement() === $this) {
+                $inscriptionevenement->setEvenement(null);
+            }
+        }
         return $this;
     }
-
 }

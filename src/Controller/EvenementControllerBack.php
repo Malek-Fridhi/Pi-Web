@@ -3,15 +3,19 @@
 namespace App\Controller;
 
 use App\Entity\Evenement;
+use App\Entity\Inscriptionevenement;
 use App\Form\EvenementType;
 use App\Repository\EvenementRepository;
+use App\Repository\InscriptionevenementRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
 #[Route('/evenement')]
+#[IsGranted('ROLE_ADMIN')]
 final class EvenementControllerBack extends AbstractController
 {
     #[Route(name: 'app_evenement_index', methods: ['GET'])]
@@ -22,22 +26,6 @@ final class EvenementControllerBack extends AbstractController
         ]);
     }
 
-/*************  ✨ Windsurf Command ⭐  *************/
-/**
- * Create a new Evenement entity.
- *
- * This method handles the creation of a new Evenement. It displays a form
- * for creating an Evenement and processes the form submission. If the form
- * is submitted and valid, the new Evenement is persisted to the database
- * and the user is redirected to the event index page.
- *
- * @param Request $request The HTTP request object.
- * @param EntityManagerInterface $entityManager The entity manager for database operations.
- *
- * @return Response The HTTP response rendering the form or redirecting.
- */
-
-/*******  6b0f6d02-6ada-43a7-ac85-17a63721e092  *******/
     #[Route('/new', name: 'app_evenement_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
@@ -58,17 +46,33 @@ final class EvenementControllerBack extends AbstractController
         ]);
     }
 
-  /*  #[Route('/{idevenement}', name: 'app_evenement_show', methods: ['GET'])]
-    public function show(Evenement $evenement): Response
+    #[Route('/{idevenement}', name: 'app_evenement_show', methods: ['GET'])]
+    public function show(int $idevenement, EvenementRepository $evenementRepository): Response
     {
+        $evenement = $evenementRepository->find($idevenement);
+        
+        if (!$evenement) {
+            throw $this->createNotFoundException('Événement non trouvé');
+        }
+
         return $this->render('evenement/show.html.twig', [
             'evenement' => $evenement,
         ]);
     }
 
     #[Route('/{idevenement}/edit', name: 'app_evenement_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, Evenement $evenement, EntityManagerInterface $entityManager): Response
-    {
+    public function edit(
+        Request $request, 
+        int $idevenement,
+        EvenementRepository $evenementRepository,
+        EntityManagerInterface $entityManager
+    ): Response {
+        $evenement = $evenementRepository->find($idevenement);
+        
+        if (!$evenement) {
+            throw $this->createNotFoundException('Événement non trouvé');
+        }
+
         $form = $this->createForm(EvenementType::class, $evenement);
         $form->handleRequest($request);
 
@@ -85,89 +89,107 @@ final class EvenementControllerBack extends AbstractController
     }
 
     #[Route('/{idevenement}', name: 'app_evenement_delete', methods: ['POST'])]
-    public function delete(Request $request, Evenement $evenement, EntityManagerInterface $entityManager): Response
-    {
-        if ($this->isCsrfTokenValid('delete'.$evenement->getIdevenement(), $request->getPayload()->getString('_token'))) {
+    public function delete(
+        Request $request,
+        int $idevenement,
+        EvenementRepository $evenementRepository,
+        EntityManagerInterface $entityManager
+    ): Response {
+        $evenement = $evenementRepository->find($idevenement);
+        
+        if (!$evenement) {
+            throw $this->createNotFoundException('Événement non trouvé');
+        }
+
+        if ($this->isCsrfTokenValid('delete'.$evenement->getIdevenement(), $request->request->get('_token'))) {
             $entityManager->remove($evenement);
             $entityManager->flush();
         }
 
         return $this->redirectToRoute('app_evenement_index', [], Response::HTTP_SEE_OTHER);
-    }*/
-    #[Route('/{idevenement}', name: 'app_evenement_show', methods: ['GET'])]
-    public function show(EvenementRepository $evenementRepository, int $idevenement): Response
-    {
-        $evenement = $evenementRepository->find($idevenement);
+    }
 
+    #[Route('/{idevenement}/inscriptions', name: 'app_evenement_inscriptions', methods: ['GET'])]
+    public function showInscriptions(
+        int $idevenement,
+        EvenementRepository $evenementRepository,
+        InscriptionevenementRepository $inscriptionRepo
+    ): Response {
+        $evenement = $evenementRepository->find($idevenement);
+        
         if (!$evenement) {
-            throw $this->createNotFoundException('Événement non trouvé.');
+            throw $this->createNotFoundException('Événement non trouvé');
         }
 
-        return $this->render('evenement/show.html.twig', [
+        $inscriptions = $inscriptionRepo->findBy(['evenement' => $evenement], ['date_inscription' => 'DESC']);
+
+        $approvedCount = $inscriptionRepo->count([
             'evenement' => $evenement,
+            'statut' => 'Approved'
+        ]);
+
+        return $this->render('evenement/inscriptions.html.twig', [
+            'evenement' => $evenement,
+            'inscriptions' => $inscriptions,
+            'approved_count' => $approvedCount,
+            'capacity_reached' => $evenement->getCapacite() && $approvedCount >= $evenement->getCapacite()
         ]);
     }
-    // Ajoutez cette méthode dans votre EvenementController
-#[Route('/{idevenement}/inscriptions', name: 'app_evenement_inscriptions', methods: ['GET'])]
-public function showInscriptions(
-    Evenement $evenement,
-    InscriptionevenementRepository $inscriptionRepository
-): Response {
-    $inscriptions = $inscriptionRepository->findBy(['idevenement' => $evenement]);
 
-    return $this->render('evenement/inscriptions.html.twig', [
-        'evenement' => $evenement,
-        'inscriptions' => $inscriptions,
-    ]);
-}
+    #[Route('/inscription/{id}/approve', name: 'app_inscription_approve', methods: ['POST'])]
+    public function approveInscription(
+        int $id,
+        InscriptionevenementRepository $inscriptionRepo,
+        EntityManagerInterface $entityManager
+    ): Response {
+        $inscription = $inscriptionRepo->find($id);
+        
+        if (!$inscription) {
+            throw $this->createNotFoundException('Inscription non trouvée');
+        }
 
-    // ✅ Modifier un événement avec `idevenement`
-   // src/Controller/EvenementController.php
-#[Route('/{idevenement}/edit', name: 'app_evenement_edit', methods: ['GET', 'POST'])]
-public function edit(Request $request, EvenementRepository $evenementRepository, int $idevenement, EntityManagerInterface $entityManager): Response
-{
-    $evenement = $evenementRepository->find($idevenement);
+        $evenement = $inscription->getEvenement();
+        
+        // Check capacity
+        $approvedCount = $inscriptionRepo->count([
+            'evenement' => $evenement,
+            'statut' => 'Approved'
+        ]);
 
-    if (!$evenement) {
-        throw $this->createNotFoundException('Événement non trouvé.');
-    }
+        if ($evenement->getCapacite() && $approvedCount >= $evenement->getCapacite()) {
+            $this->addFlash('danger', 'La capacité maximale est atteinte pour cet événement');
+            return $this->redirectToRoute('app_evenement_inscriptions', [
+                'idevenement' => $evenement->getIdevenement()
+            ]);
+        }
 
-    $form = $this->createForm(EvenementType::class, $evenement);
-    $form->handleRequest($request);
-
-    // Création du formulaire de suppression
-    $deleteForm = $this->createFormBuilder()
-        ->setAction($this->generateUrl('app_evenement_delete', ['idevenement' => $idevenement]))
-        ->setMethod('POST')
-        ->getForm();
-
-    if ($form->isSubmitted() && $form->isValid()) {
+        $inscription->setStatut('Approved');
         $entityManager->flush();
-        return $this->redirectToRoute('app_evenement_index', [], Response::HTTP_SEE_OTHER);
+
+        $this->addFlash('success', 'Inscription approuvée avec succès');
+        return $this->redirectToRoute('app_evenement_inscriptions', [
+            'idevenement' => $evenement->getIdevenement()
+        ]);
     }
 
-    return $this->render('evenement/edit.html.twig', [
-        'evenement' => $evenement,
-        'form' => $form->createView(),
-        'delete_form' => $deleteForm->createView(),
-    ]);
-}
-
-    // ✅ Supprimer un événement avec `idevenement`
-    #[Route('/{idevenement}', name: 'app_evenement_delete', methods: ['POST'])]
-    public function delete(Request $request, EvenementRepository $evenementRepository, int $idevenement, EntityManagerInterface $entityManager): Response
-    {
-        $evenement = $evenementRepository->find($idevenement);
-
-        if (!$evenement) {
-            throw $this->createNotFoundException('Événement non trouvé.');
+    #[Route('/inscription/{id}/reject', name: 'app_inscription_reject', methods: ['POST'])]
+    public function rejectInscription(
+        int $id,
+        InscriptionevenementRepository $inscriptionRepo,
+        EntityManagerInterface $entityManager
+    ): Response {
+        $inscription = $inscriptionRepo->find($id);
+        
+        if (!$inscription) {
+            throw $this->createNotFoundException('Inscription non trouvée');
         }
 
-        if ($this->isCsrfTokenValid('delete' . $evenement->getIdevenement(), $request->request->get('_token'))) {
-            $entityManager->remove($evenement);
-            $entityManager->flush();
-        }
+        $inscription->setStatut('Canceled');
+        $entityManager->flush();
 
-        return $this->redirectToRoute('app_evenement_index', [], Response::HTTP_SEE_OTHER);
+        $this->addFlash('warning', 'Inscription rejetée');
+        return $this->redirectToRoute('app_evenement_inscriptions', [
+            'idevenement' => $inscription->getEvenement()->getIdevenement()
+        ]);
     }
 }

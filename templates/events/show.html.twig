@@ -3,12 +3,17 @@
 {% block title %}Détails événement{% endblock %}
 
 {% block body %}
+ <link rel="stylesheet" href="{{ asset('assets/css/bootstrap.min.css') }}" />
+      <link rel="stylesheet" href="{{ asset('assets/css/plugins.min.css') }}" />
+      <link rel="stylesheet" href="{{ asset('assets/css/kaiadmin.min.css') }}" />
+      <link rel="stylesheet" href="{{ asset('assets/css/demo.css') }}" />
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">  
 <div class="container my-5">
     <div class="row">
         <div class="col-md-8 mx-auto">
             <div class="card">
                 {% if evenement.imageUrl %}
-                    <img src="{{ asset('uploads/' ~ evenement.imageUrl) }}" class="card-img-top" alt="{{ evenement.titre }}">
+                    <img src="{{ asset('uploads/' ~ evenement.imageUrl) }}" class="card-img-top" alt="{{ evenement.titre }}" style="max-height: 400px; object-fit: cover;">
                 {% endif %}
                 
                 <div class="card-body">
@@ -17,11 +22,35 @@
                         <i class="fas fa-calendar-alt"></i> 
                         {{ evenement.date|date('d/m/Y H:i') }}
                     </p>
-                    <p>{{ evenement.description }}</p>
+                    <div class="mb-3">
+                        <p class="card-text">{{ evenement.description }}</p>
+                    </div>
                     
-                    <a href="{{ path('app_evenement_front_index') }}" class="btn btn-primary">
-                        Retour à la liste
-                    </a>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <a href="{{ path('app_evenement_front_index') }}" class="btn btn-primary">
+                            <i class="fas fa-arrow-left"></i> Retour à la liste
+                        </a>
+                        
+                        {% if app.user %}
+                            {% if isRegistered %}
+                                <form action="{{ path('app_evenement_desinscription', {'idevenement': evenement.idevenement}) }}" method="POST">
+                                    <button type="submit" class="btn btn-danger">
+                                        <i class="fas fa-user-minus"></i> Se désinscrire
+                                    </button>
+                                </form>
+                            {% else %}
+                                <form action="{{ path('app_evenement_inscription', {'idevenement': evenement.idevenement}) }}" method="POST">
+                                    <button type="submit" class="btn btn-success">
+                                        <i class="fas fa-user-plus"></i> S'inscrire
+                                    </button>
+                                </form>
+                            {% endif %}
+                        {% else %}
+                            <a href="{{ path('app_login') }}" class="btn btn-warning">
+                                <i class="fas fa-sign-in-alt"></i> Connectez-vous pour vous inscrire
+                            </a>
+                        {% endif %}
+                    </div>
                 </div>
             </div>
         </div>
