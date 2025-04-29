@@ -1,0 +1,131 @@
+{# templates/evenement/stats.html.twig #}
+{% extends 'base.html.twig' %}
+
+{% block title %}Statistiques des événements{% endblock %}
+
+{% block body %}
+<div class="container-fluid py-4">
+    <div class="row">
+        <div class="col-12">
+            <div class="page-header d-flex justify-content-between align-items-center mb-4">
+                <h1 class="page-title">
+                    <i class="fas fa-chart-bar me-2"></i>Statistiques des événements
+                </h1>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <h3 class="card-title">Statut des événements</h3>
+                        </div>
+                        <div class="card-body">
+                            <canvas id="statusChart" height="200"></canvas>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-6">
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <h3 class="card-title">Événements par mois</h3>
+                        </div>
+                        <div class="card-body">
+                            <canvas id="monthlyChart" height="200"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Utilisation de la capacité</h3>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Événement</th>
+                                    <th>Capacité</th>
+                                    <th>Inscrits</th>
+                                    <th>Taux</th>
+                                    <th>Barre de progression</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for event in capacityUtilization %}
+                                    <tr>
+                                        <td>{{ event.titre }}</td>
+                                        <td>{{ event.capacite }}</td>
+                                        <td>{{ event.registered }}</td>
+                                        <td>{{ event.percentage|number_format(2) }}%</td>
+                                        <td>
+                                            <div class="progress">
+                                                <div class="progress-bar bg-{{ event.percentage > 90 ? 'danger' : (event.percentage > 70 ? 'warning' : 'success') }}" 
+                                                     role="progressbar" 
+                                                     style="width: {{ event.percentage }}%" 
+                                                     aria-valuenow="{{ event.percentage }}" 
+                                                     aria-valuemin="0" 
+                                                     aria-valuemax="100">
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block javascripts %}
+{{ parent() }}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Statut des événements
+        const statusCtx = document.getElementById('statusChart').getContext('2d');
+        const statusChart = new Chart(statusCtx, {
+            type: 'pie',
+            data: {
+                labels: {{ stats|map(s => s.status)|json_encode|raw }},
+                datasets: [{
+                    data: {{ stats|map(s => s.total_events)|json_encode|raw }},
+                    backgroundColor: [
+                        '#4361ee',
+                        '#3f37c9',
+                        '#4895ef',
+                        '#4cc9f0'
+                    ]
+                }]
+            }
+        });
+
+        // Événements par mois
+        const monthlyCtx = document.getElementById('monthlyChart').getContext('2d');
+        const monthlyChart = new Chart(monthlyCtx, {
+            type: 'bar',
+            data: {
+                labels: {{ monthlyRegistrations|map(m => m.month)|json_encode|raw }},
+                datasets: [{
+                    label: 'Événements',
+                    data: {{ monthlyRegistrations|map(m => m.event_count)|json_encode|raw }},
+                    backgroundColor: '#4361ee'
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    });
+</script>
+{% endblock %}

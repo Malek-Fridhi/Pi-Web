@@ -33,13 +33,13 @@
                         
                         {% if app.user %}
                             {% if isRegistered %}
-                                <form action="{{ path('app_evenement_desinscription', {'idevenement': evenement.idevenement}) }}" method="POST">
+                                <form action="{{ path('app_evenement_front_desinscription', {'idevenement': evenement.idevenement}) }}" method="POST">
                                     <button type="submit" class="btn btn-danger">
                                         <i class="fas fa-user-minus"></i> Se désinscrire
                                     </button>
                                 </form>
                             {% else %}
-                                <form action="{{ path('app_evenement_inscription', {'idevenement': evenement.idevenement}) }}" method="POST">
+                                <form action="{{ path('app_evenement_front_inscription', {'idevenement': evenement.idevenement}) }}" method="POST">
                                     <button type="submit" class="btn btn-success">
                                         <i class="fas fa-user-plus"></i> S'inscrire
                                     </button>

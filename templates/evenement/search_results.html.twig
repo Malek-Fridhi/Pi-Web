@@ -1,0 +1,51 @@
+{# templates/evenement/_search_results.html.twig #}
+{% for evenement in evenements %}
+    <div class="col-md-4 mb-4">
+        <div class="card h-100 shadow-sm">
+            {% if evenement.imageUrl %}
+                <img src="{{ asset(evenement.imageUrl) }}" class="card-img-top" alt="{{ evenement.titre }}" style="height: 200px; object-fit: cover;">
+            {% endif %}
+            
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-start mb-2">
+                    <h5 class="card-title">{{ evenement.titre }}</h5>
+                    <span class="badge bg-{{ evenement.statut == 'Completed' ? 'success' : (evenement.statut == 'Canceled' ? 'danger' : 'warning') }}">
+                        {{ evenement.statut }}
+                    </span>
+                </div>
+                
+                <p class="card-text text-muted small">
+                    <i class="fas fa-calendar-day me-1"></i> 
+                    {{ evenement.date ? evenement.date|date('d/m/Y H:i') : '' }}
+                </p>
+                
+                <p class="card-text">{{ evenement.description|slice(0, 100) ~ '...' }}</p>
+                
+                <div class="d-flex justify-content-between align-items-center">
+                    <span class="text-muted small">
+                        <i class="fas fa-users me-1"></i> 
+                        {% if evenement.capacite %}
+                            {{ evenement.getAvailablePlaces() }} / {{ evenement.capacite }} places
+                        {% else %}
+                            Illimité
+                        {% endif %}
+                    </span>
+                    <span class="text-muted small">
+                        <i class="fas fa-eye me-1"></i> {{ evenement.viewsCount }}
+                    </span>
+                </div>
+            </div>
+            
+            <div class="card-footer bg-white border-top-0">
+                <a href="{{ path('app_evenement_show', {'idevenement': evenement.idevenement}) }}" 
+                   class="btn btn-primary btn-sm w-100">
+                    Voir détails
+                </a>
+            </div>
+        </div>
+    </div>
+{% else %}
+    <div class="col-12">
+        <div class="alert alert-info text-center">Aucun événement trouvé</div>
+    </div>
+{% endfor %}
