@@ -385,7 +385,7 @@
                           </td>
                           <td>
                             {% if evenement.imageUrl %}
-                              <img src="{{ asset('uploads/' ~ evenement.imageUrl) }}" alt="Image" style="max-width: 50px;">
+<img src="{{ asset(evenement.imageUrl) }}" alt="Image" style="max-width: 50px;">
                             {% endif %}
                           </td>
                           <td>

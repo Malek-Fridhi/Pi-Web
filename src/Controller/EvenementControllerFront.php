@@ -6,6 +6,7 @@ use App\Entity\Evenement;
 use App\Entity\Inscriptionevenement;
 use App\Repository\EvenementRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -15,16 +16,25 @@ use Symfony\Component\HttpFoundation\Request;
 class EvenementControllerFront extends AbstractController
 {
     #[Route('/', name: 'app_evenement_front_index', methods: ['GET'])]
-    public function index(Request $request, EvenementRepository $evenementRepository): Response
+    public function index(Request $request, PaginatorInterface $paginator, EvenementRepository $evenementRepository): Response
     {
-        // Récupérer tous les événements
-        $evenements = $evenementRepository->findAll();
-        
-        // Récupérer le paramètre de tri
+        $search = $request->query->get('q', '');
         $sort = $request->query->get('sort', 'date_asc');
-        
-        // Trier manuellement les résultats
-        usort($evenements, function($a, $b) use ($sort) {
+
+        // Récupération de tous les événements
+        $queryBuilder = $evenementRepository->createQueryBuilder('e');
+
+        if (!empty($search)) {
+            $queryBuilder
+                ->andWhere('e.titre LIKE :search OR e.description LIKE :search')
+                ->setParameter('search', '%' . $search . '%');
+        }
+
+        // Exécution de la requête sans le tri
+        $allEvents = $queryBuilder->getQuery()->getResult();
+
+        // Tri manuel comme dans l'ancienne version
+        usort($allEvents, function($a, $b) use ($sort) {
             if ($sort === 'date_desc') {
                 return $b->getDate() <=> $a->getDate();
             } else {
@@ -32,11 +42,20 @@ class EvenementControllerFront extends AbstractController
             }
         });
 
+        // Pagination des résultats triés
+        $pagination = $paginator->paginate(
+            $allEvents,
+            $request->query->getInt('page', 1),
+            6
+        );
+
         return $this->render('events/index.html.twig', [
-            'evenements' => $evenements,
-            'current_sort' => $sort
+            'pagination' => $pagination,
+            'current_sort' => $sort,
+            'search_query' => $search,
         ]);
     }
+
     #[Route('/detail/{idevenement}', name: 'app_evenement_front_show', methods: ['GET'])]
     public function show(int $idevenement, EvenementRepository $evenementRepository): Response
     {
