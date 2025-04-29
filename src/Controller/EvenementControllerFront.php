@@ -15,13 +15,28 @@ use Symfony\Component\HttpFoundation\Request;
 class EvenementControllerFront extends AbstractController
 {
     #[Route('/', name: 'app_evenement_front_index', methods: ['GET'])]
-    public function index(EvenementRepository $evenementRepository): Response
+    public function index(Request $request, EvenementRepository $evenementRepository): Response
     {
+        // Récupérer tous les événements
+        $evenements = $evenementRepository->findAll();
+        
+        // Récupérer le paramètre de tri
+        $sort = $request->query->get('sort', 'date_asc');
+        
+        // Trier manuellement les résultats
+        usort($evenements, function($a, $b) use ($sort) {
+            if ($sort === 'date_desc') {
+                return $b->getDate() <=> $a->getDate();
+            } else {
+                return $a->getDate() <=> $b->getDate();
+            }
+        });
+
         return $this->render('events/index.html.twig', [
-            'evenements' => $evenementRepository->findAll(),
+            'evenements' => $evenements,
+            'current_sort' => $sort
         ]);
     }
-
     #[Route('/detail/{idevenement}', name: 'app_evenement_front_show', methods: ['GET'])]
     public function show(int $idevenement, EvenementRepository $evenementRepository): Response
     {
