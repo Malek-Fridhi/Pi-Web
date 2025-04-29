@@ -38,68 +38,75 @@
         </div>
         <!-- Spinner End -->
 
-        <!-- Navbar Start -->
-        <div class="container-fluid header-top">
-            <div class="nav-shaps-2"></div>
-            <div class="container d-flex align-items-center">
-                <div class="d-flex align-items-center h-100">
-                    <a href="{{ path('app_home') }}" class="navbar-brand" style="height: 125px;">
-                        <h1 class="text-primary mb-0"> <img src="img/logogeekhub-removebg-preview.png" alt="Logo" width="90" height="90"> GeekHub</h1>
-                    </a>
-                </div>
-                <div class="w-100 h-100">
-                    <div class="topbar px-0 py-2 d-none d-lg-block" style="height: 45px;">
-                        <div class="row gx-0 align-items-center">
-                            <div class="col-lg-8 text-center text-lg-center mb-lg-0">
-                                <div class="d-flex flex-wrap">
-                                    <div class="pe-4">
-                                      
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="nav-bar px-0 py-lg-0" style="height: 80px;">
-                        <nav class="navbar navbar-expand-lg navbar-light d-flex justify-content-lg-end">
-                            <a href="{{ path('app_home') }}" class="navbar-brand-2">
-                                <h1 class="text-primary mb-0"><i class="fas fa-hand-rock me-2"></i> Fitness</h1>
-                            </a> 
-                            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
-                                <span class="fa fa-bars"></span>
-                            </button>
-                            <div class="collapse navbar-collapse" id="navbarCollapse">
-                                <div class="navbar-nav mx-0 mx-lg-auto" >
+         <!-- Spinner Start -->
+  <div id="spinner" class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
+      <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
+          <span class="sr-only">Loading...</span>
+      </div>
+  </div>
+  <!-- Spinner End -->
+  <!-- Navbar Start -->
+  <div class="container-fluid header-top">
+      <div class="nav-shaps-2"></div>
+      <div class="container d-flex align-items-center">
+          <div class="d-flex align-items-center h-100">
+              <a href="{{ path('app_home') }}" class="navbar-brand" style="height: 125px;">
+                  <h1 class="text-primary mb-0"> <img src="img/logogeekhub-removebg-preview.png" alt="Logo" width="90" height="90"> GeekHub</h1>
+              </a>
+          </div>
+          <div class="w-100 h-100">
+              <div class="topbar px-0 py-2 d-none d-lg-block" style="height: 45px;">
+                  <div class="row gx-0 align-items-center">
+                      <div class="col-lg-8 text-center text-lg-center mb-lg-0">
+                          <div class="d-flex flex-wrap">
+                              <div class="pe-4">
+                                
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+              <div class="nav-bar px-0 py-lg-0" style="height: 80px;">
+                  <nav class="navbar navbar-expand-lg navbar-light d-flex justify-content-lg-end">
+                      <a href="{{ path('app_home') }}" class="navbar-brand-2">
+                          <h1 class="text-primary mb-0"><i class="fas fa-hand-rock me-2"></i> Fitness</h1>
+                      </a> 
+                      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
+                          <span class="fa fa-bars"></span>
+                      </button>
+                      <div class="collapse navbar-collapse" id="navbarCollapse">
+                          <div class="navbar-nav mx-0 mx-lg-auto" >
                                     <a href="{{ path('app_eq') }}" class="nav-item nav-link">Equipement</a>
-                                    <a href="{{ path('app_servicceeee') }}" class="nav-item nav-link">Service</a>
-                                    <a href="{{ path('app_cour_indexx') }}" class="nav-item nav-link">Courses</a>
-                                    <a href="{{ path('app_reclamation_new') }}" class="nav-item nav-link">Reclamation</a>
-                                    <a href="{{ path('app_evenement_index') }}" class="nav-item nav-link">Evenement</a>
+                              <a href="{{ path('app_servicceeee') }}" class="nav-item nav-link active">Service</a>
+                              <a href="{{ path('app_cour_indexx') }}" class="nav-item nav-link">Courses</a>
+                              <a href="{{ path('app_reclamation_new') }}" class="nav-item nav-link">Reclamation</a>
+                            <a href="{{ path('app_reclamation_new') }}" class="nav-item nav-link">Evenement</a>
 
-                                    <div class="nav-item dropdown">
-                                        <a href="#" class="nav-link" data-bs-toggle="dropdown">
-                                            <span class="dropdown-toggle">Pages</span>
-                                        </a>
-                                        <div class="dropdown-menu">
-                                            <a href="{{ path('app_feature') }}" class="dropdown-item">Our Features</a>
-                                            <a href="{{ path('app_team') }}" class="dropdown-item">Our team</a>
-                                            <a href="{{ path('app_testimonial') }}" class="dropdown-item">Testimonial</a>
-                                        </div>
-                                    </div>
-                                    <a href="{{ path('app_objectif_index') }}" class="nav-item nav-link active">Objectifs</a>
-                                    <a href="{{ path('app_recipes') }}" class="nav-item nav-link">Recettes</a>
-                                    <a href="{{ path('app_logout') }}" class="nav-item nav-link">Logout</a>
-                                    <div class="nav-btn ps-3">
-                                        <button class="btn-search btn btn-primary btn-md-square mt-2 mt-lg-0 mb-4 mb-lg-0 flex-shrink-0" style="background-color: rgb(39, 147, 230);" data-bs-toggle="modal" data-bs-target="#searchModal"><i class="fas fa-search"></i></button>
-                                    </div>
-                                    <div class="nav-shaps-1"></div>
-                                </div>
-                            </div>
-                        </nav>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- Navbar End -->
+                              <div class="nav-item dropdown">
+                                  <a href="#" class="nav-link" data-bs-toggle="dropdown">
+                                      <span class="dropdown-toggle">Pages</span>
+                                  </a>
+                                  <div class="dropdown-menu">
+                                      <a href="{{ path('app_feature') }}" class="dropdown-item">Our Features</a>
+                                      <a href="{{ path('app_team') }}" class="dropdown-item">Our team</a>
+                                      <a href="{{ path('app_testimonial') }}" class="dropdown-item">Testimonial</a>
+                                  </div>
+                              </div>
+                              <a href="{{ path('app_objectif_index') }}" class="nav-item nav-link ">Objectifs</a>
+                              <a href="{{ path('app_recipes') }}" class="nav-item nav-link">Recettes</a>
+                              <a href="{{ path('app_logout') }}" class="nav-item nav-link">Logout</a>
+                              <div class="nav-btn ps-3">
+                                  <button class="btn-search btn btn-primary btn-md-square mt-2 mt-lg-0 mb-4 mb-lg-0 flex-shrink-0" style="background-color: rgb(39, 147, 230);" data-bs-toggle="modal" data-bs-target="#searchModal"><i class="fas fa-search"></i></button>
+                              </div>
+                              <div class="nav-shaps-1"></div>
+                          </div>
+                      </div>
+                  </nav>
+              </div>
+          </div>
+      </div>
+  </div>
+  <!-- Navbar End -->
 
         <!-- Objectifs Section Start -->
         <div class="container-fluid courses overflow-hidden py-5">
