@@ -13,11 +13,19 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 #[Route('/evenement')]
 #[IsGranted('ROLE_ADMIN')]
 final class EvenementControllerBack extends AbstractController
 {
+    private HttpClientInterface $httpClient;
+
+    public function __construct(HttpClientInterface $httpClient)
+    {
+        $this->httpClient = $httpClient;
+    }
+
     #[Route(name: 'app_evenement_index', methods: ['GET'])]
     public function index(EvenementRepository $evenementRepository): Response
     {
@@ -34,6 +42,21 @@ final class EvenementControllerBack extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            if (empty($evenement->getImageUrl())) {
+                $query = urlencode($evenement->getTitre());
+                $pixabayKey = $_ENV['PIXABAY_API_KEY'];
+                $url = "https://pixabay.com/api/?key=$pixabayKey&q=$query&image_type=photo&per_page=5";
+
+                $response = $this->httpClient->request('GET', $url);
+                $data = $response->toArray();
+
+                if (!empty($data['hits'])) {
+                    $evenement->setImageUrl($data['hits'][0]['webformatURL']);
+                } else {
+                    $evenement->setImageUrl('https://via.placeholder.com/600x400?text=No+Image');
+                }
+            }
+
             $entityManager->persist($evenement);
             $entityManager->flush();
 
@@ -50,7 +73,7 @@ final class EvenementControllerBack extends AbstractController
     public function show(int $idevenement, EvenementRepository $evenementRepository): Response
     {
         $evenement = $evenementRepository->find($idevenement);
-        
+
         if (!$evenement) {
             throw $this->createNotFoundException('Événement non trouvé');
         }
@@ -61,14 +84,10 @@ final class EvenementControllerBack extends AbstractController
     }
 
     #[Route('/{idevenement}/edit', name: 'app_evenement_edit', methods: ['GET', 'POST'])]
-    public function edit(
-        Request $request, 
-        int $idevenement,
-        EvenementRepository $evenementRepository,
-        EntityManagerInterface $entityManager
-    ): Response {
+    public function edit(Request $request, int $idevenement, EvenementRepository $evenementRepository, EntityManagerInterface $entityManager): Response
+    {
         $evenement = $evenementRepository->find($idevenement);
-        
+
         if (!$evenement) {
             throw $this->createNotFoundException('Événement non trouvé');
         }
@@ -89,14 +108,10 @@ final class EvenementControllerBack extends AbstractController
     }
 
     #[Route('/{idevenement}', name: 'app_evenement_delete', methods: ['POST'])]
-    public function delete(
-        Request $request,
-        int $idevenement,
-        EvenementRepository $evenementRepository,
-        EntityManagerInterface $entityManager
-    ): Response {
+    public function delete(Request $request, int $idevenement, EvenementRepository $evenementRepository, EntityManagerInterface $entityManager): Response
+    {
         $evenement = $evenementRepository->find($idevenement);
-        
+
         if (!$evenement) {
             throw $this->createNotFoundException('Événement non trouvé');
         }
@@ -110,56 +125,41 @@ final class EvenementControllerBack extends AbstractController
     }
 
     #[Route('/{idevenement}/inscriptions', name: 'app_evenement_inscriptions', methods: ['GET'])]
-    public function showInscriptions(
-        int $idevenement,
-        EvenementRepository $evenementRepository,
-        InscriptionevenementRepository $inscriptionRepo
-    ): Response {
+    public function showInscriptions(int $idevenement, EvenementRepository $evenementRepository, InscriptionevenementRepository $inscriptionRepo): Response
+    {
         $evenement = $evenementRepository->find($idevenement);
-        
+
         if (!$evenement) {
             throw $this->createNotFoundException('Événement non trouvé');
         }
 
         $inscriptions = $inscriptionRepo->findBy(['evenement' => $evenement], ['date_inscription' => 'DESC']);
-
-        $approvedCount = $inscriptionRepo->count([
-            'evenement' => $evenement,
-            'statut' => 'Approved'
-        ]);
+        $approvedCount = $inscriptionRepo->count(['evenement' => $evenement, 'statut' => 'Approved']);
 
         return $this->render('evenement/inscriptions.html.twig', [
             'evenement' => $evenement,
             'inscriptions' => $inscriptions,
             'approved_count' => $approvedCount,
-            'capacity_reached' => $evenement->getCapacite() && $approvedCount >= $evenement->getCapacite()
+            'capacity_reached' => $evenement->getCapacite() && $approvedCount >= $evenement->getCapacite(),
         ]);
     }
 
     #[Route('/inscription/{id}/approve', name: 'app_inscription_approve', methods: ['POST'])]
-    public function approveInscription(
-        int $id,
-        InscriptionevenementRepository $inscriptionRepo,
-        EntityManagerInterface $entityManager
-    ): Response {
+    public function approveInscription(int $id, InscriptionevenementRepository $inscriptionRepo, EntityManagerInterface $entityManager): Response
+    {
         $inscription = $inscriptionRepo->find($id);
-        
+
         if (!$inscription) {
             throw $this->createNotFoundException('Inscription non trouvée');
         }
 
         $evenement = $inscription->getEvenement();
-        
-        // Check capacity
-        $approvedCount = $inscriptionRepo->count([
-            'evenement' => $evenement,
-            'statut' => 'Approved'
-        ]);
+        $approvedCount = $inscriptionRepo->count(['evenement' => $evenement, 'statut' => 'Approved']);
 
         if ($evenement->getCapacite() && $approvedCount >= $evenement->getCapacite()) {
             $this->addFlash('danger', 'La capacité maximale est atteinte pour cet événement');
             return $this->redirectToRoute('app_evenement_inscriptions', [
-                'idevenement' => $evenement->getIdevenement()
+                'idevenement' => $evenement->getIdevenement(),
             ]);
         }
 
@@ -168,18 +168,15 @@ final class EvenementControllerBack extends AbstractController
 
         $this->addFlash('success', 'Inscription approuvée avec succès');
         return $this->redirectToRoute('app_evenement_inscriptions', [
-            'idevenement' => $evenement->getIdevenement()
+            'idevenement' => $evenement->getIdevenement(),
         ]);
     }
 
     #[Route('/inscription/{id}/reject', name: 'app_inscription_reject', methods: ['POST'])]
-    public function rejectInscription(
-        int $id,
-        InscriptionevenementRepository $inscriptionRepo,
-        EntityManagerInterface $entityManager
-    ): Response {
+    public function rejectInscription(int $id, InscriptionevenementRepository $inscriptionRepo, EntityManagerInterface $entityManager): Response
+    {
         $inscription = $inscriptionRepo->find($id);
-        
+
         if (!$inscription) {
             throw $this->createNotFoundException('Inscription non trouvée');
         }
@@ -189,7 +186,7 @@ final class EvenementControllerBack extends AbstractController
 
         $this->addFlash('warning', 'Inscription rejetée');
         return $this->redirectToRoute('app_evenement_inscriptions', [
-            'idevenement' => $inscription->getEvenement()->getIdevenement()
+            'idevenement' => $inscription->getEvenement()->getIdevenement(),
         ]);
     }
 }
